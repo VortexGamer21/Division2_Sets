@@ -293,6 +293,8 @@
   }
   .card.brand::before{ content:'BRAND'; background: var(--brand-dim); }
   .card.exo::before{ content:'EXOTIC'; background: var(--weapon-dim); }
+  .card.exo .meta-badge{ color: var(--weapon); border-color: var(--weapon); background: rgba(201,67,46,0.08); }
+
   .card .idx{
     font-size: 10px;
     color: var(--text-faint);
@@ -305,6 +307,18 @@
     color: #fff;
     line-height:1.18;
   }
+  .card .meta-badge{
+    position:absolute;
+    top:20px; right:20px;
+    font-size: 9.5px;
+    letter-spacing:.07em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    background: rgba(232,194,74,0.08);
+    padding: 3px 9px;
+  }
+
   .bonus-block{
     display:flex;
     flex-wrap: wrap;
@@ -369,9 +383,10 @@
   .extras{
     margin-top: 66px;
     display:grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1.1fr 1fr;
     gap: 16px;
   }
+  @media (max-width: 760px){ .extras{ grid-template-columns: 1fr; } }
   .extras .panel{
     background: var(--panel);
     border: 1px solid var(--line-soft);
@@ -886,6 +901,19 @@
     <div class="panel">
       <h3><span class="dot"></span>Perfect-Talent-Items</h3>
       <div id="namedItems"></div>
+    </div>
+    <div class="panel">
+      <h3><span class="dot"></span>Meta-Empfehlungen 2026</h3>
+      <div class="best-cols">
+        <div>
+          <h4>BESTE GEAR SETS</h4>
+          <ul id="bestGear"></ul>
+        </div>
+        <div>
+          <h4>BESTE BRAND SETS</h4>
+          <ul id="bestBrand"></ul>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1675,6 +1703,7 @@ gearSets.forEach((s, i) => {
   card.innerHTML = `
     <div class="idx">GEAR // ${String(i+1).padStart(2,'0')}</div>
     <h3>${s[0]}</h3>
+    ${s[6] ? '<div class="meta-badge">META</div>' : ''}
     <div class="bonus-block">
       <div class="b"><div class="n">2-TEILE</div><div class="v">${s[1]}</div></div>
       <div class="b"><div class="n">3-TEILE</div><div class="v">${s[2]}</div></div>
@@ -1704,6 +1733,7 @@ brandSets.forEach((s, i) => {
   card.innerHTML = `
     <div class="idx">BRAND // ${String(i+1).padStart(2,'0')}</div>
     <h3>${s[0]}</h3>
+    ${s[4] ? '<div class="meta-badge">META</div>' : ''}
     <div class="bonus-block">
       <div class="b"><div class="n">1-TEIL</div><div class="v">${s[1]}</div></div>
       <div class="b"><div class="n">2-TEILE</div><div class="v">${s[2]}</div></div>
