@@ -1703,7 +1703,6 @@ gearSets.forEach((s, i) => {
   card.innerHTML = `
     <div class="idx">GEAR // ${String(i+1).padStart(2,'0')}</div>
     <h3>${s[0]}</h3>
-    ${s[6] ? '<div class="meta-badge">META</div>' : ''}
     <div class="bonus-block">
       <div class="b"><div class="n">2-TEILE</div><div class="v">${s[1]}</div></div>
       <div class="b"><div class="n">3-TEILE</div><div class="v">${s[2]}</div></div>
@@ -1733,7 +1732,6 @@ brandSets.forEach((s, i) => {
   card.innerHTML = `
     <div class="idx">BRAND // ${String(i+1).padStart(2,'0')}</div>
     <h3>${s[0]}</h3>
-    ${s[4] ? '<div class="meta-badge">META</div>' : ''}
     <div class="bonus-block">
       <div class="b"><div class="n">1-TEIL</div><div class="v">${s[1]}</div></div>
       <div class="b"><div class="n">2-TEILE</div><div class="v">${s[2]}</div></div>
