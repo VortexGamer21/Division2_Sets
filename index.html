@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Division 2 — Sets Datenbank</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg: #0A0C0F;
@@ -23,23 +23,25 @@
     --gold: #E8C24A;
     --weapon: #C9432E;
     --weapon-dim: #6B2419;
+    --radius: 12px;
+    --radius-sm: 7px;
   }
 
   *{ box-sizing:border-box; }
   html,body{ margin:0; padding:0; }
   body{
     background:
-      radial-gradient(1200px 600px at 15% -10%, rgba(232,137,27,0.07), transparent 60%),
-      radial-gradient(1000px 500px at 100% 0%, rgba(53,182,201,0.06), transparent 55%),
+      radial-gradient(1100px 550px at 12% -10%, rgba(232,137,27,0.06), transparent 60%),
+      radial-gradient(950px 480px at 100% 0%, rgba(53,182,201,0.05), transparent 55%),
       var(--bg);
     color: var(--text);
-    font-family: 'IBM Plex Mono', monospace;
+    font-family: 'JetBrains Mono', monospace;
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
   }
-  h1,h2,h3, .display{ font-family:'Rajdhani', sans-serif; letter-spacing:.02em; }
+  h1,h2,h3, .display{ font-family:'Oswald', sans-serif; letter-spacing:0; font-weight:600; }
 
-  ::selection{ background: var(--gear); color:#100b04; }
+  ::selection{ background: var(--gold); color:#1a1204; }
 
   a { color: inherit; }
 
@@ -52,74 +54,92 @@
 
   /* ---------- hero ---------- */
   .hero{
-    padding: 56px 0 34px;
+    padding: 58px 0 36px;
     border-bottom: 1px solid var(--line-soft);
     position: relative;
   }
   .hero .kicker{
-    font-size: 12.5px;
-    color: var(--gear);
-    letter-spacing: .18em;
-    display:flex;
+    display:inline-flex;
     align-items:center;
-    gap:10px;
-    margin-bottom:18px;
+    gap:9px;
+    font-size: 11px;
+    color: var(--gear);
+    letter-spacing: .14em;
+    padding: 7px 13px;
+    border: 1px solid var(--gear-dim);
+    border-radius: 3px 3px 3px 0;
+    background: rgba(232,137,27,0.08);
+    margin-bottom:20px;
   }
   .hero .kicker::before{
     content:'';
-    width:22px; height:1px;
+    width:6px; height:6px;
     background: var(--gear);
+    border-radius:1px;
+    transform: rotate(45deg);
     display:inline-block;
   }
   .hero h1{
-    font-size: clamp(38px, 6vw, 64px);
-    font-weight: 700;
-    line-height: 0.98;
-    margin: 0 0 14px;
+    font-size: clamp(34px, 5.6vw, 58px);
+    font-weight: 600;
+    line-height: 1.04;
+    margin: 0 0 16px;
     color:#fff;
   }
   .hero h1 span{ color: var(--gear); }
   .hero p.lede{
     max-width: 620px;
     color: var(--text-dim);
-    font-size: 14.5px;
-    line-height: 1.7;
-    margin: 0 0 30px;
+    font-size: 14px;
+    line-height: 1.75;
+    margin: 0 0 32px;
   }
 
   .stat-row{
     display:flex;
-    gap: 36px;
+    gap: 12px;
     flex-wrap: wrap;
   }
   .stat{
-    border-left: 2px solid var(--line);
-    padding-left: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line-soft);
+    border-top: 3px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 12px 18px 11px;
+    min-width: 118px;
   }
+  .stat-row .stat:nth-child(1){ border-top-color: var(--gear); }
+  .stat-row .stat:nth-child(2){ border-top-color: var(--brand); }
+  .stat-row .stat:nth-child(3){ border-top-color: var(--gold); }
+  .stat-row .stat:nth-child(4){ border-top-color: var(--weapon); }
+  .stat-row .stat:nth-child(5){ border-top-color: var(--weapon); }
   .stat .num{
-    font-family:'Rajdhani', sans-serif;
+    font-family:'Oswald', sans-serif;
     font-size: 30px;
-    font-weight: 700;
+    font-weight: 600;
     color: #fff;
     line-height:1;
   }
   .stat .lbl{
-    font-size: 11px;
+    font-size: 10.5px;
     color: var(--text-faint);
-    margin-top: 5px;
-    letter-spacing:.06em;
+    margin-top: 6px;
+    letter-spacing:.07em;
+    text-transform: uppercase;
   }
 
   /* ---------- controls ---------- */
   .controls{
     position: sticky;
-    top: 0;
+    top: 12px;
     z-index: 20;
-    background: rgba(10,12,15,0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line-soft);
-    padding: 16px 0;
-    margin-top: 10px;
+    background: rgba(20,24,29,0.88);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    box-shadow: 0 14px 30px -18px rgba(0,0,0,.7);
+    padding: 14px 16px;
+    margin-top: 26px;
   }
   .controls-inner{
     display:flex;
@@ -134,214 +154,256 @@
   }
   .search input{
     width:100%;
-    background: var(--panel);
+    background: var(--panel-2);
     border: 1px solid var(--line);
     color: var(--text);
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 13.5px;
-    padding: 10px 14px 10px 34px;
+    border-radius: 999px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 13px;
+    padding: 10px 16px 10px 36px;
     outline: none;
-    transition: border-color .15s ease;
+    transition: border-color .15s ease, box-shadow .15s ease;
   }
-  .search input:focus{ border-color: var(--gear); }
+  .search input:focus{ border-color: var(--gear); box-shadow: 0 0 0 3px rgba(232,137,27,0.15); }
   .search input::placeholder{ color: var(--text-faint); }
   .search svg{
-    position:absolute; left:11px; top:50%; transform:translateY(-50%);
-    opacity:.55; width:14px; height:14px;
+    position:absolute; left:13px; top:50%; transform:translateY(-50%);
+    opacity:.5; width:14px; height:14px;
   }
 
   .filters{
     display:flex;
-    gap: 6px;
-    background: var(--panel);
+    gap: 4px;
+    background: var(--panel-2);
     border: 1px solid var(--line);
-    padding: 3px;
+    border-radius: 999px;
+    padding: 4px;
+    flex-wrap: wrap;
   }
   .filters button{
     appearance:none;
     background: transparent;
     border: none;
+    border-radius: 999px;
     color: var(--text-dim);
-    font-family:'IBM Plex Mono', monospace;
-    font-size: 12px;
-    letter-spacing:.03em;
-    padding: 7px 14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing:.02em;
+    padding: 8px 15px;
     cursor:pointer;
     transition: all .15s ease;
   }
   .filters button.active{
-    background: var(--panel-2);
+    background: var(--panel);
     color: #fff;
+    box-shadow: 0 0 0 1px var(--line-soft) inset;
   }
-  .filters button.active[data-f="gear"]{ color: var(--gear); }
-  .filters button.active[data-f="brand"]{ color: var(--brand); }
-  .filters button.active[data-f="exogear"]{ color: var(--weapon); }
-  .filters button.active[data-f="exotic"]{ color: var(--weapon); }
-  .filters button.active[data-f="named"]{ color: var(--gold); }
-  .filters button.active[data-f="standard"]{ color: var(--brand); }
+  .filters button.active[data-f="gear"]{ color: var(--gear); background: rgba(232,137,27,0.14); }
+  .filters button.active[data-f="brand"]{ color: var(--brand); background: rgba(53,182,201,0.14); }
+  .filters button.active[data-f="exogear"]{ color: var(--weapon); background: rgba(201,67,46,0.14); }
+  .filters button.active[data-f="exotic"]{ color: var(--weapon); background: rgba(201,67,46,0.14); }
+  .filters button.active[data-f="named"]{ color: var(--gold); background: rgba(232,194,74,0.14); }
+  .filters button.active[data-f="standard"]{ color: var(--brand); background: rgba(53,182,201,0.14); }
   .filters button:hover:not(.active){ color: var(--text); }
 
   .count-note{
     color: var(--text-faint);
-    font-size: 12px;
+    font-size: 11.5px;
     white-space:nowrap;
+    padding-left: 4px;
   }
 
   /* ---------- section labels ---------- */
   .section-head{
     display:flex;
-    align-items: baseline;
-    gap: 12px;
-    margin: 46px 0 18px;
+    align-items: center;
+    gap: 14px;
+    margin: 58px 0 22px;
   }
   .section-head h2{
-    font-size: 22px;
-    font-weight:700;
+    font-size: 24px;
+    font-weight:600;
     margin:0;
     color:#fff;
+    display:flex;
+    align-items:center;
+    gap:12px;
   }
+  .section-head h2::before{
+    content:'';
+    width:9px; height:9px;
+    background: var(--gear);
+    border-radius:2px;
+    transform: rotate(45deg);
+    flex: 0 0 auto;
+  }
+  .section-head.brand h2::before{ background: var(--brand); }
+  .section-head.exogear h2::before{ background: var(--weapon); }
+  .section-head.weapon h2::before{ background: var(--weapon); }
   .section-head .tag{
-    font-size: 11px;
+    font-size: 10.5px;
     letter-spacing:.08em;
-    padding: 3px 9px;
+    padding: 5px 12px;
+    border-radius: 999px;
     border: 1px solid currentColor;
+    background: rgba(255,255,255,0.02);
   }
   .section-head.gear .tag{ color: var(--gear); }
   .section-head.brand .tag{ color: var(--brand); }
   .section-head .rule{
     flex:1;
-    height:1px;
-    background: var(--line-soft);
+    height:0;
+    border-top: 1px dashed var(--line-soft);
   }
 
   /* ---------- grid & cards ---------- */
   .grid{
     display:grid;
-    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-    gap: 1px;
-    background: var(--line-soft);
-    border: 1px solid var(--line-soft);
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
   }
   .card{
-    background: var(--panel);
-    padding: 20px 22px 18px;
+    background: linear-gradient(175deg, var(--panel-2), var(--panel) 60%);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 22px 22px 20px 34px;
     position:relative;
     display:flex;
     flex-direction:column;
+    box-shadow: 0 14px 26px -20px rgba(0,0,0,.7);
+    transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
   }
+  .card:hover{
+    transform: translateY(-2px);
+    border-color: var(--gear-dim);
+    box-shadow: 0 18px 30px -18px rgba(232,137,27,.22);
+  }
+  .card.brand:hover{ border-color: var(--brand-dim); box-shadow: 0 18px 30px -18px rgba(53,182,201,.22); }
+  .card.exo:hover{ border-color: var(--weapon-dim); box-shadow: 0 18px 30px -18px rgba(201,67,46,.22); }
   .card::before{
-    content:'';
-    position:absolute; left:0; top:0; bottom:0; width:2px;
+    content:'GEAR';
+    position:absolute; left:0; top:0; bottom:0; width:22px;
     background: var(--gear-dim);
+    color: rgba(0,0,0,.5);
+    display:flex; align-items:center; justify-content:center;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-family:'Oswald', sans-serif; font-weight:600; font-size:10px; letter-spacing:.18em;
+    border-radius: var(--radius) 0 0 var(--radius);
   }
-  .card.brand::before{ background: var(--brand-dim); }
-  .card.exo::before{ background: var(--weapon-dim); }
-  .card.exo .meta-badge{ color: var(--weapon); border-color: var(--weapon); }
+  .card.brand::before{ content:'BRAND'; background: var(--brand-dim); }
+  .card.exo::before{ content:'EXOTIC'; background: var(--weapon-dim); }
+  .card.exo .meta-badge{ color: var(--weapon); border-color: var(--weapon); background: rgba(201,67,46,0.08); }
 
   .card .idx{
-    font-size: 10.5px;
+    font-size: 10px;
     color: var(--text-faint);
     letter-spacing:.08em;
   }
   .card h3{
     font-size: 19px;
     font-weight: 600;
-    margin: 6px 0 14px;
+    margin: 8px 0 15px;
     color: #fff;
-    line-height:1.15;
+    line-height:1.18;
   }
   .card .meta-badge{
     position:absolute;
-    top:20px; right:22px;
+    top:20px; right:20px;
     font-size: 9.5px;
-    letter-spacing:.08em;
+    letter-spacing:.07em;
     color: var(--gold);
     border: 1px solid var(--gold);
-    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(232,194,74,0.08);
+    padding: 3px 9px;
   }
 
   .bonus-block{
     display:flex;
     flex-wrap: wrap;
-    gap: 0;
+    gap: 8px;
     margin-bottom: 16px;
-    border: 1px solid var(--line-soft);
   }
   .bonus-block .b{
     flex: 1 1 0;
     min-width: 110px;
     padding: 10px 12px;
-    border-right: 1px solid var(--line-soft);
-    border-bottom: 1px solid var(--line-soft);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.015);
   }
-  .bonus-block .b:last-child{ border-right:none; }
   .bonus-block .b .n{
-    font-family:'Rajdhani', sans-serif;
-    font-size: 11px;
+    font-family:'Oswald', sans-serif;
+    font-size: 10.5px;
     font-weight:600;
     color: var(--gear);
     letter-spacing:.05em;
+    text-transform: uppercase;
   }
   .card.brand .bonus-block .b .n{ color: var(--brand); }
   .bonus-block .b .v{
     font-size: 11.5px;
     color: var(--text);
-    margin-top: 5px;
+    margin-top: 6px;
     line-height:1.45;
   }
 
   .talent{
-    padding: 11px 0;
-    border-top: 1px solid var(--line-soft);
+    padding: 12px 0;
+    border-top: 1px dashed var(--line-soft);
   }
   .talent:first-of-type{ border-top: none; padding-top: 0; }
   .talent .t-label{
-    font-size: 10px;
+    font-size: 9.5px;
     letter-spacing:.09em;
     color: var(--text-faint);
-    margin-bottom: 5px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
   }
   .talent .t-body{
     font-size: 12.5px;
     color: var(--text-dim);
-    line-height: 1.55;
+    line-height: 1.6;
   }
-  .talent .t-body b{ color: var(--gold); font-weight:500; }
+  .talent .t-body b{ color: var(--gold); font-weight:600; }
 
   .empty{
     grid-column: 1/-1;
-    padding: 60px 20px;
+    padding: 70px 20px;
     text-align:center;
     color: var(--text-faint);
     font-size: 13px;
     background: var(--panel);
+    border: 1px dashed var(--line-soft);
+    border-radius: var(--radius);
   }
 
   /* ---------- extras section ---------- */
   .extras{
-    margin-top: 60px;
+    margin-top: 66px;
     display:grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: 1px;
-    background: var(--line-soft);
-    border: 1px solid var(--line-soft);
+    gap: 16px;
   }
   @media (max-width: 760px){ .extras{ grid-template-columns: 1fr; } }
   .extras .panel{
     background: var(--panel);
-    padding: 26px 24px;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius);
+    padding: 28px 26px;
   }
   .extras h3{
     font-size: 15px;
     color:#fff;
-    margin: 0 0 16px;
-    display:flex; align-items:center; gap:8px;
+    margin: 0 0 18px;
+    display:flex; align-items:center; gap:10px;
   }
-  .extras h3 .dot{ width:7px; height:7px; background: var(--gold); display:inline-block; }
+  .extras h3 .dot{ width:8px; height:8px; background: var(--gold); border-radius:2px; transform:rotate(45deg); display:inline-block; }
   .named-item{
     display:flex; justify-content:space-between; gap:10px;
-    padding: 9px 0;
-    border-bottom: 1px solid var(--line-soft);
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--line-soft);
     font-size: 12.5px;
   }
   .named-item:last-child{ border-bottom:none; }
@@ -349,131 +411,145 @@
   .named-item .item{ color:#fff; text-align:right; }
   .named-item .slot{ display:block; color: var(--text-faint); font-size:10.5px; }
 
-  .best-cols{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .best-cols{ display:grid; grid-template-columns: 1fr 1fr; gap: 22px; }
   .best-cols h4{
-    font-size: 11px; letter-spacing:.08em; margin: 0 0 10px;
-    color: var(--text-faint); font-weight:500;
+    font-size: 10.5px; letter-spacing:.08em; margin: 0 0 12px;
+    color: var(--text-faint); font-weight:600; text-transform: uppercase;
   }
   .best-cols ul{ list-style:none; margin:0; padding:0; }
   .best-cols li{
     font-size: 12.5px;
-    padding: 5px 0;
+    padding: 6px 0 6px 15px;
     color: var(--text);
     border-bottom: 1px dashed var(--line-soft);
+    position: relative;
   }
+  .best-cols li::before{ content:'▸'; position:absolute; left:0; color: var(--gold); }
   .best-cols li:last-child{ border-bottom:none; }
 
   .named-note{
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid var(--line-soft);
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--line-soft);
     font-size: 11.5px;
     color: var(--text-faint);
   }
-  .named-note b{ color: var(--gold); font-weight:500; }
+  .named-note b{ color: var(--gold); font-weight:600; }
 
   /* ---------- exotic gear (clothing) section ---------- */
   .section-head.exogear .tag{ color: var(--weapon); }
   .exo-group-label{
     grid-column: 1/-1;
-    font-size: 10px;
+    font-size: 10.5px;
     letter-spacing:.1em;
-    color: var(--text-faint);
+    color: var(--weapon);
     text-transform: uppercase;
-    padding: 14px 16px 8px;
-    background: var(--panel-2);
+    font-weight: 600;
+    padding: 18px 4px 10px;
     border-bottom: 1px solid var(--line-soft);
   }
-  .exo-group-label:first-child{ border-top: none; }
+  .exo-group-label:first-child{ border-top: none; padding-top: 0; }
 
   /* ---------- weapons section ---------- */
   .section-head.weapon .tag{ color: var(--weapon); }
   .wp-intro{
     color: var(--text-dim);
     font-size: 13px;
-    line-height: 1.7;
-    max-width: 760px;
-    margin: -6px 0 26px;
+    line-height: 1.75;
+    max-width: 720px;
+    margin: -6px 0 28px;
   }
   .wp-note{
     font-size: 11.5px;
     color: var(--text-faint);
-    border-left: 2px solid var(--weapon-dim);
-    padding: 8px 14px;
-    margin: -8px 0 30px;
+    border-left: 3px solid var(--weapon-dim);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 12px 16px;
+    margin: -8px 0 32px;
     line-height: 1.6;
     background: rgba(201,67,46,0.05);
   }
   .wp-note a{ color: var(--weapon); text-decoration: underline; }
   .wp-jump{
     display:flex; flex-wrap:wrap; gap:8px;
-    margin: -10px 0 34px;
+    margin: -10px 0 36px;
   }
   .wp-jump a{
     font-size: 11.5px;
     color: var(--text-dim);
     border: 1px solid var(--line);
-    padding: 6px 12px;
+    border-radius: 999px;
+    padding: 7px 14px;
     text-decoration: none;
     transition: all .15s ease;
   }
-  .wp-jump a:hover{ border-color: var(--weapon); color: var(--weapon); }
+  .wp-jump a:hover{ border-color: var(--weapon); color: var(--weapon); background: rgba(201,67,46,0.08); }
 
-  .wp-cat{ margin-top: 44px; }
+  .wp-cat{ margin-top: 50px; }
   .wp-cat-head{
     display:flex; align-items:baseline; gap:12px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .wp-cat-head h3{
-    font-size: 16.5px; font-weight:600; color:#fff; margin:0;
-    font-family:'Rajdhani', sans-serif; letter-spacing:.02em;
+    font-size: 17px; font-weight:600; color:#fff; margin:0;
+    font-family:'Oswald', sans-serif; letter-spacing:0;
   }
   .wp-cat-head .cnt{
     font-size: 11px; color: var(--text-faint);
   }
-  .wp-cat-head .rule{ flex:1; height:1px; background: var(--line-soft); }
+  .wp-cat-head .rule{ flex:1; height:0; border-top: 1px dashed var(--line-soft); }
 
   .wp-group-label{
     font-size: 10px; letter-spacing:.1em; color: var(--text-faint);
-    margin: 16px 0 6px;
+    text-transform: uppercase;
+    margin: 18px 0 8px;
   }
 
   .wgrid{
     display:grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1px;
-    background: var(--line-soft);
-    border: 1px solid var(--line-soft);
+    gap: 12px;
   }
   .witem{
     background: var(--panel);
-    padding: 12px 34px 12px 14px;
+    padding: 16px 34px 14px 16px;
     position: relative;
-    border-left: 2px solid var(--line);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-sm);
+    transition: border-color .15s ease, transform .15s ease;
+    --accent: var(--line);
+  }
+  .witem:hover{ border-color: var(--line); transform: translateY(-1px); }
+  .witem::after{
+    content:'';
+    position:absolute; left:0; top:0; right:0; height:3px;
+    background: var(--accent);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
   }
   .witem .wstats{
     display:grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    margin-top: 10px;
-    padding-top: 9px;
-    border-top: 1px solid var(--line-soft);
+    margin-top: 11px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-soft);
   }
   .witem .ws{
-    padding: 3px 0;
+    padding: 4px 0;
   }
   .witem .ws span{
     display:block;
     font-size: 8.5px;
     letter-spacing:.08em;
     color: var(--text-faint);
+    text-transform: uppercase;
   }
   .witem .ws b{
     display:block;
     font-size: 12px;
     font-weight:600;
     color: var(--text);
-    margin-top: 1px;
+    margin-top: 2px;
   }
   .witem .ws b .pellet{
     font-size: 9px;
@@ -483,42 +559,44 @@
   }
   .witem .ws.hl b{ color: var(--weapon); }
   .witem .wstats-missing{
-    margin-top: 10px;
-    padding-top: 9px;
-    border-top: 1px solid var(--line-soft);
+    margin-top: 11px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line-soft);
     font-size: 10.5px;
     color: var(--text-faint);
     font-style: italic;
   }
-  .witem.exotic{ border-left-color: var(--weapon); }
-  .witem.named{ border-left-color: var(--gold); }
-  .witem.standard{ border-left-color: var(--brand); }
+  .witem.exotic{ --accent: var(--weapon); }
+  .witem.named{ --accent: var(--gold); }
+  .witem.standard{ --accent: var(--brand); }
   .witem .wname{
     font-size: 13px; font-weight:600; color:#fff; line-height:1.3;
   }
   .witem .wrarity{
     font-size: 9.5px; letter-spacing:.06em; color: var(--text-faint);
-    margin-top: 5px; text-transform: uppercase;
+    margin-top: 6px; text-transform: uppercase;
   }
   .witem.exotic .wrarity{ color: var(--weapon); }
   .witem.named .wrarity{ color: var(--gold); }
   .witem.standard .wrarity{ color: var(--brand); }
   .witem .wtier{
-    position:absolute; top:10px; right:10px;
+    position:absolute; top:11px; right:10px;
     font-size: 9.5px; line-height:1;
-    padding: 3px 5px;
+    padding: 4px 6px;
+    border-radius: 4px;
     border: 1px solid currentColor;
+    background: rgba(255,255,255,0.03);
     color: var(--text-faint);
   }
-  .witem .wtier.s{ color: var(--gold); }
-  .witem .wtier.a{ color: var(--weapon); }
-  .witem .wtier.neu{ color: var(--brand); }
+  .witem .wtier.s{ color: var(--gold); background: rgba(232,194,74,0.08); }
+  .witem .wtier.a{ color: var(--weapon); background: rgba(201,67,46,0.08); }
+  .witem .wtier.neu{ color: var(--brand); background: rgba(53,182,201,0.08); }
 
   /* ---------- exotic talent (ausklappbar) ---------- */
   .witem .wtalent{
-    margin-top: 10px;
-    border-top: 1px solid var(--line-soft);
-    padding-top: 8px;
+    margin-top: 11px;
+    border-top: 1px dashed var(--line-soft);
+    padding-top: 9px;
   }
   .witem .wtalent summary{
     list-style: none;
@@ -527,7 +605,7 @@
     align-items: baseline;
     gap: 8px;
     font-size: 11.5px;
-    line-height: 1.45;
+    line-height: 1.5;
     color: var(--text-dim);
     user-select: none;
     outline: none;
@@ -549,25 +627,26 @@
   .witem .wtalent summary:focus-visible{
     outline: 1px solid var(--weapon);
     outline-offset: 3px;
+    border-radius: 2px;
   }
-  .witem .wtalent .tbody{ padding: 8px 0 2px 13px; }
-  .witem .wtalent .titem + .titem{ margin-top: 9px; }
+  .witem .wtalent .tbody{ padding: 10px 0 2px 13px; }
+  .witem .wtalent .titem + .titem{ margin-top: 10px; }
   .witem .wtalent .tname{
     font-size: 11.5px;
     font-weight: 600;
     color: var(--text);
-    margin-bottom: 2px;
+    margin-bottom: 3px;
   }
   .witem .wtalent .ttext{
     font-size: 11.5px;
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--text-dim);
     margin: 0;
   }
   .witem .wtalent .tnote{
-    margin: 8px 0 0;
+    margin: 9px 0 0;
     font-size: 10.5px;
-    line-height: 1.5;
+    line-height: 1.55;
     color: var(--text-faint);
     font-style: italic;
   }
@@ -578,29 +657,31 @@
   .wp-search{
     position:relative;
     max-width: 340px;
-    margin-bottom: 30px;
+    margin-bottom: 34px;
   }
   .wp-search input{
     width:100%;
-    background: var(--panel);
+    background: var(--panel-2);
     border: 1px solid var(--line);
     color: var(--text);
-    font-family:'IBM Plex Mono', monospace;
+    border-radius: 999px;
+    font-family:'JetBrains Mono', monospace;
     font-size: 13px;
-    padding: 9px 14px 9px 32px;
+    padding: 9px 14px 9px 34px;
     outline: none;
+    transition: border-color .15s ease, box-shadow .15s ease;
   }
-  .wp-search input:focus{ border-color: var(--weapon); }
+  .wp-search input:focus{ border-color: var(--weapon); box-shadow: 0 0 0 3px rgba(201,67,46,0.15); }
   .wp-search svg{
-    position:absolute; left:10px; top:50%; transform:translateY(-50%);
-    opacity:.55; width:13px; height:13px;
+    position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    opacity:.5; width:13px; height:13px;
   }
 
   /* ---------- footer ---------- */
   footer{
-    margin-top: 70px;
-    padding-top: 24px;
-    border-top: 1px solid var(--line-soft);
+    margin-top: 80px;
+    padding-top: 26px;
+    border-top: 1px dashed var(--line-soft);
     color: var(--text-faint);
     font-size: 11.5px;
     display:flex;
@@ -611,44 +692,132 @@
 
   @media (max-width: 560px){
     .wrap{ padding: 0 16px 60px; }
-    .hero{ padding: 40px 0 26px; }
+    .hero{ padding: 42px 0 28px; }
     .best-cols{ grid-template-columns: 1fr; }
+    .controls{ top: 8px; }
   }
 
   /* ---------- language switcher ---------- */
   .lang-switch{
     position:absolute;
-    top:18px;
+    top:0;
     right:0;
     display:flex;
     align-items:center;
-    gap:4px;
-    padding:4px;
+    gap:3px;
+    padding:3px;
+    border-radius: 999px;
     border:1px solid var(--line);
-    background:rgba(10,12,15,.82);
-    backdrop-filter:blur(8px);
+    background:rgba(10,12,15,.85);
+    backdrop-filter:blur(10px);
     z-index:20;
   }
   .lang-switch button{
     appearance:none;
     border:1px solid transparent;
+    border-radius: 999px;
     background:transparent;
     color:var(--text-faint);
-    font:600 11px 'IBM Plex Mono',monospace;
-    letter-spacing:.08em;
-    padding:7px 10px;
+    font:600 11px 'JetBrains Mono',monospace;
+    letter-spacing:.06em;
+    padding:7px 13px;
     cursor:pointer;
+    transition: all .15s ease;
   }
-  .lang-switch button:hover{ color:var(--text); border-color:var(--line); }
+  .lang-switch button:hover{ color:var(--text); }
   .lang-switch button.active{
-    color:var(--text);
-    border-color:var(--accent);
-    background:var(--panel-2);
+    color:#191204;
+    background:var(--gold);
   }
   .hero{ position:relative; }
   @media (max-width:560px){
     .lang-switch{ position:static; width:max-content; margin:0 0 16px auto; }
   }
+
+
+/* Fix: long gear-set bonus text must stay inside its own card */
+.gear-bonus-card,
+.set-bonus-card,
+.gear-set-card,
+.bonus-card,
+.gear-piece-card {
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  box-sizing: border-box;
+}
+
+.gear-bonus-card *,
+.set-bonus-card *,
+.gear-set-card *,
+.bonus-card *,
+.gear-piece-card * {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  box-sizing: border-box;
+}
+
+.gear-bonus-grid,
+.set-bonus-grid,
+.gear-set-bonuses,
+.bonus-grid {
+  min-width: 0;
+}
+
+.gear-bonus-grid > *,
+.set-bonus-grid > *,
+.gear-set-bonuses > *,
+.bonus-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 700px) {
+  .gear-bonus-card,
+  .set-bonus-card,
+  .gear-set-card,
+  .bonus-card,
+  .gear-piece-card {
+    width: 100%;
+  }
+}
+
+
+/* Definitive fix for long 1/2/3-piece bonus text */
+.bonus-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.bonus-block .b {
+  flex: 1 1 0;
+  min-width: 0 !important;
+  width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.bonus-block .b .n,
+.bonus-block .b .v {
+  min-width: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.bonus-block .b .v {
+  hyphens: auto;
+}
 
 </style>
 </head>
@@ -707,7 +876,7 @@
   </div>
   <div class="grid" id="brandGrid"></div>
 
-  <div class="section-head exogear">
+  <p class="wp-note" style="margin-top:-8px;">Talente der exotischen Kleidung: The Division Wiki (Fandom), soweit dort für Division 2 dokumentiert. Einträge, die das Wiki als WIP führt oder für die dort keine vollständige Talentbeschreibung vorliegt, sind entsprechend gekennzeichnet.</p>\n\n  <div class="section-head exogear">
     <h2>Exotische Kleidung</h2>
     <span class="tag">MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE</span>
     <div class="rule"></div>
@@ -915,48 +1084,48 @@ const brandSets = [
    Gruppiert nach Slot. Jeder Eintrag: [Name, Kern-Eigenschaft / Fokus] */
 const exoticGear = [
   ["Masken", [
-    ["Coyote's Mask","Team-Buffs auf Krit-Schaden &amp; Krit-Chance"],
-    ["Vile","Fügt Statuseffekten kontinuierlichen Giftschaden zu"],
-    ["Catharsis","Schadens-Stapelung und automatische Heilwolke bei Treffern"],
-    ["Catalyst","Neue Brooklyn-Maske mit starken Talent-Synergien"],
-    ["Tinkerer","<b>Talent – Abridged:</b> Wenn deine Primär- und Sekundärwaffe nicht exotisch oder named sind und vom gleichen Waffentyp sind, wird das Talent der Sekundärwaffe zusätzlich auf die Primärwaffe angewendet. Gilt nicht für Talente, die einen Waffenwechsel beinhalten."],
-    ["Investor","<b>Talent – Slotted:</b> Erhält Boni für jedes Nicht-Kern-Attribut auf diesem Item, abhängig von der Farbe:<br>• Rot: +10% Krit-Schaden<br>• Gelb: +5% Skill-Effizienz<br>• Blau: +1% Rüstungsregen<br>• Nur PvP: +0,5% Rüstungsregen<br>Dieses Item kann jedes Kern-Attribut tragen. Es besitzt ein drittes zufälliges Attribut anstelle eines Mod-Slots. Die Attribute Kopfschuss-Schaden, Leben und Skill-Reparatur können nicht auftreten."]
+    ["Coyote's Mask","<b>Talent – Pack Instinct:</b> Du und Verbündete erhalten abhängig von der Entfernung des zuletzt getroffenen Gegners einen Bonus: 0–15 m: +25% Krit-Schaden; 15–25 m: +10% Krit-Schaden und +10% Krit-Chance; ab 25 m: +25% Krit-Chance."],
+    ["Vile","<b>Talent – Toxic Delivery:</b> Statuseffekte wenden zusätzlich einen 10 Sekunden dauernden Schaden-über-Zeit-Debuff an. Der Gesamtschaden entspricht 50% des Schadens einer Concussion-Granate und wird durch deine Status-Effekt-Werte erhöht."],
+    ["Catharsis","<b>Talent – Vicious Cycle:</b> Erlittener Schaden baut bis zu 30 Stapel auf; jeder Stapel gewährt +1% Waffenschaden. Bei maximalen Stapeln löst weiterer Schaden eine Reinigung aus, entfernt alle Stapel und Statuseffekte und erzeugt eine Heilwolke, die 10 Sekunden lang 5% der maximalen Rüstung pro Sekunde für Verbündete in der Wolke wiederherstellt."],
+    ["Catalyst","<b>Talent – Chemical Agent:</b> Statuseffekte auf dich oder durch dich bauen Catalysis bis maximal 12 Stapel auf. Jeder Stapel gibt +2% Waffenschaden und +2% Status-Effekte. Betroffene Gegner innerhalb von 15 m erzeugen Stapel; bei maximalen Stapeln gewährt ein Kill zusätzlich +25% Bonus-Rüstung und +20% Nachladegeschwindigkeit für 5 Sekunden. <b>Stabilizer:</b> Während du brennst, kannst du weiter zielen, ohne die ADS-Funktion zu verlieren."],
+    ["Tinkerer","<b>Talent – Abridged:</b> Wenn Primär- und Sekundärwaffe weder Exotic noch Named und vom gleichen Waffentyp sind, wird das Talent der Sekundärwaffe zusätzlich auf die Primärwaffe angewendet. Talente, die einen Waffenwechsel voraussetzen, werden nicht übernommen."],
+    ["Investor","<b>Talent – Slotted:</b> Erhält Boni für jedes Nicht-Kern-Attribut auf diesem Item abhängig von dessen Farbe: Rot +10% Krit-Schaden, Gelb +5% Skill-Effizienz, Blau +1% Rüstungsregen; im PvP +0,5% Rüstungsregen. Das Item kann jedes Kern-Attribut tragen und besitzt ein drittes zufälliges Attribut statt eines Mod-Slots."]
   ]],
   ["Brust", [
-    ["Tardigrade Armor System","Gibt dem gesamten Team Bonus-Rüstung, wenn deren Rüstung bricht"],
-    ["Ridgeway's Pride","Lässt nahe Gegner bluten und gewährt Lebensraub"],
-    ["Collector","Massiver Bonus auf Granatenkapazität und Spreng-Radius"],
-    ["Provocator","Erhöht den ausgeteilten Schaden bei Aggro-Zyklen"],
-    ["Beacon / Iron Will","Zusätzliche Season-Brustpanzer<br><b>Talent – Bond:</b> Du und Verbündete erhalten +30% Krit-Schaden, +15% Skill-Effizienz und +2% Rüstungsregen, wenn sich ein Verbündeter innerhalb von 10m befindet.<br>Erhalte +15% Krit-Schaden, +8% Skill-Effizienz und +1% Rüstungsregen, wenn sich einer deiner Skills innerhalb von 10m befindet.<br>Es kann immer nur die jeweils höherwertige Bonusgruppe aktiv sein."]
+    ["Tardigrade Armor System","<b>Talent – Ablative Nano-Plating:</b> Wenn deine oder die Rüstung eines Verbündeten bricht, erhält die betreffende Person für 10 Sekunden Bonus-Rüstung in Höhe von 80% deiner Rüstung. Abklingzeit pro Verbündetem: 45 Sekunden. Ein Kill mit deiner Spezialisierungswaffe entfernt diese Abklingzeit für alle Verbündeten."],
+    ["Ridgeway's Pride","<b>Talent – Bleeding Edge:</b> Schüsse auf Gegner innerhalb von 15 m verursachen Blutung. Für jeden innerhalb von 15 m blutenden Gegner werden pro Sekunde 3–48% deiner Rüstung repariert; die Reparatur skaliert mit der Anzahl der blutenden Gegner."],
+    ["Collector","<b>Talent – Hoarder:</b> +3 Granatenkapazität, +50% Granatenradius und +35% Granatenschaden; für jeden weiteren vom Explosionsradius erfassten Gegner kommen +25% Granatenschaden hinzu. Liegen weniger als zwei Granaten im Inventar, wird alle 30 Sekunden automatisch eine Granate regeneriert."],
+    ["Provocator","<b>Talent – Challenger:</b> [PvE] Erhalte +25% Schadensresistenz gegen Gegner innerhalb von 20 m. [PvP] Erhalte +20% Schadensresistenz gegen Gegner innerhalb von 15 m."],
+    ["Beacon / Iron Will","<b>Talent – Bond:</b> Du und Verbündete erhalten +30% Krit-Schaden, +15% Skill-Effizienz und +2% Rüstungsregen, wenn sich ein Verbündeter innerhalb von 10 m befindet. Befindet sich stattdessen einer deiner Skills innerhalb von 10 m, erhältst du +15% Krit-Schaden, +7,5% Skill-Effizienz und +1% Rüstungsregen."]
   ]],
   ["Rucksack", [
-    ["Memento","Droppt Trophäen; der stärkste Allrounder für Rüstung, Schaden &amp; Fertigkeiten"],
-    ["NinjaBike Messenger Bag","Agiert als „Joker“ und schaltet Set-Boni mehrerer Sets gleichzeitig frei"],
-    ["Acosta's Go-Bag","Überlädt deine Fertigkeiten beim Werfen einer Granate"],
-    ["Birdie's Quick Fix","Repariert Verbündeten-Rüstung bei aktiven Skills"],
-    ["Harrier Pride","Offensive Drohnen- und Rucksack-Synergien"]
+    ["Memento","<b>Talent – Kill Confirmed:</b> Getötete Gegner lassen Trophäen fallen. Das Aufheben gewährt einen kurzfristigen Bonus, der mit deinen Kernattributen skaliert: Rot +5% Waffenschaden, Blau +10% Bonus-Rüstung, Gelb +5% Skill-Effizienz. Jede Trophäe gibt zusätzlich für 300 Sekunden +1% Waffenschaden, +1% Skill-Effizienz und +0,1% Rüstungsregen, bis maximal 30 Stapel."],
+    ["NinjaBike Messenger Bag","<b>Talent – Resourceful:</b> Zählt gleichzeitig als benötigtes Teil eines ausgerüsteten Gear- oder Brand-Sets und kann damit Boni mehrerer Sets gleichzeitig freischalten."],
+    ["Acosta's Go-Bag","<b>Talent – One in Hand:</b> Das Werfen einer Granate erstattet die Granate zurück und gewährt 15 Sekunden lang +1 Skill-Tier; bist du bereits auf Skill-Tier 6, wird Overcharge gewährt. <b>Two in the Bag:</b> +1 Rüstungskit, +3 Granaten, +25% Munitionskapazität, +10% Reparaturskills und +10% Status-Effekte."],
+    ["Birdie's Quick Fix","<b>Talent:</b> <i>Im The Division Wiki derzeit als WIP geführt; keine vollständige Talentbeschreibung auf der verlinkten Wiki-Seite verfügbar.</i>"],
+    ["Harrier Pride","<b>Talent – Rebalance:</b> Kills und das dreimalige Treffen von Gegnern bauen rote Stapel auf; jeder gibt +0,5% Waffenschaden. Dreimal getroffen zu werden baut blaue Stapel auf; jeder gibt +0,5% Schadensresistenz. Bei insgesamt 80 Stapeln werden alle Stapel entfernt und ein separater Bonus gewährt: +0,5% Schadensresistenz pro rotem Stapel und +0,5% Waffenschaden pro blauem Stapel bis zum nächsten Erreichen des Stapellimits."]
   ]],
   ["Holster", [
-    ["Dodge City Gunslinger","Lädt einen extremen Revolver-Kopfschuss auf"],
-    ["Waveform","Schiebt Schadens-Boni periodisch zwischen zwei Fertigkeiten hin und her"],
-    ["Imperial Dynasty","Setzt den am nächsten stehenden Gegner automatisch in Brand"],
-    ["Shocker Punch","Verleiht Nahkampfangriffen einen Schock-Effekt und bufft Schilde"],
-    ["Centurion's Scabbard","Bufft den Waffenwechsel auf Pistolen"],
-    ["Nimble Holster","Heilung bei Deckungswechseln"]
+    ["Dodge City Gunslinger","<b>Talent – Quick Draw:</b> Während die Pistole geholstert ist, erhältst du alle 0,5 Sekunden einen Stapel bis maximal 100. Beim Ziehen verbraucht der erste Schuss die Stapel und verursacht pro Stapel +10% Schaden; der Treffer zählt unabhängig von der Trefferstelle als Kopfschussschaden."],
+    ["Waveform","<b>Talent – Alternating Current:</b> Jede Sekunde erhält eine deiner Fertigkeiten einen Stapel von +3% Skill-Schaden, bis maximal 10 Stapel. Nach 10 Sekunden auf dem Maximum wechseln die Stapel auf die andere Fertigkeit; der Vorgang wiederholt sich fortlaufend."],
+    ["Imperial Dynasty","<b>Talent – Dragon's Glare:</b> Während des Kampfes wird der Gegner innerhalb von 20 m, der dir am nächsten ist, automatisch in Brand gesetzt. Abklingzeit: 40 Sekunden."],
+    ["Shocker Punch","<b>Talent – Defibrillator:</b> Der Schock-Status auf dir wird um 50% verkürzt. Mit Schild erhältst du +100% Nahkampfschaden; zusammen mit St. Elmo's Engine erhältst du zusätzlich +100% Nahkampfschaden und dein nächster Nahkampfangriff verursacht Schock. Mit allen drei Teilen erhält der Schock des Nahkampfangriffs einen Radius von 5 m. Abklingzeit: 15 Sekunden."],
+    ["Centurion's Scabbard","<b>Talent – Counter:</b> Waffenwechsel aktiviert nacheinander Bonusgruppen. PvE: +20% Feuerrate und +20% Waffenschaden, danach +50% Magazingröße und +50% Nachladegeschwindigkeit. Die Boni halten 12 Sekunden bzw. bis zum nächsten Waffenwechsel; der Wechsel zur Pistole löst die nächste Gruppe nicht aus."],
+    ["Nimble Holster","<b>Talent – Bob and Weave:</b> PvE: Erhalte 5% Reparatur für jeden Meter, den du bei einem Deckung-zu-Deckung-Lauf zurücklegst. Währenddessen erlittener Schaden wird über 10 Sekunden geheilt. PvP: 3% Reparatur pro Meter."]
   ]],
   ["Handschuhe", [
-    ["BTSU Datagloves","Setzt die Abklingzeit des gesamten Teams zurück und überlädt den Schwarm"],
-    ["Bloody Knuckles","Erhöht Waffenschaden nach Nahkampf oder Granatentreffern"],
-    ["Overdogs","Bufft Nahkampfschaden und Bedrohung"],
-    ["Rugged Gauntlets","<b>Talent – Iron Grip:</b> -50% Rückstoß-Malus beim Hüftfeuer; -50% Rückstoß-Malus beim Blindfeuer aus der Deckung."],
-    ["Exodus","<b>Talent:</b> Wenn die Rüstung bricht, wird eine Rauchbombe eingesetzt, die den Spieler für 3 Sekunden vor Gegnern verbirgt. Abklingzeit: 40 Sekunden."]
+    ["BTSU Datagloves","<b>Talent – Transference Overclock:</b> +15% Hive-Skill-Haste pro Skill-Tier. Das Detonieren eines Hive aktualisiert die Skill-Abklingzeiten und gewährt 15 Sekunden Overcharge. Verbündete, die diesen Effekt erhalten, können ihn 120 Sekunden lang nicht erneut erhalten."],
+    ["Bloody Knuckles","<b>Talent – Over the Top:</b> Granatenschaden oder ein Nahkampftreffer aktiviert Seeing Red: +25% Waffenschaden und +100% Nahkampfschaden für 20 Sekunden. Während der Abklingzeit wird diese durch einen Nahkampftreffer oder einen Treffer mit dem Effekt einer Granate sofort abgeschlossen."],
+    ["Overdogs","<b>Talent – Weakest Link:</b> Verstärkt den Waffenschaden um 30% gegen die am niedrigsten eingestuften Gegner innerhalb der Gegner-Tier-Hierarchie: Tier 1 umfasst u. a. Hunter, Rogue, Leader und Tank; Tier 2 u. a. Support, Engineer und Bomber; Tier 3 umfasst die übrigen Gegner bzw. Skill-Proxies."],
+    ["Rugged Gauntlets","<b>Talent – Iron Grip:</b> -50% Rückstoß-Malus beim Hüftfeuer und -50% Rückstoß-Malus beim Blindfeuer aus der Deckung."],
+    ["Exodus","<b>Talent:</b> <i>Auf der verlinkten Wiki-Seite ist für Exodus keine vollständige Talentbeschreibung abrufbar; der Eintrag wird dort nicht mit einem ausgearbeiteten Talenttext geführt.</i>"]
   ]],
   ["Knie", [
-    ["Sawyer's Kneepads","Immunität gegen Taumeln (Explosionen) und Schadens-Buff im Stillstand"],
-    ["NinjaBike Kneepads","Lädt die Waffe bei Deckungssprüngen automatisch nach"],
-    ["Nurse's Kneepads","Extrem starker Bonus auf Rüstungsregeneration und Überlebensfähigkeit"],
-    ["Acosta's Kneepads","Erhöhen die Bewegungsgeschwindigkeit und das Handling im Kampf"],
-    ["Blacklisters Kneepads","<b>Talent – Forbidden Impact:</b> Ein Kopfschuss-Kill gewährt für kurze Zeit erhöhten Waffenschaden und mehr Bewegungsgeschwindigkeit; der Effekt stapelt sich bis zu dreimal. Solange der Buff aktiv ist, explodieren durch Schusswaffen getötete Gegner und fügen Flächenschaden zu."]
+    ["Sawyer's Kneepads","<b>Talent – Stand Your Ground:</b> Kann durch Explosionen nicht ins Taumeln gebracht werden. Für jede Sekunde ohne Bewegung erhältst du +3% Schadensbonus, bis maximal 10 Stapel. Beim Bewegen werden keine neuen Stapel aufgebaut; nach 10 Sekunden Bewegung gehen die Stapel verloren."],
+    ["NinjaBike Kneepads","<b>Talent – Parkour!:</b> Ein Deckung-zu-Deckung-Lauf oder das Überwinden eines Hindernisses lädt die gezogene Waffe nach und gewährt 5 Sekunden lang +25% Bonus-Rüstung."],
+    ["Nurse's Kneepads","<b>Talent – Impervious:</b> Du und Verbündete innerhalb von 10 m erhalten +40% Gefahrenschutz."],
+    ["Acosta's Kneepads","<b>Talent – Escape Plan:</b> Überspringen, Klettern oder Fallen von einem Objekt gibt 3 Sekunden lang +10% Bewegungsgeschwindigkeit. Nach 5 Sekunden ohne Bewegung erhältst du 5 Sekunden lang +20%. Unter einem Statuseffekt gibt es 5 Sekunden lang +10%; maximal sind +20% Bewegungsgeschwindigkeit möglich. Zusätzlich -50% Bewegungseinschränkung durch Statuseffekte."],
+    ["Blacklisters Kneepads","<b>Talent – Forbidden Impact:</b> <i>Für diesen Eintrag ist in der verlinkten Wiki-Quelle keine verlässliche vollständige Talentbeschreibung verfügbar; der vorhandene HTML-Text wurde deshalb nicht als Wiki-Fakt ausgegeben.</i>"]
   ]]
 ];
 
@@ -1575,6 +1744,10 @@ brandSets.forEach((s, i) => {
   brandGrid.appendChild(card);
 });
 
+/* ---------- English translations for Exotic Gear ---------- */
+const exoticGearEnglish = {"Coyote's Mask": "<b>Talent – Pack Instinct:</b> You and your allies gain a bonus based on the distance to the last enemy hit: 0–15 m: +25% Critical Hit Damage; 15–25 m: +10% Critical Hit Damage and +10% Critical Hit Chance; 25 m+: +25% Critical Hit Chance.", "Vile": "<b>Talent – Toxic Delivery:</b> Status effects also apply a 10-second damage-over-time debuff. The total damage equals 50% of Concussion Grenade damage and is increased by your Status Effects values.", "Catharsis": "<b>Talent – Vicious Cycle:</b> Taking damage builds up to 30 stacks; each stack grants +1% weapon damage. At maximum stacks, taking further damage triggers a purge, removes all stacks and status effects, and creates a healing cloud that restores 5% of maximum armor per second for 10 seconds to allies inside the cloud.", "Catalyst": "<b>Talent – Chemical Agent:</b> Status effects on you or applied by you build Catalysis, up to 12 stacks. Each stack grants +2% weapon damage and +2% Status Effects. Affected enemies within 15 m generate stacks; at maximum stacks, killing an enemy also grants +25% bonus armor and +20% reload speed for 5 seconds. <b>Stabilizer:</b> While burning, you can continue aiming without losing ADS.", "Tinkerer": "<b>Talent – Abridged:</b> If your primary and secondary weapons are neither Exotic nor Named and are the same weapon type, the secondary weapon's talent is also applied to the primary weapon. Talents that require a weapon swap are not transferred.", "Investor": "<b>Talent – Slotted:</b> Gain bonuses for each non-core attribute on this item based on its color: Red +10% Critical Hit Damage, Yellow +5% Skill Efficiency, Blue +1% Armor Regeneration; in PvP +0.5% Armor Regeneration. The item can roll any core attribute and has a third random attribute instead of a mod slot.", "Tardigrade Armor System": "<b>Talent – Ablative Nano-Plating:</b> When your armor or an ally's armor breaks, that person gains bonus armor equal to 80% of your armor for 10 seconds. Cooldown per ally: 45 seconds. A kill with your specialization weapon removes this cooldown for all allies.", "Ridgeway's Pride": "<b>Talent – Bleeding Edge:</b> Shots against enemies within 15 m cause Bleed. For each bleeding enemy within 15 m, 3–48% of your armor is repaired per second; the repair scales with the number of bleeding enemies.", "Collector": "<b>Talent – Hoarder:</b> +3 grenade capacity, +50% grenade radius, and +35% grenade damage; each additional enemy caught in the blast radius adds +25% grenade damage. If you have fewer than two grenades, a grenade is automatically regenerated every 30 seconds.", "Provocator": "<b>Talent – Challenger:</b> [PvE] Gain +25% damage resistance against enemies within 20 m. [PvP] Gain +20% damage resistance against enemies within 15 m.", "Beacon / Iron Will": "<b>Talent – Bond:</b> You and allies gain +30% Critical Hit Damage, +15% Skill Efficiency, and +2% Armor Regeneration when an ally is within 10 m. If one of your skills is instead within 10 m, you gain +15% Critical Hit Damage, +7.5% Skill Efficiency, and +1% Armor Regeneration.", "Memento": "<b>Talent – Kill Confirmed:</b> Killed enemies drop trophies. Picking one up grants a short-term bonus that scales with your core attributes: Red +5% weapon damage, Blue +10% bonus armor, Yellow +5% Skill Efficiency. Each trophy also grants +1% weapon damage, +1% Skill Efficiency, and +0.1% Armor Regeneration for 300 seconds, up to 30 stacks.", "NinjaBike Messenger Bag": "<b>Talent – Resourceful:</b> Counts as a required piece of an equipped Gear or Brand Set and can therefore unlock bonuses from multiple sets at the same time.", "Acosta's Go-Bag": "<b>Talent – One in Hand:</b> Throwing a grenade refunds the grenade and grants +1 Skill Tier for 15 seconds; if you are already at Skill Tier 6, Overcharge is granted. <b>Two in the Bag:</b> +1 Armor Kit, +3 grenades, +25% ammo capacity, +10% Repair Skills, and +10% Status Effects.", "Birdie's Quick Fix": "<b>Talent:</b> <i>Currently marked as WIP on The Division Wiki; no complete talent description is available on the linked wiki page.</i>", "Harrier Pride": "<b>Talent – Rebalance:</b> Kills and hitting enemies three times build Red stacks; each grants +0.5% weapon damage. Being hit three times builds Blue stacks; each grants +0.5% damage resistance. At 80 total stacks, all stacks are removed and a separate bonus is granted: +0.5% damage resistance per Red stack and +0.5% weapon damage per Blue stack until the stack limit is reached again.", "Dodge City Gunslinger": "<b>Talent – Quick Draw:</b> While the pistol is holstered, you gain one stack every 0.5 seconds, up to 100. When you draw the pistol, the first shot consumes the stacks and deals +10% damage per stack; the hit counts as headshot damage regardless of where it hits.", "Waveform": "<b>Talent – Alternating Current:</b> Every second, one of your skills gains a stack of +3% Skill Damage, up to 10 stacks. After reaching maximum stacks for 10 seconds, the stacks transfer to the other skill; the process repeats continuously.", "Imperial Dynasty": "<b>Talent – Dragon's Glare:</b> While in combat, the enemy within 20 m who is closest to you is automatically set on fire. Cooldown: 40 seconds.", "Shocker Punch": "<b>Talent – Defibrillator:</b> Shock duration on you is reduced by 50%. With a shield, you gain +100% melee damage; together with St. Elmo's Engine, you also gain +100% melee damage and your next melee attack applies Shock. With all three pieces, the melee attack's Shock has a 5 m radius. Cooldown: 15 seconds.", "Centurion's Scabbard": "<b>Talent – Counter:</b> Weapon swapping activates bonus groups in sequence. PvE: +20% rate of fire and +20% weapon damage, followed by +50% magazine size and +50% reload speed. The bonuses last 12 seconds or until the next weapon swap; swapping to the pistol does not trigger the next group.", "Nimble Holster": "<b>Talent – Bob and Weave:</b> PvE: Gain 5% repair for every meter traveled during a cover-to-cover move. Damage taken during the move is healed over 10 seconds. PvP: 3% repair per meter.", "BTSU Datagloves": "<b>Talent – Transference Overclock:</b> +15% Hive Skill Haste per Skill Tier. Detonating a Hive refreshes skill cooldowns and grants Overcharge for 15 seconds. Allies who receive this effect cannot receive it again for 120 seconds.", "Bloody Knuckles": "<b>Talent – Over the Top:</b> Grenade damage or a melee hit activates Seeing Red: +25% weapon damage and +100% melee damage for 20 seconds. While on cooldown, a melee hit or a hit with a grenade effect instantly completes the cooldown.", "Overdogs": "<b>Talent – Weakest Link:</b> Amplifies weapon damage by 30% against the lowest-ranked enemies within the enemy tier hierarchy: Tier 1 includes Hunters, Rogues, Leaders, and Tanks; Tier 2 includes Support, Engineers, and Bombers; Tier 3 includes the remaining enemies and skill proxies.", "Rugged Gauntlets": "<b>Talent – Iron Grip:</b> -50% recoil penalty while firing from the hip and -50% recoil penalty while blind-firing from cover.", "Exodus": "<b>Talent:</b> <i>No complete talent description for Exodus is available on the linked wiki page; the entry is not presented there with a fully developed talent text.</i>", "Sawyer's Kneepads": "<b>Talent – Stand Your Ground:</b> Cannot be staggered by explosions. Gain +3% damage per second while not moving, up to 10 stacks. No new stacks are built while moving; after 10 seconds of movement, the stacks are lost.", "NinjaBike Kneepads": "<b>Talent – Parkour!:</b> A cover-to-cover move or vaulting over an obstacle reloads your drawn weapon and grants +25% bonus armor for 5 seconds.", "Nurse's Kneepads": "<b>Talent – Impervious:</b> You and allies within 10 m gain +40% Hazard Protection.", "Acosta's Kneepads": "<b>Talent – Escape Plan:</b> Vaulting, climbing, or dropping from an object grants +10% movement speed for 3 seconds. After 5 seconds without moving, gain +20% for 5 seconds. While affected by a status effect, gain +10% for 5 seconds; movement speed can reach a maximum of +20%. Also reduces movement impairment from status effects by 50%.", "Blacklisters Kneepads": "<b>Talent – Forbidden Impact:</b> <i>No reliable, complete talent description is available for this entry in the linked wiki source; the existing HTML text is therefore not presented as a wiki fact.</i>"};
+const exoticSlotEnglish = {"Masken": "Masks", "Brust": "Chest", "Rucksack": "Backpack", "Holster": "Holster", "Handschuhe": "Gloves", "Knie": "Kneepads"};
+
 /* ---------- Exotische Kleidung render ---------- */
 const exoGrid = document.getElementById('exoGrid');
 let exoIdx = 0;
@@ -1601,6 +1774,9 @@ exoticGear.forEach(([slotName, items]) => {
         <div class="t-body">${desc}</div>
       </div>
     `;
+    card.dataset.deSlot = slotName;
+    card.querySelector('.t-body').dataset.deHtml = desc;
+    card.querySelector('.t-body').dataset.enHtml = exoticGearEnglish[name] || desc;
     exoGrid.appendChild(card);
   });
 });
@@ -1897,8 +2073,8 @@ const exact = new Map([
     [/Gegner/g,"enemies"], [/Gegnern/g,"enemies"], [/nahe Gegner/g,"nearby enemies"],
     [/alle Gegner/g,"all enemies"], [/Team/g,"team"], [/Verbündete/g,"allies"],
     [/Aufbau/g,"build-up"], [/Verbrauch/g,"consumption"], [/Modus/g,"mode"],
-    [/Treffer/g,"hits"], [/Kill/g,"kill"], [/Kills/g,"kills"], [/Waffe/g,"weapon"],
-    [/Waffen/g,"weapons"], [/Munition/g,"ammo"], [/Magazin/g,"magazine"],
+    [/Treffer/g,"hits"], [/Kill/g,"kill"], [/Kills/g,"kills"], [/Waffen/g,"weapons"],
+    [/Waffe/g,"weapon"], [/Munition/g,"ammo"], [/Magazin/g,"magazine"],
     [/Sichtlinie/g,"line of sight"], [/Deckung/g,"cover"], [/Nahkampf/g,"melee"],
     [/Sekunden/g,"seconds"], [/Sekunde/g,"second"], [/Minuten/g,"minutes"],
     [/maximal/g,"maximum"], [/mindestens/g,"at least"], [/bis zu/g,"up to"],
@@ -1982,6 +2158,20 @@ const exact = new Map([
 
     // Localized in-game names for gear sets and weapons.
     localizeItemNames();
+
+    // Dedicated English text for Exotic Gear: no word-by-word German/English mix.
+    document.querySelectorAll('.exo-group-label').forEach(el=>{
+      if(!el.dataset.deSlot) el.dataset.deSlot = el.textContent.trim();
+      el.textContent = english ? (exoticSlotEnglish[el.dataset.deSlot] || el.dataset.deSlot) : el.dataset.deSlot;
+    });
+    document.querySelectorAll('.card.exo').forEach(card=>{
+      const body = card.querySelector('.t-body');
+      const label = card.querySelector('.t-label');
+      const badge = card.querySelector('.meta-badge');
+      if(body) body.innerHTML = english ? (body.dataset.enHtml || body.dataset.deHtml) : body.dataset.deHtml;
+      if(label) label.textContent = english ? 'CORE ATTRIBUTE / FOCUS' : 'KERN-EIGENSCHAFT / FOKUS';
+      if(badge) badge.textContent = english ? (exoticSlotEnglish[card.dataset.deSlot] || card.dataset.deSlot).toUpperCase() : card.dataset.deSlot.toUpperCase();
+    });
 
     // Search/filter still works because dataset names remain unchanged.
     localStorage.setItem('division2-language',lang);
