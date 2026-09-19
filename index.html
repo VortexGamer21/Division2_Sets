@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Division 2 — Sets Datenbank</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0C0F;
+    --panel: #14181D;
+    --panel-2: #191E24;
+    --line: #262C34;
+    --line-soft: #1D2229;
+    --text: #E7EAEE;
+    --text-dim: #838B98;
+    --text-faint: #545C68;
+    --gear: #E8891B;
+    --gear-dim: #7A4F1F;
+    --brand: #35B6C9;
+    --brand-dim: #1F5C67;
+    --gold: #E8C24A;
+    --weapon: #C9432E;
+    --weapon-dim: #6B2419;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(232,137,27,0.07), transparent 60%),
+      radial-gradient(1000px 500px at 100% 0%, rgba(53,182,201,0.06), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+  h1,h2,h3, .display{ font-family:'Rajdhani', sans-serif; letter-spacing:.02em; }
+
+  ::selection{ background: var(--gear); color:#100b04; }
+
+  a { color: inherit; }
+
+  /* ---------- layout shell ---------- */
+  .wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 28px 90px;
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 56px 0 34px;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+  .hero .kicker{
+    font-size: 12.5px;
+    color: var(--gear);
+    letter-spacing: .18em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .hero .kicker::before{
+    content:'';
+    width:22px; height:1px;
+    background: var(--gear);
+    display:inline-block;
+  }
+  .hero h1{
+    font-size: clamp(38px, 6vw, 64px);
+    font-weight: 700;
+    line-height: 0.98;
+    margin: 0 0 14px;
+    color:#fff;
+  }
+  .hero h1 span{ color: var(--gear); }
+  .hero p.lede{
+    max-width: 620px;
+    color: var(--text-dim);
+    font-size: 14.5px;
+    line-height: 1.7;
+    margin: 0 0 30px;
+  }
+
+  .stat-row{
+    display:flex;
+    gap: 36px;
+    flex-wrap: wrap;
+  }
+  .stat{
+    border-left: 2px solid var(--line);
+    padding-left: 14px;
+  }
+  .stat .num{
+    font-family:'Rajdhani', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #fff;
+    line-height:1;
+  }
+  .stat .lbl{
+    font-size: 11px;
+    color: var(--text-faint);
+    margin-top: 5px;
+    letter-spacing:.06em;
+  }
+
+  /* ---------- controls ---------- */
+  .controls{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(10,12,15,0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-soft);
+    padding: 16px 0;
+    margin-top: 10px;
+  }
+  .controls-inner{
+    display:flex;
+    gap:14px;
+    align-items:center;
+    flex-wrap: wrap;
+  }
+  .search{
+    position:relative;
+    flex: 1 1 240px;
+    min-width: 200px;
+  }
+  .search input{
+    width:100%;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    padding: 10px 14px 10px 34px;
+    outline: none;
+    transition: border-color .15s ease;
+  }
+  .search input:focus{ border-color: var(--gear); }
+  .search input::placeholder{ color: var(--text-faint); }
+  .search svg{
+    position:absolute; left:11px; top:50%; transform:translateY(-50%);
+    opacity:.55; width:14px; height:14px;
+  }
+
+  .filters{
+    display:flex;
+    gap: 6px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 3px;
+  }
+  .filters button{
+    appearance:none;
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing:.03em;
+    padding: 7px 14px;
+    cursor:pointer;
+    transition: all .15s ease;
+  }
+  .filters button.active{
+    background: var(--panel-2);
+    color: #fff;
+  }
+  .filters button.active[data-f="gear"]{ color: var(--gear); }
+  .filters button.active[data-f="brand"]{ color: var(--brand); }
+  .filters button.active[data-f="exogear"]{ color: var(--weapon); }
+  .filters button.active[data-f="exotic"]{ color: var(--weapon); }
+  .filters button.active[data-f="named"]{ color: var(--gold); }
+  .filters button.active[data-f="standard"]{ color: var(--brand); }
+  .filters button:hover:not(.active){ color: var(--text); }
+
+  .count-note{
+    color: var(--text-faint);
+    font-size: 12px;
+    white-space:nowrap;
+  }
+
+  /* ---------- section labels ---------- */
+  .section-head{
+    display:flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 46px 0 18px;
+  }
+  .section-head h2{
+    font-size: 22px;
+    font-weight:700;
+    margin:0;
+    color:#fff;
+  }
+  .section-head .tag{
+    font-size: 11px;
+    letter-spacing:.08em;
+    padding: 3px 9px;
+    border: 1px solid currentColor;
+  }
+  .section-head.gear .tag{ color: var(--gear); }
+  .section-head.brand .tag{ color: var(--brand); }
+  .section-head .rule{
+    flex:1;
+    height:1px;
+    background: var(--line-soft);
+  }
+
+  /* ---------- grid & cards ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+  }
+  .card{
+    background: var(--panel);
+    padding: 20px 22px 18px;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+  .card::before{
+    content:'';
+    position:absolute; left:0; top:0; bottom:0; width:2px;
+    background: var(--gear-dim);
+  }
+  .card.brand::before{ background: var(--brand-dim); }
+  .card.exo::before{ background: var(--weapon-dim); }
+  .card.exo .meta-badge{ color: var(--weapon); border-color: var(--weapon); }
+
+  .card .idx{
+    font-size: 10.5px;
+    color: var(--text-faint);
+    letter-spacing:.08em;
+  }
+  .card h3{
+    font-size: 19px;
+    font-weight: 600;
+    margin: 6px 0 14px;
+    color: #fff;
+    line-height:1.15;
+  }
+  .card .meta-badge{
+    position:absolute;
+    top:20px; right:22px;
+    font-size: 9.5px;
+    letter-spacing:.08em;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 2px 6px;
+  }
+
+  .bonus-block{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 16px;
+    border: 1px solid var(--line-soft);
+  }
+  .bonus-block .b{
+    flex: 1 1 0;
+    min-width: 110px;
+    padding: 10px 12px;
+    border-right: 1px solid var(--line-soft);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .bonus-block .b:last-child{ border-right:none; }
+  .bonus-block .b .n{
+    font-family:'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight:600;
+    color: var(--gear);
+    letter-spacing:.05em;
+  }
+  .card.brand .bonus-block .b .n{ color: var(--brand); }
+  .bonus-block .b .v{
+    font-size: 11.5px;
+    color: var(--text);
+    margin-top: 5px;
+    line-height:1.45;
+  }
+
+  .talent{
+    padding: 11px 0;
+    border-top: 1px solid var(--line-soft);
+  }
+  .talent:first-of-type{ border-top: none; padding-top: 0; }
+  .talent .t-label{
+    font-size: 10px;
+    letter-spacing:.09em;
+    color: var(--text-faint);
+    margin-bottom: 5px;
+  }
+  .talent .t-body{
+    font-size: 12.5px;
+    color: var(--text-dim);
+    line-height: 1.55;
+  }
+  .talent .t-body b{ color: var(--gold); font-weight:500; }
+
+  .empty{
+    grid-column: 1/-1;
+    padding: 60px 20px;
+    text-align:center;
+    color: var(--text-faint);
+    font-size: 13px;
+    background: var(--panel);
+  }
+
+  /* ---------- extras section ---------- */
+  .extras{
+    margin-top: 60px;
+    display:grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+  }
+  @media (max-width: 760px){ .extras{ grid-template-columns: 1fr; } }
+  .extras .panel{
+    background: var(--panel);
+    padding: 26px 24px;
+  }
+  .extras h3{
+    font-size: 15px;
+    color:#fff;
+    margin: 0 0 16px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .extras h3 .dot{ width:7px; height:7px; background: var(--gold); display:inline-block; }
+  .named-item{
+    display:flex; justify-content:space-between; gap:10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: 12.5px;
+  }
+  .named-item:last-child{ border-bottom:none; }
+  .named-item .set{ color: var(--text-dim); }
+  .named-item .item{ color:#fff; text-align:right; }
+  .named-item .slot{ display:block; color: var(--text-faint); font-size:10.5px; }
+
+  .best-cols{ display:grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .best-cols h4{
+    font-size: 11px; letter-spacing:.08em; margin: 0 0 10px;
+    color: var(--text-faint); font-weight:500;
+  }
+  .best-cols ul{ list-style:none; margin:0; padding:0; }
+  .best-cols li{
+    font-size: 12.5px;
+    padding: 5px 0;
+    color: var(--text);
+    border-bottom: 1px dashed var(--line-soft);
+  }
+  .best-cols li:last-child{ border-bottom:none; }
+
+  .named-note{
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 11.5px;
+    color: var(--text-faint);
+  }
+  .named-note b{ color: var(--gold); font-weight:500; }
+
+  /* ---------- exotic gear (clothing) section ---------- */
+  .section-head.exogear .tag{ color: var(--weapon); }
+  .exo-group-label{
+    grid-column: 1/-1;
+    font-size: 10px;
+    letter-spacing:.1em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    padding: 14px 16px 8px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .exo-group-label:first-child{ border-top: none; }
+
+  /* ---------- weapons section ---------- */
+  .section-head.weapon .tag{ color: var(--weapon); }
+  .wp-intro{
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 760px;
+    margin: -6px 0 26px;
+  }
+  .wp-note{
+    font-size: 11.5px;
+    color: var(--text-faint);
+    border-left: 2px solid var(--weapon-dim);
+    padding: 8px 14px;
+    margin: -8px 0 30px;
+    line-height: 1.6;
+    background: rgba(201,67,46,0.05);
+  }
+  .wp-note a{ color: var(--weapon); text-decoration: underline; }
+  .wp-jump{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin: -10px 0 34px;
+  }
+  .wp-jump a{
+    font-size: 11.5px;
+    color: var(--text-dim);
+    border: 1px solid var(--line);
+    padding: 6px 12px;
+    text-decoration: none;
+    transition: all .15s ease;
+  }
+  .wp-jump a:hover{ border-color: var(--weapon); color: var(--weapon); }
+
+  .wp-cat{ margin-top: 44px; }
+  .wp-cat-head{
+    display:flex; align-items:baseline; gap:12px;
+    margin-bottom: 14px;
+  }
+  .wp-cat-head h3{
+    font-size: 16.5px; font-weight:600; color:#fff; margin:0;
+    font-family:'Rajdhani', sans-serif; letter-spacing:.02em;
+  }
+  .wp-cat-head .cnt{
+    font-size: 11px; color: var(--text-faint);
+  }
+  .wp-cat-head .rule{ flex:1; height:1px; background: var(--line-soft); }
+
+  .wp-group-label{
+    font-size: 10px; letter-spacing:.1em; color: var(--text-faint);
+    margin: 16px 0 6px;
+  }
+
+  .wgrid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1px;
+    background: var(--line-soft);
+    border: 1px solid var(--line-soft);
+  }
+  .witem{
+    background: var(--panel);
+    padding: 12px 34px 12px 14px;
+    position: relative;
+    border-left: 2px solid var(--line);
+  }
+  .witem .wstats{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid var(--line-soft);
+  }
+  .witem .ws{
+    padding: 3px 0;
+  }
+  .witem .ws span{
+    display:block;
+    font-size: 8.5px;
+    letter-spacing:.08em;
+    color: var(--text-faint);
+  }
+  .witem .ws b{
+    display:block;
+    font-size: 12px;
+    font-weight:600;
+    color: var(--text);
+    margin-top: 1px;
+  }
+  .witem .ws b .pellet{
+    font-size: 9px;
+    font-weight:400;
+    color: var(--text-faint);
+    margin-left: 3px;
+  }
+  .witem .ws.hl b{ color: var(--weapon); }
+  .witem .wstats-missing{
+    margin-top: 10px;
+    padding-top: 9px;
+    border-top: 1px solid var(--line-soft);
+    font-size: 10.5px;
+    color: var(--text-faint);
+    font-style: italic;
+  }
+  .witem.exotic{ border-left-color: var(--weapon); }
+  .witem.named{ border-left-color: var(--gold); }
+  .witem.standard{ border-left-color: var(--brand); }
+  .witem .wname{
+    font-size: 13px; font-weight:600; color:#fff; line-height:1.3;
+  }
+  .witem .wrarity{
+    font-size: 9.5px; letter-spacing:.06em; color: var(--text-faint);
+    margin-top: 5px; text-transform: uppercase;
+  }
+  .witem.exotic .wrarity{ color: var(--weapon); }
+  .witem.named .wrarity{ color: var(--gold); }
+  .witem.standard .wrarity{ color: var(--brand); }
+  .witem .wtier{
+    position:absolute; top:10px; right:10px;
+    font-size: 9.5px; line-height:1;
+    padding: 3px 5px;
+    border: 1px solid currentColor;
+    color: var(--text-faint);
+  }
+  .witem .wtier.s{ color: var(--gold); }
+  .witem .wtier.a{ color: var(--weapon); }
+  .witem .wtier.neu{ color: var(--brand); }
+
+  /* ---------- exotic talent (ausklappbar) ---------- */
+  .witem .wtalent{
+    margin-top: 10px;
+    border-top: 1px solid var(--line-soft);
+    padding-top: 8px;
+  }
+  .witem .wtalent summary{
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 11.5px;
+    line-height: 1.45;
+    color: var(--text-dim);
+    user-select: none;
+    outline: none;
+  }
+  .witem .wtalent summary::-webkit-details-marker{ display: none; }
+  .witem .wtalent summary::before{
+    content: '';
+    flex: 0 0 auto;
+    width: 0; height: 0;
+    border-left: 5px solid var(--weapon);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    transform: translateY(-1px);
+    transition: transform .15s ease;
+  }
+  .witem .wtalent[open] summary::before{ transform: translateY(-1px) rotate(90deg); }
+  .witem .wtalent summary b{ color: var(--weapon); font-weight: 600; }
+  .witem .wtalent summary:hover{ color: var(--text); }
+  .witem .wtalent summary:focus-visible{
+    outline: 1px solid var(--weapon);
+    outline-offset: 3px;
+  }
+  .witem .wtalent .tbody{ padding: 8px 0 2px 13px; }
+  .witem .wtalent .titem + .titem{ margin-top: 9px; }
+  .witem .wtalent .tname{
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .witem .wtalent .ttext{
+    font-size: 11.5px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    margin: 0;
+  }
+  .witem .wtalent .tnote{
+    margin: 8px 0 0;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--text-faint);
+    font-style: italic;
+  }
+  @media (prefers-reduced-motion: reduce){
+    .witem .wtalent summary::before{ transition: none; }
+  }
+
+  .wp-search{
+    position:relative;
+    max-width: 340px;
+    margin-bottom: 30px;
+  }
+  .wp-search input{
+    width:100%;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family:'IBM Plex Mono', monospace;
+    font-size: 13px;
+    padding: 9px 14px 9px 32px;
+    outline: none;
+  }
+  .wp-search input:focus{ border-color: var(--weapon); }
+  .wp-search svg{
+    position:absolute; left:10px; top:50%; transform:translateY(-50%);
+    opacity:.55; width:13px; height:13px;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    margin-top: 70px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+    color: var(--text-faint);
+    font-size: 11.5px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap: 10px;
+  }
+
+  @media (max-width: 560px){
+    .wrap{ padding: 0 16px 60px; }
+    .hero{ padding: 40px 0 26px; }
+    .best-cols{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">ISAC DATABASE // AGENT REFERENCE</div>
+    <h1>Gear Sets, Brand Sets <span>&amp;</span> Waffen</h1>
+    <p class="lede">Alle Ausrüstungs- und Marken-Sets aus The Division 2 in einer durchsuchbaren Übersicht — jedes Set mit vollständigen Set-Boni und Talenten direkt sichtbar. Dazu alle exotischen Kleidungsstücke (Masken, Brust, Rucksack, Holster, Handschuhe, Knie) mit ihrem Kern-Talent, sowie alle Standard-, Named- und Exotic-Waffen, sortiert nach Waffenklasse.</p>
+    <div class="stat-row">
+      <div class="stat"><div class="num">28</div><div class="lbl">GEAR SETS</div></div>
+      <div class="stat"><div class="num">37</div><div class="lbl">BRAND SETS</div></div>
+      <div class="stat"><div class="num">65</div><div class="lbl">SETS GESAMT</div></div>
+      <div class="stat"><div class="num">30</div><div class="lbl">EXOTISCHE KLEIDUNG</div></div>
+      <div class="stat"><div class="num" id="wpCountStat">—</div><div class="lbl">WAFFEN ERFASST</div></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="controls-inner">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="searchInput" type="text" placeholder="Set suchen…">
+      </div>
+      <div class="filters">
+        <button class="active" data-f="all">Alle</button>
+        <button data-f="gear">Gear Sets</button>
+        <button data-f="brand">Brand Sets</button>
+        <button data-f="exogear">Exotische Kleidung</button>
+        <button data-f="exotic">Exotic-Waffen</button>
+        <button data-f="named">Named-Waffen</button>
+        <button data-f="standard">Standard-Waffen</button>
+      </div>
+      <div class="count-note" id="countNote"></div>
+    </div>
+  </div>
+
+  <div class="section-head gear">
+    <h2>Gear Sets</h2>
+    <span class="tag">2 / 3 / 4-TEILE</span>
+    <div class="rule"></div>
+  </div>
+  <div class="grid" id="gearGrid"></div>
+
+  <div class="section-head brand">
+    <h2>Brand Sets</h2>
+    <span class="tag">1 / 2 / 3-TEILE</span>
+    <div class="rule"></div>
+  </div>
+  <div class="grid" id="brandGrid"></div>
+
+  <div class="section-head exogear">
+    <h2>Exotische Kleidung</h2>
+    <span class="tag">MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE</span>
+    <div class="rule"></div>
+  </div>
+  <div class="grid" id="exoGrid"></div>
+
+  <div class="section-head weapon" style="margin-top:70px;">
+    <h2>Waffen</h2>
+    <span class="tag">STANDARD / NAMED / EXOTIC</span>
+    <div class="rule"></div>
+  </div>
+  <p class="wp-intro">Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic mit Unique-Talent). Tier-Badges (S/A/B/C) zeigen die aktuelle Meta-Einstufung 2026 je Waffenklasse. Bei den Exotic-Waffen lässt sich das jeweilige Exotic-Talent per Klick aufklappen.</p>
+  <div class="wp-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="wpSearchInput" type="text" placeholder="Waffe suchen…">
+  </div>
+  <div class="wp-jump" id="wpJump"></div>
+  <div id="wpCategories"></div>
+  <p class="wp-note">Quelle für Namen/Einstufung: grindout.com Waffen-Guide (Stand 29.08.2026). Die Waffenwerte (Base Damage, RPM, Mag, Reload, Optimal Range, Mag Damage, Burst-/Sustain-DPS) stammen aus der Tabelle auf <a href="https://djtickle.com/weapons" target="_blank" rel="noopener">djtickle.com/weapons</a> (Stand 17.09.2026), inkl. aller vom Nutzer bereitgestellten Screenshots für AR, MMR, Pistole, Rifle (inkl. der Rifle-Exotic Vindicator), Shotgun, SMG und LMG. Noch nicht erfasst: alle Exotic-/Named-SMGs außer Emeline's Guard (Ouroboros, The Chatterbox, Lady Death, Backfire, Oxpecker, Underboss, Dark Winter, The Grudge). Waffen mit identischen Werten wie eine bereits gelistete Waffe (z.&nbsp;B. baugleiche Namensvarianten) sind bewusst als eigene Einträge aufgeführt, da sie im Spiel als eigenständige Drops/Skins erscheinen. <br><br><b>Exotic-Talente:</b> sinngemäß zusammengefasst aus dem <a href="https://thedivision.fandom.com/wiki/Category:Exotic" target="_blank" rel="noopener">The Division Wiki (Fandom)</a>, soweit die Waffenseiten dort für Division 2 gepflegt sind. Wo das Wiki veraltet ist oder nur die Division-1-Version beschreibt (z.&nbsp;B. Pakhan), stammen die Angaben aus Ubisoft-Season-News/Patchnotes sowie Guides (KeenGamer, Sportskeeda, Destructoid, games.gg, Grindout). Zahlenwerte können sich mit Title Updates ändern.</p>
+
+  <div class="extras">
+    <div class="panel">
+      <h3><span class="dot"></span>Perfect-Talent-Items</h3>
+      <div id="namedItems"></div>
+    </div>
+    <div class="panel">
+      <h3><span class="dot"></span>Meta-Empfehlungen 2026</h3>
+      <div class="best-cols">
+        <div>
+          <h4>BESTE GEAR SETS</h4>
+          <ul id="bestGear"></ul>
+        </div>
+        <div>
+          <h4>BESTE BRAND SETS</h4>
+          <ul id="bestBrand"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Quellen: grindout.com (Gear/Brand Sets &amp; Waffen), djtickle.com (Waffenliste) — Community-Guides, Stand 2026</span>
+    <span>Nicht offiziell mit Ubisoft verbunden</span>
+  </footer>
+
+</div>
+
+<script>
+const gearSets = [
+["Striker's Battlegear","+15% Waffenhandling","+15% Feuerrate",
+ "Striker's Gamble — Treffer erhöhen den Gesamtwaffenschaden um 0,65%, stapelbar bis 100x.",
+ "Risk Management — erhöht den Schadensbonus pro Stack von 0,65% auf 1%.",
+ "Press the Advantage — erhöht die maximalen Stacks von 100 auf 200.", true],
+["Heartbreaker","+15% AR-/LMG-Schaden","+15% Waffenhandling",
+ "Heartstopper — Kopfschüsse pulsen Gegner; Treffer geben stapelbare Bonus-Rüstung & -Schaden, bis 50 Stacks.",
+ "Cold — erhöht die Bonus-Rüstung pro Stack von 1% auf 2%.",
+ "Max BPM — erhöht die maximalen Stacks von 50 auf 100.", true],
+["Umbra Initiative","+15% Krit-Chance","+30% Nachladegeschwindigkeit",
+ "Zwei Modi: in Deckung Krit-Schaden/RPM aufbauen, außerhalb Deckung Rüstungsregeneration aufbauen.",
+ "Into the Light — mehr Stacks, Aufbau und Verbrauch für den Rüstungsregen-Modus.",
+ "From the Shadows — mehr Stacks und schnellerer Aufbau für den Krit-Modus.", true],
+["Hunter's Fury","+15% Schrotflinten-/SMG-Schaden","+20% Rüstung &amp; +50% Leben bei Kill",
+ "Apex Predator — Debuff auf nahe Gegner verstärkt Schaden; Kills desorientieren und stapeln weiteren Bonus.",
+ "Overwhelming Force — vergrößert den Desorientierungs-Radius von 5m auf 10m.",
+ "Endless Hunger — verlängert die Stackdauer von 10s auf 30s.", true],
+["Negotiator's Dilemma","+15% Krit-Chance","+20% Krit-Schaden",
+ "Hostile Negotiations — kritische Treffer markieren Gegner; Schaden überträgt sich auf andere Markierte.",
+ "Critical Measures — erhöht den übertragenen Schaden von 60% auf 100%.",
+ "Target Rich Environment — erhöht die Markierungen von 3 auf 5.", true],
+["Hotshot","+30% Scharfschützengewehr-Schaden","+30% Kopfschuss-Schaden &amp; Waffenhandling",
+ "Headache — Kopfschuss-Kombo aus Bonusschaden, Rüstung und automatischem Nachladen.",
+ "Blessed — verzeiht einen verpassten Kopfschuss, bevor die Kombo zurückgesetzt wird.",
+ "Daring — erhöht die Bonus-Rüstung von 50% auf 100%.", true],
+["Rigger","+15% Skill Haste","+15% Skilldauer",
+ "Tend and Befriend — Interaktion mit eigenen Skills gibt ihnen 10s lang +25% Skillschaden.",
+ "Complete Uptime — Skill abbrechen setzt dessen Cooldown zurück.",
+ "Best Buds — erhöht den Schadensbonus von 25% auf 50%.", false],
+["Eclipse Protocol","+15% Status-Effekte","+15% Skill Haste &amp; +30% Gefahrenschutz",
+ "Indirect Transmission — Statuseffekte springen bei einem Kill auf nahe Gegner über.",
+ "Symptom Aggravator — erhöht den Schaden gegen status-betroffene Gegner um 30%.",
+ "Proliferation — erhöht Reichweite (10m→15m) und Übertragungsanteil (50%→75%).", true],
+["Future Initiative","+30% Reparaturskills","+15% Skill Haste &amp; +30% Skilldauer",
+ "Ground Control — Team-Waffen-/Skillschaden bei voller Rüstung; Reparatur wird an nahe Allies weitergegeben.",
+ "Strategic Combat Support — erhöht die geteilte Heilung von 60% auf 120%.",
+ "Tactical Superiority — erhöht den Schadensbonus von 15% auf 25%.", true],
+["Foundry Bulwark","+10% Gesamtrüstung","+1% Rüstungsregen &amp; +50% Schild-HP",
+ "Makeshift Repairs — Schaden an dir oder deinem Schild wird über 10s teilweise repariert.",
+ "Process Refinery — verkürzt die Reparaturzeit von 10s auf 5s.",
+ "Improved Materials — erhöht den Reparaturanteil von 25% auf 35%.", true],
+["Hard Wired","+15% Skill Haste","+15% Skillschaden &amp; +30% Reparaturskills",
+ "Feedback Loop — Skill nutzen/abbrechen senkt den Cooldown des anderen Skills und erhöht Skillschaden/-reparatur temporär.",
+ "Short Circuit — verkürzt den Feedback-Loop-Cooldown von 20s auf 10s.",
+ "Positive Reinforcement — erhöht den Bonus von 10% auf 25%.", false],
+["Ongoing Directive","+15% Status-Effekte","+30% Nachladegeschwindigkeit",
+ "Rules of Engagement — Kill eines markierten Status-Gegners gibt Hollow-Point-Munition mit Bonusschaden &amp; Blutung.",
+ "Trauma Specialist — verlängert Blutungsdauer um 50% und erhöht Blutungsschaden um 100%.",
+ "Parabellum Rounds — erhöht den Munitions-Schadensbonus von 40% auf 60% (nicht fürs Team).", false],
+["True Patriot","+15% Waffenhandling","+30% Magazingröße",
+ "Red, White and Blue — stapelbare Debuffs auf getroffene Gegner; bei allen drei Stufen Explosion beim Tod.",
+ "Patriotic Boost — verstärkt die Debuffs (15%→30% / 2%→5% / 10%→20%).",
+ "Waving the Flag — beschleunigt die Debuff-Rotation von 2s auf 1s.", false],
+["Aces and Eights","+30% Scharfschützen-/Gewehrschaden","+30% Kopfschuss-Schaden &amp; Waffenhandling",
+ "Dead Man's Hand — Kartensystem: nach 5 aufgedeckten Karten wird der nächste Schuss deutlich verstärkt.",
+ "Ace in the Sleeve — verstärkt einen zusätzlichen Schuss beim Aufdecken.",
+ "No Limit — erhöht den Schadensbonus von 75% auf 100%.", false],
+["Tip of the Spear","+20% Signaturwaffen-Schaden","+10% Waffenschaden",
+ "Aggressive Recon — Signaturwaffen-Kill gibt temporären Bonus und regeneriert automatisch Munition alle 60s.",
+ "Signature Moves — +50% Waffenschaden nach komplettem Leerschießen, doppelte Munitionsregeneration.",
+ "Specialized Destruction — erhöht den Bonus von 15% auf 30%, Munition alle 3 Kills.", false],
+["System Corruption","+15% Rüstung bei Kill","+40% Disrupt-/Pulswiderstand",
+ "Hackstep Protocol — ersetzt den Verbandskasten durch einen Skill: Rüstungsheilung, Bonus-Rüstung und kurze Tarnung.",
+ "Multithreaded Execution — erhöht die Bonus-Rüstung von 50% auf 100%.",
+ "Compiler Optimization — verkürzt den Cooldown von 20s auf 15s.", false],
+["Cavalier","+30% Gefahrenschutz","+40% Reparaturskills",
+ "Charging/Charged — außerhalb der Deckung baut sich Schadensreduktion auf; bei voller Ladung Team-Bonus &amp; Immunität.",
+ "Safe Charging — erhöht den Schutzaufbau auf 10% pro Sekunde.",
+ "Overcharging — erhöht das Maximum auf bis zu 70%.", false],
+["Ortiz: Exuro","+20% Brenndauer, +15% Skill-Leben","+40% Brandschaden",
+ "Der Incinerator-Turm dreht sich um 360° und explodiert bei Zerstörung.",
+ "Heatstroke — +40% Schaden gegen brennende Gegner, +25% Turm-Reichweite.",
+ "Chain Combustion — Feuer springt auf Gegner im 10m-Radius über.", false],
+["Aegis","+70% Leben","+15% Gesamtrüstung",
+ "Stoic — Schadensresistenz für jeden Gegner, der dich anvisiert, skaliert mit der Gruppengröße.",
+ "Polyethylene Plating — erhöht die Resistenz pro Stack von 3% auf 4%.",
+ "Deceit — Gegner, die deinen Decoy anvisieren, zählen mit.", false],
+["Breaking Point","+30% Scharfschützen-/Gewehrschaden","+30% Kopfschuss-Schaden &amp; Waffenhandling",
+ "On Point — Treffer bauen Stacks auf; Nachladen gewährt temporären Waffenhandling- &amp; Schadensbonus.",
+ "Point of Honor — erhöht den Schadensbonus pro Stack von 4% auf 9%.",
+ "Point of No Return — verlängert die Wirkdauer von 20s auf 40s.", false],
+["Virtuoso","+15% Waffenhandling &amp; Magazingröße","+15% Waffenschaden",
+ "Symphony — Kills auf Distanz oder nah geben unterschiedliche Boni; bei 4 Stacks werden sie verdoppelt und kombiniert.",
+ "Accelerando — reduziert die nötigen Stacks von 4 auf 3.",
+ "Fortissimo — verdoppelt die Waffenschaden-Boni von Symphony.", false],
+["Refactor","+15% Status-Effekte","+25% Skillschaden",
+ "Return to Sender — Skillschaden heilt dich (10%) und dein Team (20%) anteilig.",
+ "Over-engineered — bei voller Rüstung wird die erhaltene Heilung zu Bonus-Rüstung, bis 80%.",
+ "Increased Interest — erhöht die Heilungsanteile (10%→25% / 20%→35%).", true],
+["Measured Assembly","+15% Skill Haste","+60% Reparaturskills &amp; 40% Explosionswiderstand",
+ "Huddle — Skill-Tier je nahem Verbündeten; bei Tier 6 zeitweise Overcharge; zerstört feindliche Skills/Mörser in Reichweite.",
+ "Smart Cooperation — verkürzt den Zerstörungs-Cooldown von 10s auf 1s.",
+ "Hivemind — verkürzt den Overcharge-Cooldown von 40s auf 25s.", false],
+["Tipping Scales","+30% Magazingröße","+30% LMG-Schaden",
+ "Throttle Control — Schießen baut Stacks für Waffenhandling &amp; Krit-Schaden auf, bis 50.",
+ "Snowball — erhöht den Krit-Schaden pro Stack von 5% auf 8%.",
+ "Sustainability — erhöht die maximalen Stacks von 50 auf 75.", true],
+["Concentrated Company","+10% Waffenschaden","+30% Waffenhandling",
+ "Camaraderie — markierte Gegner geben beim Tod Stacks für Waffenschaden/Krit-Schaden, je nach beteiligten Alliierten/Skills.",
+ "One for All — erhöht den Schadensbonus pro Stack von 3% auf 6%.",
+ "All for One — erhöht die möglichen Markierungen von 4 auf 8.", false],
+["Core Strength","+10% Waffenhandling","+5% Waffenschaden, Rüstung, Skill-Effizienz",
+ "Core Exercise — erhält 40% der Boni der jeweils anderen beiden Kern-Attribute.",
+ "Outer Core — der Rucksack trägt drei Kernattribute statt einem.",
+ "Inner Core — erhöht den Übertragungsanteil von 40% auf 75%.", true],
+["Ortiz: Reficere","+8% Skill-Effizienz","+60% Reparaturskills",
+ "Heilskills verlieren Reichweite/Dauer (-90%), erhalten dafür +150% Heileffizienz; Heilung gibt zusätzlich Gefahrenschutz.",
+ "Improved Dampeners — reduziert den Reichweiten-/Dauerverlust von 90% auf 25%.",
+ "Overcharged Nanites — erhöht die Heileffizienz von 150% auf 225%.", false],
+["Ember Engine","+8% Skill-Effizienz","+30% Status-Effekte",
+ "Spontaneous Combustion — Statuseffekte haben eine Chance, zusätzlich Brand auszulösen.",
+ "White Hot — verlängert die Branddauer um 50%.",
+ "Flashpoint — erhöht die Auslösechance von 20% auf 40%.", false]
+];
+
+const brandSets = [
+["Providence Defense","+13% Kopfschuss-Schaden","+8% Krit-Chance","+13% Krit-Schaden", true],
+["Uzina Getica","+5% Gesamtrüstung","+10% Rüstung bei Kill","+30% Gefahrenschutz", false],
+["Empress International","+10% Skill-Leben","+13% Skillschaden","+8% Skill-Effizienz", true],
+["Wyvern Wear","+8% Skillschaden","+20% Status-Effekte","+45% Skilldauer", true],
+["Belstone Armory","+1% Rüstungsregen","+100% erhöhte Bedrohung","+36% Schutz vor Elite-Gegnern", false],
+["Alps Summit","+18% Reparaturskills","+30% Skilldauer","+30% Skill Haste", true],
+["China Light","+15% Explosionsschaden","+20% Status-Effekte","+30% Skill Haste", true],
+["Palisade Steelworks","+10% Rüstung bei Kill","+24% Schutz vor Elite-Gegnern","+1 Skill-Tier", true],
+["Brazos de Arcabuz","+10% Skill Haste","+1 Skill-Tier","+50% Magazingröße", true],
+["Gila Guard","+5% Gesamtrüstung","+20% Gefahrenschutz","+2% Rüstungsregen", true],
+["Fenris Group","+12% Sturmgewehr-Schaden","+32% Magazingröße","+50% Stabilität", true],
+["Petrov Defense Group","+12% LMG-Schaden","+15% Waffenhandling","+50% Munitionskapazität", true],
+["Overlord Armaments","+12% Gewehr-Schaden","+30% Genauigkeit","+30% Waffenhandling", true],
+["Walker, Harris &amp; Co","+6% Waffenschaden","+5% Schaden gegen Rüstung","+10% Schaden gegen Leben", true],
+["Yaahl Gear","+10% Gefahrenschutz","+12% Waffenschaden","+40% Pulswiderstand", false],
+["Electrique","+10% Status-Effekte","+20% Gefahrenschutz","+8% Skill-Effizienz", false],
+["Hana-U","+10% Skill Haste","+13% Skillschaden","+18% Waffenschaden", false],
+["Murakami Industries","+15% Skilldauer","+35% Reparaturskills","+18% Skillschaden", false],
+["Richter &amp; Kaiser","+10% Skill Haste","+40% Explosionswiderstand","+52% Reparaturskills", false],
+["5.11 Tactical","+12% Schutz vor Elite-Gegnern","+100% erhöhte Bedrohung","+30% Gefahrenschutz", false],
+["Badger Tuff","+12% Schrotflinten-Schaden","+10% Rüstung bei Kill","+15% Gesamtrüstung", false],
+["Golan Gear","+20% Explosionswiderstand","+1,5% Rüstungsregen","+150% erhöhte Bedrohung", false],
+["Habsburg Guard","+13% Kopfschuss-Schaden","+24% Scharfschützengewehr-Schaden","+25% Status-Effekte", false],
+["Lengmo","+15% Nachladegeschwindigkeit","+24% LMG-Schaden","+30% Waffenhandling", false],
+["Ceska Vyroba","+8% Krit-Chance","+24% Schrotflinten-Schaden","+30% Gefahrenschutz", false],
+["Douglas &amp; Harding","+24% Pistolen-Schaden","+20% Skill-Leben","+50% Genauigkeit", false],
+["Grupo Sombra","+13% Krit-Schaden","+20% Explosionsschaden","+39% Kopfschuss-Schaden", false],
+["Airaldi","+12% Scharfschützengewehr-Schaden","+26% Kopfschuss-Schaden","+5% Schaden gegen Rüstung", false],
+["Sokolov","+12% SMG-Schaden","+13% Krit-Schaden","+8% Krit-Chance", false],
+["Zwiadowka","+15% Magazingröße","+24% Gewehr-Schaden","+30% Waffenhandling", false],
+["Legatus","+15% Magazingröße","+24% SMG-Schaden","+105% optimale Reichweite", false],
+["Shiny Monkey Gear","+15% Skilldauer","+5% Skill-Effizienz","+52% Reparaturskills", false],
+["Imminence Armaments","+6% Waffenschaden","+48% Pistolen-Schaden","+30% Skill-Leben", false],
+["Urban Lookout","+5% Waffenhandling","+24% Scharfschützengewehr-Schaden","+45% Skilldauer", false],
+["Unit Alloys","+5% Feuerrate","+24% Sturmgewehr-Schaden","+50% Magazingröße", true],
+["Royal Works","+5% Waffenhandling","+24% LMG-Schaden","+50% Genauigkeit", false],
+["Edelweiss GPz","+18% Reparaturskills","+20% Skill Haste","+8% Skill-Effizienz", false]
+];
+
+/* ---------- Exotische Kleidung ----------
+   Gruppiert nach Slot. Jeder Eintrag: [Name, Kern-Eigenschaft / Fokus] */
+const exoticGear = [
+  ["Masken", [
+    ["Coyote's Mask","Team-Buffs auf Krit-Schaden &amp; Krit-Chance"],
+    ["Vile","Fügt Statuseffekten kontinuierlichen Giftschaden zu"],
+    ["Catharsis","Schadens-Stapelung und automatische Heilwolke bei Treffern"],
+    ["Catalyst","Neue Brooklyn-Maske mit starken Talent-Synergien"],
+    ["Tinkerer","<b>Talent – Abridged:</b> Wenn deine Primär- und Sekundärwaffe nicht exotisch oder named sind und vom gleichen Waffentyp sind, wird das Talent der Sekundärwaffe zusätzlich auf die Primärwaffe angewendet. Gilt nicht für Talente, die einen Waffenwechsel beinhalten."],
+    ["Investor","<b>Talent – Slotted:</b> Erhält Boni für jedes Nicht-Kern-Attribut auf diesem Item, abhängig von der Farbe:<br>• Rot: +10% Krit-Schaden<br>• Gelb: +5% Skill-Effizienz<br>• Blau: +1% Rüstungsregen<br>• Nur PvP: +0,5% Rüstungsregen<br>Dieses Item kann jedes Kern-Attribut tragen. Es besitzt ein drittes zufälliges Attribut anstelle eines Mod-Slots. Die Attribute Kopfschuss-Schaden, Leben und Skill-Reparatur können nicht auftreten."]
+  ]],
+  ["Brust", [
+    ["Tardigrade Armor System","Gibt dem gesamten Team Bonus-Rüstung, wenn deren Rüstung bricht"],
+    ["Ridgeway's Pride","Lässt nahe Gegner bluten und gewährt Lebensraub"],
+    ["Collector","Massiver Bonus auf Granatenkapazität und Spreng-Radius"],
+    ["Provocator","Erhöht den ausgeteilten Schaden bei Aggro-Zyklen"],
+    ["Beacon / Iron Will","Zusätzliche Season-Brustpanzer<br><b>Talent – Bond:</b> Du und Verbündete erhalten +30% Krit-Schaden, +15% Skill-Effizienz und +2% Rüstungsregen, wenn sich ein Verbündeter innerhalb von 10m befindet.<br>Erhalte +15% Krit-Schaden, +8% Skill-Effizienz und +1% Rüstungsregen, wenn sich einer deiner Skills innerhalb von 10m befindet.<br>Es kann immer nur die jeweils höherwertige Bonusgruppe aktiv sein."]
+  ]],
+  ["Rucksack", [
+    ["Memento","Droppt Trophäen; der stärkste Allrounder für Rüstung, Schaden &amp; Fertigkeiten"],
+    ["NinjaBike Messenger Bag","Agiert als „Joker“ und schaltet Set-Boni mehrerer Sets gleichzeitig frei"],
+    ["Acosta's Go-Bag","Überlädt deine Fertigkeiten beim Werfen einer Granate"],
+    ["Birdie's Quick Fix","Repariert Verbündeten-Rüstung bei aktiven Skills"],
+    ["Harrier Pride","Offensive Drohnen- und Rucksack-Synergien"]
+  ]],
+  ["Holster", [
+    ["Dodge City Gunslinger","Lädt einen extremen Revolver-Kopfschuss auf"],
+    ["Waveform","Schiebt Schadens-Boni periodisch zwischen zwei Fertigkeiten hin und her"],
+    ["Imperial Dynasty","Setzt den am nächsten stehenden Gegner automatisch in Brand"],
+    ["Shocker Punch","Verleiht Nahkampfangriffen einen Schock-Effekt und bufft Schilde"],
+    ["Centurion's Scabbard","Bufft den Waffenwechsel auf Pistolen"],
+    ["Nimble Holster","Heilung bei Deckungswechseln"]
+  ]],
+  ["Handschuhe", [
+    ["BTSU Datagloves","Setzt die Abklingzeit des gesamten Teams zurück und überlädt den Schwarm"],
+    ["Bloody Knuckles","Erhöht Waffenschaden nach Nahkampf oder Granatentreffern"],
+    ["Overdogs","Bufft Nahkampfschaden und Bedrohung"],
+    ["Rugged Gauntlets","<b>Talent – Iron Grip:</b> -50% Rückstoß-Malus beim Hüftfeuer; -50% Rückstoß-Malus beim Blindfeuer aus der Deckung."],
+    ["Exodus","<b>Talent:</b> Wenn die Rüstung bricht, wird eine Rauchbombe eingesetzt, die den Spieler für 3 Sekunden vor Gegnern verbirgt. Abklingzeit: 40 Sekunden."]
+  ]],
+  ["Knie", [
+    ["Sawyer's Kneepads","Immunität gegen Taumeln (Explosionen) und Schadens-Buff im Stillstand"],
+    ["NinjaBike Kneepads","Lädt die Waffe bei Deckungssprüngen automatisch nach"],
+    ["Nurse's Kneepads","Extrem starker Bonus auf Rüstungsregeneration und Überlebensfähigkeit"],
+    ["Acosta's Kneepads","Erhöhen die Bewegungsgeschwindigkeit und das Handling im Kampf"],
+    ["Blacklisters Kneepads","<b>Talent – Forbidden Impact:</b> Ein Kopfschuss-Kill gewährt für kurze Zeit erhöhten Waffenschaden und mehr Bewegungsgeschwindigkeit; der Effekt stapelt sich bis zu dreimal. Solange der Buff aktiv ist, explodieren durch Schusswaffen getötete Gegner und fügen Flächenschaden zu."]
+  ]]
+];
+
+const namedItems = [
+  ["Petrov Defense Group","Contractor's Gloves","Handschuhe"],
+  ["Overlord Armaments","Fox's Prayer","Kniepolster"],
+  ["Brazos de Arcabuz","Picaro's Holster","Holster"],
+  ["Belstone Armory","(benannte Brust)","Brust"]
+];
+
+const bestGear = ["Striker","Heartbreaker","Umbra Initiative","Tipping Scales","Negotiator's Dilemma","Refactor","Future Initiative","Eclipse Protocol","Hunter's Fury","Hotshot","Foundry Bulwark","Core Strength"];
+const bestBrand = ["Unit Alloys","Providence","Palisade Steelworks","Empress","Wyvern","Alps Summit","China Light","Brazos de Arcabuz","Gila Guard","Fenris","Petrov","Overlord","Walker, Harris & Co"];
+
+/* ---------- Waffen ----------
+   Jeder Eintrag: [Name, Rarity ('exotic'|'named'|'standard'), Tier ('S'|'A'|'B'|'C'|'NEU')]
+   Tier = aktuelle Meta-Einstufung je Waffenklasse (grindout.com, Stand 29.08.2026). */
+const weaponCategories = [
+  { id:"ar", name:"Sturmgewehre (AR)", groups:{
+    exotic: [["St. Elmo's Engine","exotic","S"],["Capacitor","exotic","S"],["Eagle Bearer","exotic","A"],["Chameleon","exotic","A"],["The Bighorn","exotic","A"],["Strega","exotic","A"],["Agitator","exotic","B"],["Caduceus","exotic","NEU"]],
+    named: [["Lexington","named","S"],["Shield Splinterer","named","S"],["Huntsman","named","S"],["Caretaker","named","S"],["Savage Wolverine","named","A"],["Kingbreaker","named","A"],["Mechanical Animal","named","A"],["Test Subject","named","B"],["The Railsplitter","named","C"],["Invisible Hand","named",""],["First Sight","named",""],["Manic","named",""],["Lud","named",""],["Steamer","named",""],["The Archivist","named",""],["First Bloom","named",""],["Born Great","named",""],["The Drill","named",""],["Glory Daze","named",""],["Pyromaniac","named",""],["Burn Out","named",""],["Goalie","named",""]],
+    standard: [["FAMAS 2000","standard","S"],["Carbine 7","standard","S"],["Police M4","standard","S"],["ACR","standard","A"],["G36","standard","A"],["AK-M","standard","B"],["P416","standard","B"],["Honey Badger","standard","C"],["AUG A3-CQC","standard",""],["Military AK-M","standard",""],["TKB-408","standard",""],["Mk16","standard",""],["PDR","standard",""],["SIG 556","standard",""],["Military G36","standard",""],["F2000","standard",""],["Military P416","standard",""],["FAMAS 2010","standard",""],["CTAR-21","standard",""],["FAL","standard",""]]
+  }},
+  { id:"smg", name:"Maschinenpistolen (SMG)", groups:{
+    exotic: [["Ouroboros","exotic","S"],["The Chatterbox","exotic","A"],["Lady Death","exotic","A"],["Backfire","exotic","A"],["Oxpecker","exotic","B"],["Underboss","exotic","B"]],
+    named: [["Dark Winter","named","S"],["Emeline's Guard","named","C"],["The Grudge","named","C"],["Froth","named",""],["Purist","named",""],["Grown Great","named",""],["Cold Relations","named",""],["Swap Chain","named",""],["Safety Distance","named",""],["The Apartment","named",""],["Cabaret","named",""],["Interchange","named",""],["Old Glory","named",""],["Slingshot","named",""]],
+    standard: [["Banshee","standard","A"],["Vector SBR 9mm","standard","A"],["Vector SBR .45 ACP","standard","A"],["SIG MPX","standard","B"],["PP-19","standard",""],["Tommy Gun","standard",""],["Black Market T821","standard",""],["M1928","standard",""],["UMP45","standard",""],["P90","standard",""],["MP7","standard",""],["MP5A2","standard",""],["Police UMP-45","standard",""],["Converted SMG-9","standard",""],["CMMG Banshee","standard",""],["Converted SMG-9 A2","standard",""],["AUG A3 Para XS","standard",""],["Tactical Vector SBR 9mm","standard",""]]
+  }},
+  { id:"lmg", name:"Leichte Maschinengewehre (LMG)", groups:{
+    exotic: [["Pestilence","exotic","S"],["Iron Lung","exotic","A"],["Bluescreen","exotic","A"],["Big Alejandro","exotic","A"],["Bullet King","exotic","B"],["Pakhan","exotic","B"]],
+    named: [["Carnage","named","B"],["Quiet Roar","named",""],["Cricket","named",""],["Dare","named",""],["Good Times","named",""],["The Headline-grabber","named",""],["Black Friday","named",""],["Gear Shift","named",""],["The Stinger","named",""],["New Reliable","named",""],["Rusty","named",""],["Big Show","named",""],["Sleipnir","named",""],["Bell Ringer","named",""],["Insult To Injury","named",""],["Tabula Rasa","named",""]],
+    standard: [["M249","standard","A"],["MK46","standard","A"],["GR9","standard","A"],["RPK-74","standard","B"],["M60","standard","C"],["MG5","standard","C"],["Stoner LAMG","standard",""],["Classic M60","standard",""],["Military M60 E4","standard",""],["IWI NEGEV","standard",""],["Classic RPK-74","standard",""],["Infantry MG5","standard",""],["Military LB6 LSW","standard",""]]
+  }},
+  { id:"mmr", name:"Scharfschützengewehre (MMR)", groups:{
+    exotic: [["Prima Donna","exotic","S"],["Shroud","exotic","A"],["Nemesis","exotic","A"],["Mantis","exotic","A"],["Dread Edict","exotic","B"],["Sacrum Imperium","exotic","B"]],
+    named: [["The White Death","named","B"],["Designated Hitter","named","C"],["Relic","named",""],["Handbasket","named",""],["Ekim's Long stick","named",""],["The Darkness","named",""],["Brutus","named",""],["Incendia","named",""],["Pinprick","named",""],["Scalpel","named",""],["Oh Carol","named",""],["Instigator","named",""],["Adrestia","named",""],["Commando","named",""]],
+    standard: [["Model 700","standard","S"],["M44","standard","A"],["M700","standard","A"],["Tactical .308","standard","B"],["G28","standard",""],["SOCOM Mk20 SSR","standard",""],["M700 Tactical","standard",""],["Covert SRS","standard",""],["Classic M44 Carbine","standard",""],["Custom M44","standard",""],["Hunting M44","standard",""],["SR-1","standard",""],["Surplus SVD","standard",""]]
+  }},
+  { id:"rifle", name:"Gewehre (Rifles)", groups:{
+    exotic: [["The Ravenous","exotic","A"],["Diamondback","exotic","A"],["Doctor Home","exotic","B"],["Vindicator","exotic","C"],["Merciless","exotic","C"],["Bittersweet","exotic","C"],["Steel & Sons ACR","exotic",""],["Ruthless","exotic",""]],
+    named: [["Baker's Dozen","named","A"],["Harmony","named","B"],["Everlasting Gaze","named","C"],["The Claw","named",""],["Teapot","named",""],["Whisper","named",""],["The Virginian","named",""],["Surge","named",""],["Trader","named",""],["Artist's Tool","named",""],["Brain Break","named",""],["Achilles","named",""],["Stage Left","named",""]],
+    standard: [["1886","standard","A"],["Classic M1A","standard","B"],["UIC15 MOD2","standard",""],["Resolute MK47","standard",""],["Lightweight M4","standard",""],["M16A2","standard",""],["LVOA-C","standard",""],["ACR SS","standard",""],["SIG 716 CQB","standard",""],["SIG 716","standard",""],["Urban MDR","standard",""],["USC .45 ACP","standard",""],["Military Mk17","standard",""],["SOCOM M1A","standard",""]]
+  }},
+  { id:"shotgun", name:"Schrotflinten", groups:{
+    exotic: [["Scorpio","exotic","S"],["Sheriff","exotic","A"],["Overlord","exotic","B"],["Sweet Dreams","exotic","C"],["Fafnir","exotic",""],["Lullaby","exotic",""]],
+    named: [["Rock n' Roll","named","S"],["Lefty","named","A"],["The Send-Off","named",""],["Thorn","named",""],["Cuélebre","named",""],["Lockdown","named",""],["Enforcer","named",""],["Like Glue","named",""],["The Mop","named",""],["Tsunami","named",""],["Boomstick","named",""],["Backup Boomstick","named",""]],
+    standard: [["ACS-12","standard","A"],["M870","standard","A"],["Super 90","standard","B"],["KSG Shotgun","standard",""],["SPAS-12","standard",""],["M870 Express","standard",""],["Police M870","standard",""],["Stack Broker","standard",""],["SIX12","standard",""],["SASG-12","standard",""],["Double Barrel Shotgun","standard",""],["Double Barrel Sawed Off","standard",""]]
+  }},
+  { id:"pistol", name:"Pistolen", groups:{
+    exotic: [["Regulus","exotic","S"],["Liberty","exotic","A"],["Busy Little Bee","exotic","B"],["Tempest","exotic","B"],["Mosquito","exotic","C"],["Whiplash","exotic","NEU"]],
+    named: [["Orbit","named","S"],["Quickstep","named","A"],["TDI \"Kard\" Custom","named","A"],["Prophet","named","C"],["The Harvest","named",""],["Rabid D50","named",""],["Lightning Rod","named",""],["Mozambique Special","named",""]],
+    standard: [["Maxim 9","standard",""],["Military M9","standard",""],["D50","standard",""],["P320 XCompact","standard",""],["Officer's M9 A1","standard",""],["586 Magnum","standard",""],["X-45","standard",""],["Px4 Storm Type F","standard",""],["Snubnosed Diceros","standard",""],["Diceros","standard",""],["Diceros Special","standard",""],["KARD-45","standard",""],["93R","standard",""],["First Wave PF45","standard",""],["Custom PF45","standard",""],["M1911","standard",""],["M45A1","standard",""]]
+  }},
+  { id:"sig", name:"Signaturwaffen (Spezialisierungen)", groups:{
+    exotic: [],
+    named: [],
+    standard: [
+      ["SRS A1 (Sharpshooter)","standard",""],
+      ["M32A1 Granatwerfer (Demolitionist)","standard",""],
+      ["Armbrust (Survivalist)","standard",""],
+      ["M134 Minigun (Gunner)","standard",""],
+      ["Mehrfach-Raketenwerfer (Technician)","standard",""],
+      ["K8-JetStream Flammenwerfer (Firewall)","standard",""]
+    ]
+  }}
+];
+
+/* ---------- Waffen-Werte ----------
+   Quelle: djtickle.com/weapons DPS-Tabelle (Screenshots des Users, Stand 17.09.2026 / 18.09.2026).
+   Format je Waffe: { dmg, pellet(optional Anzeige-Zusatz), rpm, mag, reload, range, magDmg, burst, sustain }
+   Fehlt eine Waffe hier, werden noch keine Werte gerendert (siehe wp-note).
+   Offene Lücken (nicht in Screenshots enthalten / keine DPS-Kennzahlen):
+   die 6 Signaturwaffen (SRS A1, M32A1, Armbrust, M134 Minigun, Mehrfach-Raketenwerfer, K8-JetStream). */
+const weaponStats = {
+  // --- Sturmgewehre (AR) ---
+  "St. Elmo's Engine": {dmg:46918, rpm:850, mag:70, reload:2.02, range:31, magDmg:3284260, burst:664672, sustain:471797},
+  "Capacitor": {dmg:57618, rpm:700, mag:41, reload:1.84, range:31, magDmg:2362338, burst:672210, sustain:441205},
+  "Eagle Bearer": {dmg:47365, rpm:850, mag:60, reload:2.11, range:26, magDmg:2841900, burst:671004, sustain:447875},
+  "Chameleon": {dmg:44671, rpm:900, mag:50, reload:2.40, range:20, magDmg:2233550, burst:670065, sustain:389573},
+  "The Bighorn": {dmg:57218, rpm:800, mag:42, reload:1.73, range:40, magDmg:2403156, burst:762907, sustain:492450},
+  "Strega": {dmg:57646, rpm:700, mag:40, reload:1.93, range:35, magDmg:2305840, burst:672537, sustain:430309},
+  "Agitator": {dmg:49104, rpm:850, mag:50, reload:2.40, range:31, magDmg:2455200, burst:695640, sustain:414071},
+  "Caduceus": {dmg:59221, rpm:650, mag:70, reload:2.02, range:31, magDmg:4145470, burst:641561, sustain:488764},
+
+  "Lexington": {dmg:48700, rpm:850, mag:30, reload:2.24, range:31, magDmg:1461000, burst:689917, sustain:335273},
+  "Shield Splinterer": {dmg:49104, rpm:850, mag:30, reload:2.40, range:31, magDmg:1473120, burst:695640, sustain:326081},
+  "Huntsman": {dmg:45273, rpm:900, mag:30, reload:2.49, range:26, magDmg:1358190, burst:679095, sustain:302492},
+  "Caretaker": {dmg:52564, rpm:750, mag:30, reload:2.34, range:35, magDmg:1576920, burst:657050, sustain:332684},
+  "Savage Wolverine": {dmg:51271, rpm:800, mag:30, reload:2.06, range:28, magDmg:1538130, burst:683613, sustain:356875},
+  "Kingbreaker": {dmg:63509, rpm:600, mag:30, reload:1.87, range:27, magDmg:1905270, burst:635090, sustain:391226},
+  "Mechanical Animal": {dmg:55925, rpm:700, mag:30, reload:2.17, range:28, magDmg:1677750, burst:652458, sustain:353849},
+  "Test Subject": {dmg:57618, rpm:700, mag:30, reload:2.04, range:31, magDmg:1728540, burst:672210, sustain:374838},
+  "The Railsplitter": {dmg:44802, rpm:900, mag:30, reload:2.39, range:32, magDmg:1344060, burst:672030, sustain:306164},
+
+  "FAMAS 2000": {dmg:45273, rpm:900, mag:30, reload:2.49, range:26, magDmg:1358190, burst:679095, sustain:302492},
+  "Carbine 7": {dmg:49790, rpm:790, mag:30, reload:2.02, range:28, magDmg:1493700, burst:655568, sustain:347495},
+  "Police M4": {dmg:46918, rpm:850, mag:30, reload:2.24, range:31, magDmg:1407540, burst:664672, sustain:323005},
+  "ACR": {dmg:58897, rpm:650, mag:30, reload:1.91, range:31, magDmg:1766910, burst:638051, sustain:377607},
+  "G36": {dmg:52564, rpm:750, mag:30, reload:2.34, range:35, magDmg:1576920, burst:657050, sustain:332684},
+  "AK-M": {dmg:67175, rpm:600, mag:30, reload:2.26, range:27, magDmg:2015250, burst:671750, sustain:383127},
+  "P416": {dmg:47365, rpm:850, mag:30, reload:2.34, range:26, magDmg:1420950, burst:671004, sustain:318767},
+  "Honey Badger": {dmg:51271, rpm:800, mag:30, reload:2.06, range:28, magDmg:1538130, burst:683613, sustain:356875},
+
+  // --- SMG (nur Standard + Emeline's Guard vorhanden, Rest fehlt noch) ---
+  "Emeline's Guard": {dmg:39457, rpm:1100, mag:50, reload:1.57, range:21, magDmg:1972850, burst:723378, sustain:459094},
+  "Banshee": {dmg:47849, rpm:900, mag:32, reload:1.92, range:21, magDmg:1531168, burst:717735, sustain:377755},
+  "Vector SBR 9mm": {dmg:39307, rpm:1200, mag:33, reload:2.38, range:15, magDmg:1297131, burst:786140, sustain:321869},
+  "Vector SBR .45 ACP": {dmg:38301, rpm:1200, mag:25, reload:2.06, range:15, magDmg:957525, burst:766020, sustain:289282},
+  "SIG MPX": {dmg:50999, rpm:850, mag:30, reload:2.27, range:22, magDmg:1529970, burst:722486, sustain:348699},
+  "Ouroboros": {dmg:38301, rpm:1452, mag:50, reload:1.54, range:15, magDmg:1915050, burst:894967, sustain:520423},
+  "The Chatterbox": {dmg:39457, rpm:850, mag:60, reload:1.41, range:21, magDmg:2367420, burst:358574, sustain:419160},
+  "Lady Death": {dmg:35409, rpm:900, mag:32, reload:1.73, range:21, magDmg:1133088, burst:531115, sustain:298293},
+  "Backfire": {dmg:50999, rpm:850, mag:50, reload:2.09, range:22, magDmg:2549950, burst:722486, sustain:453775},
+  "Oxpecker": {dmg:46406, rpm:950, mag:50, reload:1.60, range:32, magDmg:2320300, burst:734762, sustain:487674},
+  "Underboss": {dmg:50627, rpm:900, mag:50, reload:1.54, range:19, magDmg:2531350, burst:759405, sustain:519429},
+  "Dark Winter": {dmg:38301, rpm:1200, mag:25, reload:2.06, range:15, magDmg:957525, burst:766020, sustain:289282},
+  "The Grudge": {dmg:47849, rpm:900, mag:32, reload:1.92, range:21, magDmg:1531168, burst:717735, sustain:377755},
+  "Froth": {dmg:40506, rpm:1200, mag:19, reload:1.69, range:15, magDmg:769614, burst:810120, sustain:291520},
+  "Purist": {dmg:46735, rpm:1000, mag:32, reload:2.30, range:15, magDmg:1495520, burst:778917, sustain:354389},
+  "Grown Great": {dmg:50627, rpm:900, mag:50, reload:1.54, range:19, magDmg:2531350, burst:759405, sustain:519429},
+  "Cold Relations": {dmg:63593, rpm:700, mag:51, reload:1.46, range:21, magDmg:3370429, burst:741918, sustain:561471},
+  "Swap Chain": {dmg:46406, rpm:950, mag:40, reload:1.60, range:21, magDmg:1856240, burst:734762, sustain:449854},
+  "Safety Distance": {dmg:50999, rpm:850, mag:30, reload:2.09, range:22, magDmg:1529970, burst:722486, sustain:363617},
+  "The Apartment": {dmg:50999, rpm:850, mag:30, reload:2.09, range:22, magDmg:1529970, burst:722486, sustain:361617},
+  "Cabaret": {dmg:53904, rpm:800, mag:30, reload:1.79, range:21, magDmg:1617120, burst:718720, sustain:400277},
+  "Interchange": {dmg:58662, rpm:725, mag:25, reload:2.31, range:22, magDmg:1466550, burst:708832, sustain:334908},
+  "Old Glory": {dmg:76916, rpm:550, mag:32, reload:1.47, range:20, magDmg:2461312, burst:705063, sustain:496141},
+  "Slingshot": {dmg:63692, rpm:650, mag:25, reload:1.67, range:16, magDmg:1592300, burst:689997, sustain:400307},
+
+  // --- LMG ---
+  "Pestilence": {dmg:48300, rpm:935, mag:100, reload:4.54, range:35, magDmg:4830000, burst:752675, sustain:440810},
+  "Iron Lung": {dmg:54322, rpm:800, mag:85, reload:2.96, range:35, magDmg:4617370, burst:724293, sustain:494630},
+  "Bluescreen": {dmg:62361, rpm:720, mag:200, reload:2.04, range:40, magDmg:12472200, burst:748332, sustain:666725},
+  "Big Alejandro": {dmg:39279, rpm:1100, mag:200, reload:4.03, range:35, magDmg:7855800, burst:720115, sustain:525855},
+  "Bullet King": {dmg:54604, rpm:750, mag:1000, reload:4.76, range:40, magDmg:54604000, burst:682550, sustain:644219},
+  "Pakhan": {dmg:71538, rpm:600, mag:180, reload:3.60, range:30, magDmg:12876840, burst:715380, sustain:596150},
+  "Carnage": {dmg:54604, rpm:750, mag:100, reload:4.00, range:40, magDmg:5460400, burst:682550, sustain:455033},
+  "M249": {dmg:48300, rpm:850, mag:100, reload:4.54, range:35, magDmg:4830000, burst:684250, sustain:416422},
+  "MK46": {dmg:48300, rpm:892, mag:100, reload:4.54, range:35, magDmg:4830000, burst:718060, sustain:428706},
+  "GR9": {dmg:49480, rpm:750, mag:200, reload:3.63, range:35, magDmg:9896000, burst:618500, sustain:504126},
+  "RPK-74": {dmg:71538, rpm:600, mag:40, reload:4.00, range:30, magDmg:2861520, burst:715380, sustain:357690},
+  "M60": {dmg:67711, rpm:600, mag:100, reload:3.75, range:40, magDmg:6771100, burst:677110, sustain:492444},
+  "MG5": {dmg:54322, rpm:800, mag:50, reload:2.96, range:35, magDmg:2716100, burst:724293, sustain:404784},
+
+  // --- Scharfschützengewehre (MMR) ---
+  "Prima Donna": {dmg:417692, rpm:55, mag:7, reload:4.99, range:55, magDmg:2923844, burst:382884, sustain:231567},
+  "Shroud": {dmg:412516, rpm:55, mag:7, reload:3.18, range:50, magDmg:2887612, burst:378140, sustain:266967},
+  "Nemesis": {dmg:940240, rpm:50, mag:5, reload:2.74, range:60, magDmg:4701200, burst:783533, sustain:537895},
+  "Mantis": {dmg:409357, rpm:60, mag:7, reload:3.86, range:60, magDmg:2865499, burst:409357, sustain:263858},
+  "Dread Edict": {dmg:156663, rpm:260, mag:10, reload:2.42, range:50, magDmg:1566630, burst:678873, sustain:331373},
+  "Sacrum Imperium": {dmg:206425, rpm:180, mag:20, reload:3.60, range:60, magDmg:4128500, burst:619275, sustain:402127},
+  "The White Death": {dmg:433563, rpm:55, mag:5, reload:4.29, range:50, magDmg:2167815, burst:397433, sustain:222464},
+  "Designated Hitter": {dmg:409357, rpm:60, mag:5, reload:3.15, range:50, magDmg:2046785, burst:409357, sustain:251139},
+  "Model 700": {dmg:441570, rpm:55, mag:7, reload:8.65, range:50, magDmg:3090990, burst:404772, sustain:189790},
+  "M44": {dmg:433563, rpm:55, mag:5, reload:4.29, range:50, magDmg:2167815, burst:397433, sustain:222464},
+  "M700": {dmg:412516, rpm:55, mag:7, reload:3.98, range:50, magDmg:2887612, burst:378140, sustain:248581},
+  "Tactical .308": {dmg:403810, rpm:70, mag:7, reload:3.04, range:50, magDmg:2826670, burst:471112, sustain:312685},
+
+  // --- Gewehre (Rifles) ---
+  "Vindicator": {dmg:102947, rpm:380, mag:20, reload:2.85, range:60, magDmg:2058940, burst:651998, sustain:342706},
+  "The Ravenous": {dmg:134360, pellet:"2× 67.180", rpm:240, mag:60, reload:2.16, range:50, magDmg:8061600, burst:537440, sustain:469790},
+  "Diamondback": {dmg:386989, rpm:100, mag:8, reload:3.75, range:35, magDmg:3095912, burst:644982, sustain:362095},
+  "Doctor Home": {dmg:129180, rpm:320, mag:10, reload:2.09, range:60, magDmg:1291800, burst:688960, sustain:325801},
+  "Merciless": {dmg:102270, rpm:400, mag:30, reload:1.66, range:35, magDmg:3068100, burst:681800, sustain:498068},
+  "Bittersweet": {dmg:231346, rpm:180, mag:20, reload:2.60, range:60, magDmg:4626920, burst:694038, sustain:499308},
+  "Baker's Dozen": {dmg:231346, rpm:180, mag:10, reload:2.86, range:60, magDmg:2313460, burst:694038, sustain:373540},
+  "Harmony": {dmg:124901, rpm:300, mag:30, reload:1.94, range:55, magDmg:3747030, burst:624505, sustain:471918},
+  "Everlasting Gaze": {dmg:145850, rpm:275, mag:10, reload:2.45, range:55, magDmg:1458500, burst:668479, sustain:314887},
+  "1886": {dmg:386989, rpm:100, mag:8, reload:4.11, range:35, magDmg:3095912, burst:644982, sustain:347465},
+  "Classic M1A": {dmg:231346, rpm:180, mag:10, reload:2.60, range:60, magDmg:2313460, burst:694038, sustain:389909},
+
+  // --- Schrotflinten ---
+  "Scorpio": {dmg:409569, pellet:"8× 51.196", rpm:130, mag:7, reload:2.43, range:14, magDmg:2866983, burst:887400, sustain:506465},
+  "Sheriff": {dmg:526414, pellet:"8× 65.802", rpm:160, mag:8, reload:3.65, range:100, magDmg:4211312, burst:1403771, sustain:633280},
+  "Overlord": {dmg:678929, pellet:"8× 84.866", rpm:70, mag:12, reload:7.21, range:16, magDmg:8147148, burst:792084, sustain:465665},
+  "Sweet Dreams": {dmg:716012, pellet:"8× 89.502", rpm:70, mag:8, reload:5.13, range:13, magDmg:5728096, burst:835347, sustain:477853},
+  "Rock n' Roll": {dmg:180752, pellet:"8× 22.594", rpm:300, mag:20, reload:3.35, range:16, magDmg:3615040, burst:903760, sustain:491842},
+  "Lefty": {dmg:180752, pellet:"8× 22.594", rpm:300, mag:20, reload:3.35, range:16, magDmg:3615040, burst:903760, sustain:491842},
+  "ACS-12": {dmg:180752, pellet:"8× 22.594", rpm:300, mag:20, reload:3.35, range:16, magDmg:3615040, burst:903760, sustain:491842},
+  "M870": {dmg:703676, pellet:"8× 87.960", rpm:75, mag:5, reload:3.95, range:11, magDmg:3518380, burst:879595, sustain:442564},
+  "Super 90": {dmg:389936, pellet:"8× 48.742", rpm:160, mag:8, reload:5.27, range:11, magDmg:3119488, burst:1039829, sustain:377205},
+
+  // --- Pistolen ---
+  "Regulus": {dmg:282072, rpm:160, mag:6, reload:2.29, range:16, magDmg:1692432, burst:752192, sustain:372782},
+  "Liberty": {dmg:189172, rpm:230, mag:8, reload:1.90, range:18, magDmg:1513376, burst:725159, sustain:379582},
+  "Busy Little Bee": {dmg:93963, rpm:400, mag:10, reload:1.59, range:18, magDmg:939630, burst:626420, sustain:304087},
+  "Tempest": {dmg:62714, rpm:700, mag:30, reload:2.38, range:12, magDmg:1881420, burst:731663, sustain:379975},
+  "Mosquito": {dmg:102585, rpm:350, mag:15, reload:1.61, range:16, magDmg:1538775, burst:598412, sustain:368002},
+  "Whiplash": {dmg:198306, rpm:180, mag:6, reload:1.93, range:18, magDmg:1189836, burst:594918, sustain:302757},
+  "Orbit": {dmg:233278, rpm:160, mag:6, reload:2.54, range:16, magDmg:1399668, burst:622075, sustain:292206},
+  "Quickstep": {dmg:117436, rpm:310, mag:7, reload:2.33, range:12, magDmg:822052, burst:606753, sustain:223090},
+  "TDI \"Kard\" Custom": {dmg:114267, rpm:310, mag:10, reload:1.71, range:12, magDmg:1142670, burst:590380, sustain:313448},
+  "Prophet": {dmg:233278, rpm:160, mag:6, reload:2.54, range:16, magDmg:1399668, burst:622075, sustain:292206},
+
+  // --- NEU: ar ---
+  "Invisible Hand": {dmg:57218, rpm:680, mag:42, reload:2.16, range:26, magDmg:2403156, burst:648471, sustain:409684},
+  "First Sight": {dmg:67175, rpm:600, mag:30, reload:2.8, range:27, magDmg:2015250, burst:671750, sustain:347457},
+  "Manic": {dmg:64717, rpm:600, mag:30, reload:2.3, range:27, magDmg:1941510, burst:647170, sustain:366323},
+  "Lud": {dmg:59221, rpm:650, mag:30, reload:2.02, range:31, magDmg:1776630, burst:641561, sustain:370964},
+  "Steamer": {dmg:59221, rpm:650, mag:30, reload:2.02, range:31, magDmg:1776630, burst:641561, sustain:370964},
+  "The Archivist": {dmg:58897, rpm:650, mag:30, reload:1.91, range:31, magDmg:1766910, burst:638051, sustain:377607},
+  "First Bloom": {dmg:57618, rpm:700, mag:30, reload:2.04, range:31, magDmg:1728540, burst:672210, sustain:374838},
+  "Born Great": {dmg:52564, rpm:750, mag:30, reload:2.34, range:35, magDmg:1576920, burst:657050, sustain:332684},
+  "The Drill": {dmg:49790, rpm:790, mag:30, reload:2.02, range:28, magDmg:1493700, burst:655568, sustain:347495},
+  "Glory Daze": {dmg:47365, rpm:850, mag:30, reload:2.34, range:26, magDmg:1420950, burst:671004, sustain:318767},
+  "Pyromaniac": {dmg:46918, rpm:850, mag:30, reload:2.24, range:31, magDmg:1407540, burst:664672, sustain:323005},
+  "Burn Out": {dmg:45273, rpm:900, mag:30, reload:2.49, range:26, magDmg:1358190, burst:679095, sustain:302492},
+  "Goalie": {dmg:57646, rpm:700, mag:20, reload:2.14, range:35, magDmg:1152920, burst:672537, sustain:299127},
+  "AUG A3-CQC": {dmg:57218, rpm:680, mag:42, reload:2.16, range:26, magDmg:2403156, burst:648471, sustain:409684},
+  "Military AK-M": {dmg:64717, rpm:600, mag:30, reload:2.3, range:27, magDmg:1941510, burst:647170, sustain:366323},
+  "TKB-408": {dmg:63509, rpm:600, mag:30, reload:1.87, range:27, magDmg:1905270, burst:635090, sustain:391226},
+  "Mk16": {dmg:59221, rpm:650, mag:30, reload:2.02, range:31, magDmg:1776630, burst:641561, sustain:370964},
+  "PDR": {dmg:57618, rpm:700, mag:30, reload:2.04, range:31, magDmg:1728540, burst:672210, sustain:374838},
+  "SIG 556": {dmg:55935, rpm:700, mag:30, reload:2.17, range:28, magDmg:1678050, burst:652575, sustain:353912},
+  "Military G36": {dmg:52564, rpm:750, mag:30, reload:2.34, range:35, magDmg:1576920, burst:657050, sustain:332684},
+  "F2000": {dmg:49104, rpm:850, mag:30, reload:2.4, range:31, magDmg:1473120, burst:695640, sustain:326081},
+  "Military P416": {dmg:47365, rpm:850, mag:30, reload:2.34, range:26, magDmg:1420950, burst:671004, sustain:318767},
+  "FAMAS 2010": {dmg:45273, rpm:900, mag:30, reload:2.49, range:26, magDmg:1358190, burst:679095, sustain:302492},
+  "CTAR-21": {dmg:44802, rpm:900, mag:30, reload:2.39, range:32, magDmg:1344060, burst:672030, sustain:306164},
+  "FAL": {dmg:57646, rpm:700, mag:20, reload:2.14, range:35, magDmg:1152920, burst:672537, sustain:299127},
+  // --- NEU: smg ---
+  "PP-19": {dmg:63593, rpm:700, mag:53, reload:1.46, range:21, magDmg:3370429, burst:741918, sustain:561471},
+  "Tommy Gun": {dmg:50627, rpm:900, mag:50, reload:1.54, range:19, magDmg:2531350, burst:759405, sustain:519429},
+  "Black Market T821": {dmg:76916, rpm:550, mag:32, reload:1.47, range:20, magDmg:2461312, burst:705063, sustain:496141},
+  "M1928": {dmg:78416, rpm:600, mag:30, reload:1.46, range:19, magDmg:2352480, burst:784160, sustain:527462},
+  "UMP45": {dmg:65817, rpm:600, mag:30, reload:2.3, range:14, magDmg:1974510, burst:658170, sustain:372549},
+  "P90": {dmg:39457, rpm:1100, mag:50, reload:1.57, range:21, magDmg:1972850, burst:723378, sustain:459094},
+  "MP7": {dmg:46406, rpm:950, mag:40, reload:1.6, range:21, magDmg:1856240, burst:734762, sustain:449854},
+  "MP5A2": {dmg:53904, rpm:800, mag:30, reload:1.79, range:21, magDmg:1617120, burst:718720, sustain:400277},
+  "Police UMP-45": {dmg:63692, rpm:650, mag:25, reload:1.67, range:16, magDmg:1592300, burst:689997, sustain:400307},
+  "Converted SMG-9": {dmg:48512, rpm:1000, mag:32, reload:2.26, range:15, magDmg:1552384, burst:808533, sustain:371384},
+  "CMMG Banshee": {dmg:47849, rpm:900, mag:32, reload:1.92, range:21, magDmg:1531168, burst:717735, sustain:377755},
+  "Converted SMG-9 A2": {dmg:46735, rpm:1000, mag:32, reload:2.3, range:15, magDmg:1495520, burst:778917, sustain:354389},
+  "AUG A3 Para XS": {dmg:58662, rpm:725, mag:25, reload:2.31, range:22, magDmg:1466550, burst:708832, sustain:334908},
+  "Tactical Vector SBR 9mm": {dmg:40506, rpm:1200, mag:19, reload:1.69, range:15, magDmg:769614, burst:810120, sustain:291520},
+  // --- NEU: lmg ---
+  "Quiet Roar": {dmg:62361, rpm:580, mag:200, reload:3.0, range:40, magDmg:12472200, burst:602823, sustain:526483},
+  "Cricket": {dmg:49480, rpm:750, mag:200, reload:3.63, range:35, magDmg:9896000, burst:618500, sustain:504126},
+  "Dare": {dmg:49480, rpm:750, mag:200, reload:3.63, range:35, magDmg:9896000, burst:618500, sustain:504126},
+  "Good Times": {dmg:65234, rpm:600, mag:100, reload:3.85, range:40, magDmg:6523400, burst:652340, sustain:471004},
+  "The Headline-grabber": {dmg:65234, rpm:600, mag:100, reload:3.85, range:40, magDmg:6523400, burst:652340, sustain:471004},
+  "Black Friday": {dmg:48300, rpm:850, mag:100, reload:4.54, range:35, magDmg:4830000, burst:684250, sustain:416422},
+  "Gear Shift": {dmg:48300, rpm:850, mag:100, reload:4.54, range:35, magDmg:4830000, burst:684250, sustain:416422},
+  "The Stinger": {dmg:48300, rpm:850, mag:100, reload:4.54, range:35, magDmg:4830000, burst:684250, sustain:416422},
+  "New Reliable": {dmg:71538, rpm:600, mag:40, reload:4.0, range:30, magDmg:2861520, burst:715380, sustain:357690},
+  "Rusty": {dmg:71538, rpm:600, mag:40, reload:4.0, range:30, magDmg:2861520, burst:715380, sustain:357690},
+  "Big Show": {dmg:54322, rpm:800, mag:50, reload:2.96, range:35, magDmg:2716100, burst:724293, sustain:404784},
+  "Sleipnir": {dmg:54322, rpm:800, mag:50, reload:2.96, range:35, magDmg:2716100, burst:724293, sustain:404784},
+  "Bell Ringer": {dmg:52334, rpm:800, mag:50, reload:3.01, range:35, magDmg:2616700, burst:697787, sustain:387086},
+  "Insult To Injury": {dmg:61097, rpm:700, mag:30, reload:3.18, range:30, magDmg:1832910, burst:712798, sustain:318688},
+  "Tabula Rasa": {dmg:61097, rpm:700, mag:30, reload:3.18, range:30, magDmg:1832910, burst:712798, sustain:318688},
+  "Stoner LAMG": {dmg:62361, rpm:580, mag:200, reload:3.0, range:40, magDmg:12472200, burst:602823, sustain:526483},
+  "Classic M60": {dmg:67711, rpm:600, mag:100, reload:3.75, range:40, magDmg:6771100, burst:677110, sustain:492444},
+  "Military M60 E4": {dmg:65234, rpm:600, mag:100, reload:3.85, range:40, magDmg:6523400, burst:652340, sustain:471004},
+  "IWI NEGEV": {dmg:54604, rpm:750, mag:100, reload:4.0, range:40, magDmg:5460400, burst:682550, sustain:455033},
+  "Classic RPK-74": {dmg:71538, rpm:600, mag:40, reload:4.0, range:30, magDmg:2861520, burst:715380, sustain:357690},
+  "Infantry MG5": {dmg:52334, rpm:800, mag:50, reload:3.01, range:35, magDmg:2616700, burst:697787, sustain:387086},
+  "Military LB6 LSW": {dmg:61097, rpm:700, mag:30, reload:3.18, range:30, magDmg:1832910, burst:712798, sustain:318688},
+  // --- NEU: mmr ---
+  "Relic": {dmg:206425, rpm:180, mag:20, reload:3.6, range:50, magDmg:4128500, burst:619275, sustain:402127},
+  "Handbasket": {dmg:386989, rpm:60, mag:10, reload:3.15, range:50, magDmg:3869890, burst:386989, sustain:294288},
+  "Ekim's Long stick": {dmg:441570, rpm:55, mag:7, reload:8.65, range:50, magDmg:3090990, burst:404772, sustain:189790},
+  "The Darkness": {dmg:145850, rpm:275, mag:20, reload:4.99, range:55, magDmg:2917000, burst:668479, sustain:311857},
+  "Brutus": {dmg:412516, rpm:55, mag:7, reload:3.98, range:50, magDmg:2887612, burst:378140, sustain:248581},
+  "Incendia": {dmg:409357, rpm:60, mag:7, reload:4.29, range:60, magDmg:2865499, burst:409357, sustain:253809},
+  "Pinprick": {dmg:409357, rpm:60, mag:7, reload:4.29, range:60, magDmg:2865499, burst:409357, sustain:253809},
+  "Scalpel": {dmg:403810, rpm:70, mag:7, reload:3.04, range:50, magDmg:2826670, burst:471112, sustain:312685},
+  "Oh Carol": {dmg:433563, rpm:55, mag:5, reload:4.29, range:50, magDmg:2167815, burst:397433, sustain:222464},
+  "Instigator": {dmg:417692, rpm:55, mag:5, reload:4.29, range:50, magDmg:2088460, burst:382884, sustain:214321},
+  "Adrestia": {dmg:409357, rpm:60, mag:5, reload:3.15, range:50, magDmg:2046785, burst:409357, sustain:251139},
+  "Commando": {dmg:156663, rpm:260, mag:10, reload:2.85, range:50, magDmg:1566630, burst:678873, sustain:303746},
+  "G28": {dmg:206425, rpm:180, mag:20, reload:3.6, range:50, magDmg:4128500, burst:619275, sustain:402127},
+  "SOCOM Mk20 SSR": {dmg:145850, rpm:275, mag:20, reload:4.99, range:55, magDmg:2917000, burst:668479, sustain:311857},
+  "M700 Tactical": {dmg:412516, rpm:55, mag:7, reload:3.98, range:50, magDmg:2887612, burst:378140, sustain:248581},
+  "Covert SRS": {dmg:409357, rpm:60, mag:7, reload:4.29, range:60, magDmg:2865499, burst:409357, sustain:253809},
+  "Classic M44 Carbine": {dmg:433563, rpm:55, mag:5, reload:4.29, range:50, magDmg:2167815, burst:397433, sustain:222464},
+  "Custom M44": {dmg:417692, rpm:55, mag:5, reload:4.29, range:50, magDmg:2088460, burst:382884, sustain:214321},
+  "Hunting M44": {dmg:417692, rpm:55, mag:5, reload:4.29, range:50, magDmg:2088460, burst:382884, sustain:214321},
+  "SR-1": {dmg:409357, rpm:60, mag:5, reload:3.15, range:50, magDmg:2046785, burst:409357, sustain:251139},
+  "Surplus SVD": {dmg:156663, rpm:260, mag:10, reload:2.85, range:50, magDmg:1566630, burst:678873, sustain:303746},
+  // --- NEU: rifle ---
+  "Steel & Sons ACR": {dmg:92364, rpm:420, mag:40, reload:2.13, range:45, magDmg:3694560, burst:646548, sustain:470987},
+  "Ruthless": {dmg:102270, rpm:400, mag:30, reload:1.66, range:35, magDmg:3068100, burst:681800, sustain:498068},
+  "The Claw": {dmg:150316, rpm:240, mag:30, reload:1.73, range:60, magDmg:4509480, burst:601264, sustain:488568},
+  "Teapot": {dmg:107258, rpm:360, mag:30, reload:2.03, range:55, magDmg:3217740, burst:643548, sustain:457716},
+  "Whisper": {dmg:106971, rpm:400, mag:30, reload:2.44, range:50, magDmg:3209130, burst:713140, sustain:462411},
+  "The Virginian": {dmg:386989, rpm:100, mag:8, reload:3.75, range:35, magDmg:3095912, burst:644982, sustain:362095},
+  "Surge": {dmg:100615, rpm:380, mag:30, reload:2.08, range:55, magDmg:3018450, burst:637228, sustain:442793},
+  "Trader": {dmg:92364, rpm:420, mag:30, reload:2.63, range:45, magDmg:2770920, burst:646548, sustain:400670},
+  "Artist's Tool": {dmg:125865, rpm:320, mag:20, reload:2.63, range:45, magDmg:2517300, burst:671280, sustain:394561},
+  "Brain Break": {dmg:102970, rpm:380, mag:20, reload:2.85, range:60, magDmg:2059400, burst:652143, sustain:342782},
+  "Achilles": {dmg:97743, rpm:420, mag:20, reload:2.88, range:55, magDmg:1954860, burst:684201, sustain:340738},
+  "Stage Left": {dmg:129180, rpm:320, mag:10, reload:2.32, range:60, magDmg:1291800, burst:688960, sustain:307938},
+  "UIC15 MOD2": {dmg:150316, rpm:240, mag:30, reload:1.73, range:60, magDmg:4509480, burst:601264, sustain:488568},
+  "Resolute MK47": {dmg:124901, rpm:300, mag:30, reload:1.94, range:55, magDmg:3747030, burst:624505, sustain:471918},
+  "Lightweight M4": {dmg:107258, rpm:360, mag:30, reload:2.03, range:55, magDmg:3217740, burst:643548, sustain:457716},
+  "M16A2": {dmg:106971, rpm:400, mag:30, reload:2.44, range:50, magDmg:3209130, burst:713140, sustain:462411},
+  "LVOA-C": {dmg:100615, rpm:380, mag:30, reload:2.08, range:55, magDmg:3018450, burst:637228, sustain:442793},
+  "ACR SS": {dmg:92364, rpm:420, mag:30, reload:2.63, range:45, magDmg:2770920, burst:646548, sustain:400670},
+  "SIG 716 CQB": {dmg:125865, rpm:320, mag:20, reload:2.63, range:45, magDmg:2517300, burst:671280, sustain:394561},
+  "SIG 716": {dmg:121258, rpm:320, mag:20, reload:2.68, range:45, magDmg:2425160, burst:646709, sustain:377163},
+  "Urban MDR": {dmg:102970, rpm:380, mag:20, reload:2.85, range:60, magDmg:2059400, burst:652143, sustain:342782},
+  "USC .45 ACP": {dmg:97743, rpm:420, mag:20, reload:2.88, range:55, magDmg:1954860, burst:684201, sustain:340738},
+  "Military Mk17": {dmg:145850, rpm:275, mag:10, reload:2.45, range:55, magDmg:1458500, burst:668479, sustain:314887},
+  "SOCOM M1A": {dmg:129180, rpm:320, mag:10, reload:2.32, range:60, magDmg:1291800, burst:688960, sustain:307938},
+  // --- NEU: shotgun ---
+  "Fafnir": {dmg:703676, rpm:75, mag:10, reload:7.01, range:11, magDmg:7036760, pellet:"8× 87.960", burst:879595, sustain:468805},
+  "Lullaby": {dmg:716012, rpm:70, mag:8, reload:5.13, range:13, magDmg:5728096, pellet:"8× 89.502", burst:835347, sustain:477853},
+  "The Send-Off": {dmg:678929, rpm:70, mag:12, reload:8.4, range:16, magDmg:8147148, pellet:"8× 84.866", burst:792084, sustain:436009},
+  "Thorn": {dmg:716012, rpm:70, mag:8, reload:5.95, range:16, magDmg:5728096, pellet:"8× 89.502", burst:835347, sustain:447258},
+  "Cuélebre": {dmg:703676, rpm:75, mag:5, reload:3.95, range:11, magDmg:3518380, pellet:"8× 87.960", burst:879595, sustain:442564},
+  "Lockdown": {dmg:703676, rpm:75, mag:5, reload:3.95, range:11, magDmg:3518380, pellet:"8× 87.960", burst:879595, sustain:442564},
+  "Enforcer": {dmg:389936, rpm:160, mag:8, reload:5.27, range:11, magDmg:3119488, pellet:"8× 48.742", burst:1039829, sustain:377205},
+  "Like Glue": {dmg:389936, rpm:160, mag:8, reload:5.27, range:11, magDmg:3119488, pellet:"8× 48.742", burst:1039829, sustain:377205},
+  "The Mop": {dmg:409569, rpm:130, mag:7, reload:3.0, range:14, magDmg:2866983, pellet:"8× 51.196", burst:887400, sustain:460133},
+  "Tsunami": {dmg:349807, rpm:180, mag:7, reload:3.05, range:14, magDmg:2448649, pellet:"8× 43.726", burst:1049421, sustain:454857},
+  "Boomstick": {dmg:678139, rpm:200, mag:2, reload:3.19, range:11, magDmg:1356278, pellet:"8× 84.767", burst:2260463, sustain:357857},
+  "Backup Boomstick": {dmg:635715, rpm:200, mag:2, reload:2.95, range:7, magDmg:1271430, pellet:"8× 79.464", burst:2119050, sustain:358149},
+  "KSG Shotgun": {dmg:678929, rpm:70, mag:12, reload:8.4, range:16, magDmg:8147148, pellet:"8× 84.866", burst:792084, sustain:436009},
+  "SPAS-12": {dmg:716012, rpm:70, mag:8, reload:5.95, range:16, magDmg:5728096, pellet:"8× 89.502", burst:835347, sustain:447258},
+  "M870 Express": {dmg:703676, rpm:75, mag:5, reload:3.95, range:11, magDmg:3518380, pellet:"8× 87.960", burst:879595, sustain:442564},
+  "Police M870": {dmg:695778, rpm:75, mag:5, reload:4.3, range:14, magDmg:3478890, pellet:"8× 86.972", burst:869722, sustain:419143},
+  "Stack Broker": {dmg:150626, rpm:360, mag:20, reload:3.35, range:16, magDmg:3012520, pellet:"8× 18.828", burst:903756, sustain:450751},
+  "SIX12": {dmg:409569, rpm:130, mag:7, reload:3.0, range:14, magDmg:2866983, pellet:"8× 51.196", burst:887400, sustain:460133},
+  "SASG-12": {dmg:349807, rpm:180, mag:7, reload:3.05, range:14, magDmg:2448649, pellet:"8× 43.726", burst:1049421, sustain:454857},
+  "Double Barrel Shotgun": {dmg:678139, rpm:200, mag:2, reload:3.19, range:11, magDmg:1356278, pellet:"8× 84.767", burst:2260463, sustain:357857},
+  "Double Barrel Sawed Off": {dmg:635715, rpm:200, mag:2, reload:2.95, range:7, magDmg:1271430, pellet:"8× 79.464", burst:2119050, sustain:358149},
+  // --- NEU: pistol ---
+  "The Harvest": {dmg:256610, rpm:149, mag:6, reload:2.54, range:16, magDmg:1539660, burst:637248, sustain:310659},
+  "Rabid D50": {dmg:189172, rpm:200, mag:8, reload:2.24, range:18, magDmg:1513376, burst:630573, sustain:326159},
+  "Lightning Rod": {dmg:93963, rpm:370, mag:10, reload:1.77, range:14, magDmg:939630, burst:579438, sustain:277044},
+  "Mozambique Special": {dmg:117436, rpm:310, mag:7, reload:2.33, range:12, magDmg:822052, burst:606753, sustain:223090},
+  "Maxim 9": {dmg:125414, rpm:280, mag:17, reload:1.39, range:16, magDmg:2132038, burst:585265, sustain:423624},
+  "Military M9": {dmg:102585, rpm:350, mag:15, reload:1.9, range:16, magDmg:1538775, burst:598412, sustain:344135},
+  "D50": {dmg:189172, rpm:200, mag:8, reload:2.24, range:18, magDmg:1513376, burst:630573, sustain:326159},
+  "P320 XCompact": {dmg:87541, rpm:380, mag:17, reload:1.77, range:12, magDmg:1488197, burst:554426, sustain:334110},
+  "Officer's M9 A1": {dmg:95698, rpm:350, mag:15, reload:1.96, range:16, magDmg:1435470, burst:558238, sustain:316781},
+  "586 Magnum": {dmg:233278, rpm:160, mag:6, reload:2.54, range:16, magDmg:1399668, burst:622075, sustain:292206},
+  "X-45": {dmg:88321, rpm:400, mag:15, reload:1.99, range:16, magDmg:1324815, burst:588807, sustain:312456},
+  "Px4 Storm Type F": {dmg:91692, rpm:380, mag:14, reload:1.63, range:12, magDmg:1283688, burst:580716, sustain:334248},
+  "Snubnosed Diceros": {dmg:211295, rpm:180, mag:6, reload:1.98, range:18, magDmg:1267770, burst:633885, sustain:318535},
+  "Diceros": {dmg:204803, rpm:180, mag:6, reload:2.0, range:18, magDmg:1228818, burst:614409, sustain:307204},
+  "Diceros Special": {dmg:198306, rpm:180, mag:6, reload:1.93, range:18, magDmg:1189836, burst:594918, sustain:302757},
+  "KARD-45": {dmg:114267, rpm:310, mag:10, reload:1.71, range:12, magDmg:1142670, burst:590380, sustain:313448},
+  "93R": {dmg:52978, rpm:700, mag:20, reload:1.71, range:12, magDmg:1059560, burst:618077, sustain:309425},
+  "First Wave PF45": {dmg:100728, rpm:370, mag:10, reload:1.74, range:14, magDmg:1007280, burst:621156, sustain:299641},
+  "Custom PF45": {dmg:93963, rpm:370, mag:10, reload:1.77, range:14, magDmg:939630, burst:579438, sustain:277044},
+  "M1911": {dmg:129885, rpm:310, mag:7, reload:2.24, range:12, magDmg:909195, burst:671072, sustain:252917},
+  "M45A1": {dmg:117436, rpm:310, mag:7, reload:2.33, range:12, magDmg:822052, burst:606753, sustain:223090},
+};
+
+function fmtDE(n){ return n.toLocaleString('de-DE'); }
+
+/* ---------- Exotic-Talente ----------
+   Format: "Waffenname": [ [Talent-Name, Beschreibung, optionaler Hinweis], ... ]
+   Waffen ohne Eintrag bekommen keinen Talent-Block. */
+const exoticTalents = {
+  /* --- Sturmgewehre --- */
+  "St. Elmo's Engine": [
+    ["Actum Est", "Jeder Treffer auf einen Gegner gibt 1 Stack. Bei 100 Stacks wird das nächste Magazin mit Schock-Munition gefüllt."]
+  ],
+  "Capacitor": [
+    ["Capacitance", "Treffer auf Gegner bauen Stacks auf (max. 40). Jeder Stack gibt +1,5 % Skill-Schaden; nach 5 Sekunden ohne Treffer zerfällt 1 Stack pro Sekunde. Zusätzlich gibt jedes Skill-Tier +7,5 % Waffenschaden."]
+  ],
+  "Eagle Bearer": [
+    ["Eagle's Strike", "Die Genauigkeit steigt bei anhaltendem Feuer um bis zu +30 %. Kopfschuss-Kills aktivieren für 15 s den Tenacity-Buff; dessen Stärke wächst um 1 % pro Körpertreffer und um 5 % pro Kopftreffer."],
+    ["Tenacity", "40–80 % des erlittenen Schadens werden verzögert, bis der Buff endet. Jeder Kill während des Buffs verringert den verzögerten Schaden – nach 3 Kills bis zu 100 %."]
+  ],
+  "Chameleon": [
+    ["Adaptive Instincts", "30 Kopftreffer: +20 % Krit-Chance und +50 % Krit-Schaden (45 s). 65 Körpertreffer: +90 % Waffenschaden (45 s). 20 Beintreffer: +150 % Nachladegeschwindigkeit (45 s). Die Buffs erneuern sich außerhalb des Kampfes.", "Die Trefferzahlen weichen je nach Wiki-Seite leicht ab (65–75 Körpertreffer, 20–30 Beintreffer)."]
+  ],
+  "The Bighorn": [
+    ["Big Game Hunter", "Beim Zielen wechselt die Waffe auf Halbautomatik: Jeder Schuss verursacht 450 % Waffenschaden. Kopftreffer geben +2 % Kopfschussschaden (bis zu 50 Stacks). Bei vollen Stacks verfallen alle 4 s 10 Stacks; Kopftreffer verzögern den Zerfall."]
+  ],
+  "Strega": [
+    ["Unnerve", "Ein Kill markiert alle Gegner in der Nähe des Getöteten (laut Patchnotes im Umkreis von etwa 10 m); mehrere Markierungen auf demselben Gegner sind möglich. Markierte Gegner nehmen pro Markierung +15 % verstärkten Schaden."]
+  ],
+  "Agitator": [
+    ["Perturb", "Halte die Waffe 10 s im Holster, um sie aufzuladen; solange sie geholstert ist, erzeugst du 50 % weniger Bedrohung. Ziehst du die aufgeladene Waffe, erhältst du 20 s lang +25 % Feuerrate und +30 % Waffenschaden – dafür erzeugst du in dieser Zeit 100 % mehr Bedrohung."]
+  ],
+  "Caduceus": [
+    ["Caduceus", "Alle kritischen Treffer reparieren dich und deine Verbündeten um 3 % des verursachten Trefferschadens."]
+  ],
+
+  /* --- Maschinenpistolen --- */
+  "Ouroboros": [
+    ["Rule Them All", "Ist ein Statuseffekt auf dir aktiv, tragen 50 % der Munition im nächsten Magazin denselben Statuseffekt auf getroffene Gegner. Funktioniert nur im Kampf."]
+  ],
+  "The Chatterbox": [
+    ["Incessant Chatter", "Jeder Treffer erhöht die Feuerrate um 1 % (bis +60 %); der Bonus wird beim Nachladen zurückgesetzt."],
+    ["Box Magazine", "Kills füllen 20 % des Magazins auf und starten einen 10-s-Buff: Jeder Treffer erhöht die Magazingröße um 1 (max. 60). Ein weiterer Kill verbraucht den Buff und füllt das vergrößerte Magazin komplett auf."],
+    ["Blabbermouth", "Solange die Chatterbox geholstert ist, gibt das Nachladen einer anderen Waffe innerhalb von 5 s nach einem Kill +20 % Feuerrate für 10 s.", "Beschreibung nach Guides aus der Anfangszeit; einzelne Werte können sich seitdem geändert haben."]
+  ],
+  "Lady Death": [
+    ["Breathe Free", "In Bewegung sammelst du 4 Stacks pro Sekunde (beim Sprinten 8), bis maximal 30. Jeder abgefeuerte Schuss verbraucht 1 Stack und verstärkt den Schaden um 75 %. Kills geben zusätzlich für 10 s einen Tempo-Bonus (+20 % Lauftempo)."]
+  ],
+  "Backfire": [
+    ["Payment in Kind", "Deine Schüsse bauen Stacks auf, die den Krit-Schaden erhöhen. Der Preis: Beim Nachladen erleidest du Blutungsschaden, der von der Zahl der Stacks abhängt.", "Genaue Zahlenwerte sind in den Quellen uneinheitlich; hier nur das Grundprinzip."]
+  ],
+  "Oxpecker": [
+    ["Symbiosis", "Solange dein Schild ausgefahren ist, verliert es 10 % Gesundheit pro Sekunde. Dafür repariert es 25 % des von der Oxpecker verursachten Schadens. Gedacht für Ballistic-Shield-Builds (Crusader/Striker)."]
+  ],
+  "Underboss": [
+    ["Gangland Hit", "Schüsse setzen eine Markierung, die zwischen Gegnern wechseln kann; mehrere Markierungen auf demselben Gegner sind möglich. Markierte Gegner nehmen +20 % verstärkten Schaden, +5 % für jede weitere Markierung."]
+  ],
+
+  /* --- LMGs --- */
+  "Pestilence": [
+    ["Plague of the Outcasts", "Wiederholte Treffer (ca. 20 auf denselben Gegner) infizieren ihn. Stirbt ein Infizierter, hinterlässt er 10 s lang eine Giftwolke (200 % Waffenschaden pro Sekunde), die Gegner darin mit „Pestilence“ belegt: −50 % erhaltene Heilung, niedergestreckte Gegner sterben sofort.", "Beschreibung nach älteren Guides; Details können abweichen."]
+  ],
+  "Iron Lung": [
+    ["Ardent", "Feuern heizt die Waffe auf und füllt eine Hitze-Anzeige (entspricht 50 % der Standard-Magazingröße). Ist die Anzeige voll, entzünden die abgefeuerten Kugeln Gegner. Ohne Feuern baut sich die Anzeige ab; Nachladen oder Waffenwechsel setzen sie zurück."]
+  ],
+  "Bluescreen": [
+    ["Disruptor Rounds", "Treffer bauen Stacks auf, die Gegner mit Pulse, Disrupt und Desorientierung belegen; bei maximalen Stacks wirken die Effekte auf Gegner in etwa 10 m Umkreis.", "In den Quellen nur knapp beschrieben; Details bitte im Spiel prüfen."]
+  ],
+  "Big Alejandro": [
+    ["Cover Shooter", "Jeder Schuss aus der Deckung erhöht den Waffenschaden um 1 % (bis zu +100 %); der Bonus hält 15 s und wird durch Kills aus der Deckung verlängert. Er verfällt beim Nachladen, Waffenwechsel oder Verlassen des Kampfes."]
+  ],
+  "Bullet King": [
+    ["Bullet Hell", "Ein riesiges Magazin (1.000 Schuss) erlaubt Dauerfeuer, ohne nachladen zu müssen. Ältere Guides nennen zusätzlich: Je 100 Treffer füllen Munition für dich und deine Verbündeten auf."]
+  ],
+  "Pakhan": [
+    ["Pakhan", "Jeder Kill mit dieser Waffe gibt einen Stack von +75 % Magazingröße für das nächste Magazin (bis zu 4 Stacks). Nach dem Nachladen ist das Magazin dadurch deutlich größer.", "Die Fandom-Wiki-Seite beschreibt die Division-1-Version (+20 % pro Kill). Hier steht der Wortlaut der Division-2-Version."]
+  ],
+
+  /* --- Scharfschützengewehre --- */
+  "Prima Donna": [
+    ["You Can Look… But You Can't Touch", "Außerhalb des Kampfes baut die Waffe bis zu 10 Stacks auf; jeder Stack gibt +12,5 % verstärkten Schaden. Ein Stack wird automatisch verbraucht, um einen erlittenen Treffer vollständig zu reparieren; alle 3 s kommt ein neuer Stack nach."]
+  ],
+  "Shroud": [
+    ["High Priority Target", "Verstärkt den Waffenschaden um 125 % gegen die ranghöchsten Gegner (Tier 1: z. B. Hunter, Rogue, Leader, Tank, Shield, Heavy Weapons, Medic; Tier 2: z. B. Support, Engineer, Bodyguard, Bomber; Tier 3: alle übrigen)."]
+  ],
+  "Nemesis": [
+    ["Electromagnetic Accelerator", "Halte den Abzug gedrückt, um den Schuss aufzuladen; er wird beim Loslassen abgefeuert. Je länger die Aufladung, desto höher der Schaden.", "Talentname und Beschreibung nach KeenGamer; in den Quellen nur knapp beschrieben."]
+  ],
+  "Mantis": [
+    ["In Plain Sight", "Kopftreffer auf Gegner, die nicht auf dich zielen, verursachen +50 % Schaden. Kills setzen die Abklingzeit deines Decoys zurück – ideal für Decoy-Builds."]
+  ],
+  "Dread Edict": [
+    ["Full Stop", "Treffer bauen Stacks auf (max. 20), Kopftreffer geben 2 Stacks. Jeder Stack bringt +2 % Waffenschaden und +5 % Kopfschussschaden. Beim Nachladen verfallen alle Stacks, dafür erhältst du 10 s lang 5 % deiner max. Rüstung als Bonusrüstung pro entferntem Stack. Kopfschuss-Kills füllen das Magazin komplett auf (zählt nicht als Nachladen)."]
+  ],
+  "Sacrum Imperium": [
+    ["The Trap", "Beim Zielen werden Gegner markiert (max. 10) – nach dem aktuellen Stand schon nach 0,5 s im Zielfernrohr. Ein Kopfschuss-Kill an einem markierten Gegner belegt alle anderen Ziele 10 s lang mit Brennen und verlangsamt sie um 50 % (PvP: 20 %). Abklingzeit 30 s; jeder weitere Kopfschuss-Kill verkürzt sie um 10 s."]
+  ],
+
+  /* --- Gewehre (Rifles) --- */
+  "The Ravenous": [
+    ["Geri und Freki", "Du wechselst die Schulter: Schüsse von der einen Seite laden offensive Primer auf den Gegner, Schüsse von der anderen Seite defensive Primer. Anschließend werden die Primer gezündet.", "In den Quellen nur knapp beschrieben; Details bitte im Spiel prüfen."]
+  ],
+  "Diamondback": [
+    ["Agonizing Bite", "Bei jedem Schuss wird ein zufälliger Gegner markiert. Ein Treffer auf die Markierung verbraucht sie und ist garantiert ein kritischer Treffer (+20 % verstärkter Schaden). Nach so einem Treffer sind alle Schüsse 5 s lang garantierte Krits. Eine neue Markierung erscheint danach sowie beim Nachladen."]
+  ],
+  "Doctor Home": [
+    ["Doctor's Orders", "Getötete markierte Gegner lassen eine Rüstungsreparatur (ca. 10 %) für dein Team fallen.", "Vereinfacht nach KeenGamer."]
+  ],
+  "Vindicator": [
+    ["Ortiz Assault Interface", "Beim Zielen wird bei jedem Gegner eine zufällige Körperzone hervorgehoben; Treffer auf diese Zone verursachen deutlich mehr Waffenschaden (zum Release +40 %). Funktioniert ähnlich wie bei der Mantis gut mit Decoy.", "Der Bonuswert wird in den Quellen unterschiedlich angegeben (40 % bzw. 75 %)."]
+  ],
+  "Merciless": [
+    ["Binary Trigger", "Abzug drücken und Abzug loslassen feuern je einen Schuss. Treffen beide denselben Gegner, gibt das 1 Stack. Bei 7 Stacks löst der nächste Treffer eine Explosion mit 7 m Radius aus (500 % Waffenschaden)."]
+  ],
+  "Bittersweet": [
+    ["Transfusion", "Kopftreffer bauen Stacks auf (max. 8). Schüsse auf Verbündete oder Skills reparieren diese um 50 % des Schussschadens pro Stack; geheilte Verbündete erhalten pro Stack 10 s lang 200 % deines Reparatur-Skill-Bonus als Bonusrüstung. Nach einer Heilung bei vollen Stacks sind 8 s lang alle Treffer garantierte Kopftreffer."]
+  ],
+  "Steel & Sons ACR": [
+    ["Confirm & Execute", "PvE: Körpertreffer geben dem Gegner 1 Stack für 10 s (max. 4; ein Treffer auf einen anderen Gegner entfernt alle Stacks); je Stack +4 % verstärkter Schaden. Der nächste Kopfschuss verbraucht alle Stacks und verursacht +11 % verstärkten Schaden pro Stack. Zerstörst du eine Schwachstelle, nimmt der Gegner 5 s lang +30 % verstärkten Schaden von dir. PvP: schwächere Werte (max. 3 Stacks für 6 s, +3 % bzw. +9 % pro Stack)."]
+  ],
+  "Ruthless": [
+    ["Binary Trigger", "Identisch zur Merciless: Abzug drücken und loslassen feuern je einen Schuss. Treffen beide denselben Gegner, gibt das 1 Stack. Bei 7 Stacks löst der nächste Treffer eine Explosion mit 7 m Radius aus (500 % Waffenschaden)."]
+  ],
+
+  /* --- Schrotflinten --- */
+  "Scorpio": [
+    ["Septic Shock", "Jeder Schuss (nicht jeder Pellet) gibt dem Gegner einen Stack: Stack 1 Gift, Stack 3 Desorientierung, Stack 6 Schock, Stack 7 +20 % erlittener Schaden aus allen Quellen. Die Stacks mehrerer Spieler addieren sich. Im PvP gelten andere Effekte (Blutung, Disrupt, Fesseln)."]
+  ],
+  "Sheriff": [
+    ["Autentico", "Eingebaute Boni: +35 % Waffenschaden, +100 % Genauigkeit und kein Schadensabfall über die Distanz."]
+  ],
+  "Overlord": [
+    ["Capitulate", "Jeder getroffene Pellet verringert das Bewegungstempo des Gegners um 4 % (5 s). Erneutes Schießen erneuert die Stacks."]
+  ],
+  "Sweet Dreams": [
+    ["Sandman", "Nahkampftreffer töten normale (Nicht-Elite-)Gegner sofort. Abklingzeit: 15 s."]
+  ],
+  "Fafnir": [
+    ["Dragon's Breath", "Feuert Brandgeschosse: 40 % Chance pro Schuss, Brennen zu verursachen. Zusätzlich verstärkt die Waffe den Waffenschaden um 50 % deines Statuseffekt-Bonus."]
+  ],
+  "Lullaby": [
+    ["Sandman", "Identisch zu Sweet Dreams (Lullaby ist die Pre-Order-Variante): Nahkampftreffer töten normale (Nicht-Elite-)Gegner sofort. Abklingzeit: 15 s."]
+  ],
+
+  /* --- Pistolen --- */
+  "Regulus": [
+    ["", "Kopfschuss-Kills lösen eine Explosion mit etwa 5 m Radius aus.", "Talentname und Zahlenwerte sind in den Quellen uneinheitlich; hier nur das Grundprinzip."]
+  ],
+  "Liberty": [
+    ["Liberty or Death", "Treffer geben Waffenschaden-Stacks; Kopftreffer verbrauchen Stacks, um Rüstung zu reparieren – stark in Schild- und Tank-Builds.", "Vereinfacht nach KeenGamer."]
+  ],
+  "Busy Little Bee": [
+    ["Busy Little Bee", "Treffer auf verschiedene Gegner geben Schadens-Stacks; der Bonus wird beim Waffenwechsel wirksam.", "Vereinfacht nach KeenGamer."]
+  ],
+  "Tempest": [
+    ["Restrained", "Die Pistole feuert vollautomatisch und verursacht 20 s lang +25 % verstärkten Schaden, nachdem dein Schild zerstört wurde."]
+  ],
+  "Mosquito": [
+    ["Mosquito Song", "Jeder Treffer gibt dem Gegner einen Stack (Stacks werden zwischen Spielern geteilt). Bei 10 Stacks zielt der Gegner 5 s lang gezwungen auf den Spieler, der zuletzt einen Stack gesetzt hat. Die Stacks zerfallen alle 5 s."]
+  ],
+  "Whiplash": [
+    ["Faster Than Reloading", "Nach 5 s im Holster ist die Whiplash aufgeladen. Ziehst du sie, werden Primär- und Sekundärwaffe sofort nachgeladen. Bis das Magazin leer ist, gibt sie +20 % Feuerrate und +50 % Waffenschaden; ein zu frühes Wegstecken beendet den Bonus. Eingebaut: +50 % Wechselgeschwindigkeit."]
+  ]
+};
+
+function escHTML(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function talentBlock(name, rarity){
+  if(rarity !== 'exotic') return '';
+  const list = exoticTalents[name];
+  if(!list || !list.length) return '';
+  const names = list.map(t => t[0]).filter(Boolean);
+  const label = names.length
+    ? `Talent: <b>${names.map(escHTML).join(' · ')}</b>`
+    : 'Talent anzeigen';
+  const items = list.map(t => `
+        <div class="titem">
+          ${t[0] ? `<div class="tname">${escHTML(t[0])}</div>` : ''}
+          <p class="ttext">${escHTML(t[1])}</p>
+          ${t[2] ? `<p class="tnote">${escHTML(t[2])}</p>` : ''}
+        </div>`).join('');
+  return `
+    <details class="wtalent">
+      <summary>${label}</summary>
+      <div class="tbody">${items}
+      </div>
+    </details>`;
+}
+
+function weaponStatsBlock(name){
+  const s = weaponStats[name];
+  if(!s) return '<div class="wstats-missing">Werte noch nicht erfasst</div>';
+  return `
+    <div class="wstats">
+      <div class="ws"><span>BASE DAMAGE</span><b>${fmtDE(s.dmg)}${s.pellet ? `<span class="pellet">(${s.pellet})</span>` : ''}</b></div>
+      <div class="ws"><span>RPM</span><b>${s.rpm}</b></div>
+      <div class="ws"><span>MAG</span><b>${s.mag}</b></div>
+      <div class="ws"><span>RELOAD</span><b>${s.reload}s</b></div>
+      <div class="ws"><span>OPTIMAL RANGE</span><b>${s.range}m</b></div>
+      <div class="ws"><span>MAG DAMAGE</span><b>${fmtDE(s.magDmg)}</b></div>
+      <div class="ws hl"><span>BURST DPS</span><b>${fmtDE(s.burst)}</b></div>
+      <div class="ws hl"><span>SUSTAIN DPS</span><b>${fmtDE(s.sustain)}</b></div>
+    </div>`;
+}
+
+/* ---------- render ---------- */
+const gearGrid = document.getElementById('gearGrid');
+const brandGrid = document.getElementById('brandGrid');
+
+function starIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9"/></svg>';
+}
+
+function namedItemNote(brandName){
+  const match = namedItems.find(n => n[0] === brandName);
+  if(!match) return '';
+  return `<div class="named-note">Perfect-Talent-Item: <b>${match[1]}</b> (${match[2]})</div>`;
+}
+
+gearSets.forEach((s, i) => {
+  const card = document.createElement('div');
+  card.className = 'card gear';
+  card.dataset.name = s[0].toLowerCase();
+  card.dataset.type = 'gear';
+  card.dataset.meta = s[6] ? '1' : '0';
+  card.innerHTML = `
+    <div class="idx">GEAR // ${String(i+1).padStart(2,'0')}</div>
+    <h3>${s[0]}</h3>
+    ${s[6] ? '<div class="meta-badge">META</div>' : ''}
+    <div class="bonus-block">
+      <div class="b"><div class="n">2-TEILE</div><div class="v">${s[1]}</div></div>
+      <div class="b"><div class="n">3-TEILE</div><div class="v">${s[2]}</div></div>
+    </div>
+    <div class="talent">
+      <div class="t-label">4-TEILE-TALENT</div>
+      <div class="t-body">${s[3]}</div>
+    </div>
+    <div class="talent">
+      <div class="t-label">RUCKSACK-TALENT (4-TLG.)</div>
+      <div class="t-body">${s[4]}</div>
+    </div>
+    <div class="talent">
+      <div class="t-label">BRUST-TALENT (4-TLG.)</div>
+      <div class="t-body">${s[5]}</div>
+    </div>
+  `;
+  gearGrid.appendChild(card);
+});
+
+brandSets.forEach((s, i) => {
+  const card = document.createElement('div');
+  card.className = 'card brand';
+  card.dataset.name = s[0].toLowerCase();
+  card.dataset.type = 'brand';
+  card.dataset.meta = s[4] ? '1' : '0';
+  card.innerHTML = `
+    <div class="idx">BRAND // ${String(i+1).padStart(2,'0')}</div>
+    <h3>${s[0]}</h3>
+    ${s[4] ? '<div class="meta-badge">META</div>' : ''}
+    <div class="bonus-block">
+      <div class="b"><div class="n">1-TEIL</div><div class="v">${s[1]}</div></div>
+      <div class="b"><div class="n">2-TEILE</div><div class="v">${s[2]}</div></div>
+      <div class="b"><div class="n">3-TEILE</div><div class="v">${s[3]}</div></div>
+    </div>
+    ${namedItemNote(s[0])}
+  `;
+  brandGrid.appendChild(card);
+});
+
+/* ---------- Exotische Kleidung render ---------- */
+const exoGrid = document.getElementById('exoGrid');
+let exoIdx = 0;
+exoticGear.forEach(([slotName, items]) => {
+  const label = document.createElement('div');
+  label.className = 'exo-group-label';
+  label.dataset.slot = slotName.toLowerCase();
+  label.textContent = slotName;
+  exoGrid.appendChild(label);
+
+  items.forEach(([name, desc]) => {
+    exoIdx++;
+    const card = document.createElement('div');
+    card.className = 'card exo';
+    card.dataset.name = name.toLowerCase();
+    card.dataset.type = 'exogear';
+    card.dataset.slot = slotName.toLowerCase();
+    card.innerHTML = `
+      <div class="idx">EXOTIC // ${String(exoIdx).padStart(2,'0')}</div>
+      <h3>${name}</h3>
+      <div class="meta-badge">${slotName.toUpperCase()}</div>
+      <div class="talent" style="border-top:none;padding-top:0;">
+        <div class="t-label">KERN-EIGENSCHAFT / FOKUS</div>
+        <div class="t-body">${desc}</div>
+      </div>
+    `;
+    exoGrid.appendChild(card);
+  });
+});
+
+const namedWrap = document.getElementById('namedItems');
+namedItems.forEach(n => {
+  const el = document.createElement('div');
+  el.className = 'named-item';
+  el.innerHTML = `<div class="set">${n[0]}</div><div class="item">${n[1]}<span class="slot">${n[2]}</span></div>`;
+  namedWrap.appendChild(el);
+});
+
+const bestGearEl = document.getElementById('bestGear');
+bestGear.forEach(n => { const li = document.createElement('li'); li.textContent = n; bestGearEl.appendChild(li); });
+const bestBrandEl = document.getElementById('bestBrand');
+bestBrand.forEach(n => { const li = document.createElement('li'); li.textContent = n; bestBrandEl.appendChild(li); });
+
+/* ---------- Waffen render ---------- */
+const rarityLabel = { exotic:"Exotic", named:"Named", standard:"Standard" };
+const groupLabel = { exotic:"Exotic-Waffen", named:"Named-Waffen (Perfect-Talent)", standard:"Standard- / High-End-Waffen" };
+
+function tierClass(t){
+  if(t === 'S') return 's';
+  if(t === 'A') return 'a';
+  if(t === 'NEU') return 'neu';
+  return '';
+}
+
+const wpJump = document.getElementById('wpJump');
+const wpCategories = document.getElementById('wpCategories');
+let totalWeapons = 0;
+
+weaponCategories.forEach(cat => {
+  const catCount = cat.groups.exotic.length + cat.groups.named.length + cat.groups.standard.length;
+  totalWeapons += catCount;
+
+  const a = document.createElement('a');
+  a.href = '#wp-' + cat.id;
+  a.textContent = cat.name;
+  wpJump.appendChild(a);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'wp-cat';
+  wrap.id = 'wp-' + cat.id;
+
+  let groupsHTML = '';
+  ['exotic','named','standard'].forEach(key => {
+    const list = cat.groups[key];
+    if(!list.length) return;
+    groupsHTML += `<div class="wp-group" data-rarity="${key}"><div class="wp-group-label">${groupLabel[key]} — ${list.length}</div><div class="wgrid">`;
+    list.forEach(w => {
+      const [name, rarity, tier] = w;
+      groupsHTML += `
+        <div class="witem ${rarity}" data-name="${name.toLowerCase()}">
+          ${tier ? `<div class="wtier ${tierClass(tier)}">${tier}</div>` : ''}
+          <div class="wname">${name}</div>
+          <div class="wrarity">${rarityLabel[rarity]}</div>
+          ${weaponStatsBlock(name)}
+          ${talentBlock(name, rarity)}
+        </div>`;
+    });
+    groupsHTML += `</div></div>`;
+  });
+
+  wrap.innerHTML = `
+    <div class="wp-cat-head">
+      <h3>${cat.name}</h3>
+      <span class="cnt">${catCount} Waffen</span>
+      <div class="rule"></div>
+    </div>
+    ${groupsHTML}
+  `;
+  wpCategories.appendChild(wrap);
+});
+
+document.getElementById('wpCountStat').textContent = totalWeapons;
+
+/* ---------- filter & search ---------- */
+const searchInput = document.getElementById('searchInput');
+const filterButtons = document.querySelectorAll('.filters button');
+const countNote = document.getElementById('countNote');
+const wpSearchInput = document.getElementById('wpSearchInput');
+const weaponSectionHead = document.querySelector('.section-head.weapon');
+const wpIntro = document.querySelector('.wp-intro');
+const wpSearchBox = document.querySelector('.wp-search');
+const wpJumpEl = document.getElementById('wpJump');
+let activeFilter = 'all';
+const weaponRarities = ['exotic','named','standard'];
+
+function applyFilters(){
+  const q = searchInput.value.trim().toLowerCase();
+  const weaponFilterActive = weaponRarities.includes(activeFilter);
+  let visibleGear = 0, visibleBrand = 0;
+
+  document.querySelectorAll('#gearGrid .card').forEach(card => {
+    const matchesQ = card.dataset.name.includes(q);
+    const matchesF = activeFilter === 'all' || activeFilter === 'gear' || (activeFilter === 'meta' && card.dataset.meta === '1');
+    const show = matchesQ && matchesF && activeFilter !== 'brand' && !weaponFilterActive;
+    card.style.display = show ? '' : 'none';
+    if(show) visibleGear++;
+  });
+
+  document.querySelectorAll('#brandGrid .card').forEach(card => {
+    const matchesQ = card.dataset.name.includes(q);
+    const matchesF = activeFilter === 'all' || activeFilter === 'brand' || (activeFilter === 'meta' && card.dataset.meta === '1');
+    const show = matchesQ && matchesF && activeFilter !== 'gear' && !weaponFilterActive;
+    card.style.display = show ? '' : 'none';
+    if(show) visibleBrand++;
+  });
+
+  gearGrid.parentElement.querySelectorAll('.section-head.gear')[0].style.display = visibleGear ? '' : 'none';
+  gearGrid.style.display = visibleGear ? '' : 'none';
+  brandGrid.parentElement.querySelectorAll('.section-head.brand')[0].style.display = visibleBrand ? '' : 'none';
+  brandGrid.style.display = visibleBrand ? '' : 'none';
+
+  /* Exotische Kleidung: eigener Grid-Bereich, eigene Filter-/Suchlogik */
+  let visibleExo = 0;
+  document.querySelectorAll('#exoGrid .card').forEach(card => {
+    const matchesQ = card.dataset.name.includes(q);
+    const matchesF = activeFilter === 'all' || activeFilter === 'exogear';
+    const show = matchesQ && matchesF && !weaponFilterActive;
+    card.style.display = show ? '' : 'none';
+    if(show) visibleExo++;
+  });
+  document.querySelectorAll('.exo-group-label').forEach(label => {
+    const anyVisible = [...exoGrid.querySelectorAll(`.card[data-slot="${label.dataset.slot}"]`)]
+      .some(c => c.style.display !== 'none');
+    label.style.display = anyVisible ? '' : 'none';
+  });
+  exoGrid.parentElement.querySelectorAll('.section-head.exogear')[0].style.display = visibleExo ? '' : 'none';
+  exoGrid.style.display = visibleExo ? '' : 'none';
+
+  if(weaponFilterActive){
+    countNote.textContent = '';
+  } else if(activeFilter === 'exogear'){
+    countNote.textContent = `${visibleExo} Exotic-Kleidungsstücke`;
+  } else {
+    countNote.textContent = `${visibleGear + visibleBrand} von 65 Sets`;
+  }
+
+  /* Waffen-Bereich: nach Kategorie (Exotic/Named/Standard) und eigener Suche filtern */
+  const wq = wpSearchInput.value.trim().toLowerCase();
+  let visibleWeapons = 0;
+  document.querySelectorAll('.wp-group').forEach(group => {
+    const rarityOK = !weaponFilterActive || group.dataset.rarity === activeFilter;
+    let anyItemVisible = false;
+    group.querySelectorAll('.witem').forEach(item => {
+      const show = rarityOK && item.dataset.name.includes(wq);
+      item.style.display = show ? '' : 'none';
+      if(show){ anyItemVisible = true; visibleWeapons++; }
+    });
+    group.style.display = anyItemVisible ? '' : 'none';
+  });
+  document.querySelectorAll('.wp-cat').forEach(catEl => {
+    const anyVisible = [...catEl.querySelectorAll('.witem')].some(i => i.style.display !== 'none');
+    catEl.style.display = anyVisible ? '' : 'none';
+  });
+
+  if(weaponFilterActive){
+    countNote.textContent = `${visibleWeapons} Waffen`;
+  }
+
+
+  /* Waffen-Sektion nur ausblenden, wenn gezielt nach Gear/Brand/Meta gefiltert wird (ohne Waffenbezug) */
+  const hideWeaponSection = ['gear','brand','exogear'].includes(activeFilter);
+  weaponSectionHead.style.display = hideWeaponSection ? 'none' : '';
+  wpIntro.style.display = hideWeaponSection ? 'none' : '';
+  wpSearchBox.style.display = hideWeaponSection ? 'none' : '';
+  wpJumpEl.style.display = hideWeaponSection ? 'none' : '';
+  wpCategories.style.display = hideWeaponSection ? 'none' : '';
+
+  if(weaponFilterActive && typeof weaponSectionHead.scrollIntoView === 'function'){
+    weaponSectionHead.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+}
+
+searchInput.addEventListener('input', applyFilters);
+wpSearchInput.addEventListener('input', applyFilters);
+filterButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.f;
+    applyFilters();
+  });
+});
+
+applyFilters();
+</script>
+</body>
+</html>
