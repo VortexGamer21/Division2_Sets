@@ -997,9 +997,9 @@ const gearSets = [
  "Safe Charging — erhöht den Schutzaufbau auf 10% pro Sekunde.",
  "Overcharging — erhöht das Maximum der eingehenden Schadensreduktion auf 50%.", false],
 ["Ortiz: Exuro","+20% Brenndauer &amp; +15% Skill-Leben","+40% Brandschaden",
- "Ortiz Incinerator Turret Prototype — der Incinerator-Turm dreht sich um 360°, du bist gegen sein Feuer immun und er explodiert bei Deaktivierung.",
- "Chain Combustion — vom Turm entzündete Gegner setzen weitere Gegner innerhalb 10m in Brand.",
- "Heatstroke — +40% verstärkter Schaden gegen vom Turm entzündete Gegner und +25% Turm-Reichweite.", false],
+ "",
+ "Heatstroke — Verursacht +40% verstärkten Schaden bei Gegnern, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden. +25% Reichweite des Ortiz Incinerator Turret Prototype. Hinweis: Die Talentbeschreibung bezeichnet den verstärkten Schaden fälschlicherweise als erhöhten Waffenschaden; der Bonus ist ein Verstärker.",
+ "Chain Combustion — Vom Ortiz Incinerator Turret Prototype in Brand gesetzte Gegner entzünden weitere Gegner innerhalb von 10 m.", false],
 ["Aegis","+70 Leben","+15% Gesamtrüstung",
  "Stoic — +4% Schadensresistenz pro Gegner, der dich anvisiert; der Bonus wird mit der Gruppengröße multipliziert.",
  "Polyethylene Plating — Gegner, die deinen Decoy anvisieren, zählen ebenfalls für Stoic.",
@@ -1007,7 +1007,7 @@ const gearSets = [
 ["Breaking Point","+30% Gewehr-Schaden &amp; +30% MMR-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandling",
  "On Point — Treffer mit Gewehr/MMR geben einen Stack; Nachladen gibt +2% Waffenhandling und +4% Waffenschaden pro Stack für 20s. Keine neuen Stacks während der Boni; Ablauf füllt das Magazin.",
  "Point of Honor — erhöht den Waffenschaden pro Stack von 4% auf 9%.",
- "Point of No Return — erhöht den On-Point-Timer von 20s auf 40s (zuvor 10s auf 15s).", false],
+ "Point of No Return — erhöht den On-Point-Timer von 20s auf 40s.", false],
 ["Virtuoso","+15% Waffenhandling &amp; +15% Magazingröße","+15% Waffenschaden",
  "Symphony — Kill >25m: +40% Waffenschaden für Schrotflinten/SMGs/Pistolen, +20% für ARs/LMGs und +25% Bonus-Rüstung für 15s. Kill <25m: +40% für MMR/Gewehre, +20% für ARs/LMGs und +30% Kopfschussschaden für 15s. Bei 4 Stacks werden alle Boni 1,5× gleichzeitig ausgelöst.",
  "Accelerando — reduziert die nötigen Stacks für die verdoppelten Symphony-Boni von 4 auf 3.",
@@ -1698,6 +1698,56 @@ function namedItemNote(brandName){
   return `<div class="named-note">Perfect-Talent-Item: <b>${match[1]}</b> (${match[2]})</div>`;
 }
 
+const gearSetEnglish = {
+  "Ortiz: Exuro": {
+    p2: "+20% Burn Duration & +15% Skill Health", p3: "+40% Burn Damage",
+    t4: "",
+    backpack: "Heatstroke — Deal +40% Amplified Damage to enemies set on fire by the Ortiz Incinerator Turret Prototype +25% Ortiz Incinerator Turret Prototype Range. Note: The Backpack Talent’s description incorrectly describes Amplified Damage as Increased Weapon Damage. The Talent’s bonus is an Amplifier.",
+    chest: "Chain Combustion — Enemies set ablaze by the Ortiz Incinerator Turret Prototype ignite other enemies within 10m."
+  },
+  "True Patriot": {
+    p2: "15% Weapon Handling (15% PvP) - previously 30% Ammo Capacity", p3: "",
+    t4: "Every 2s, enemies you shoot receive a stacking debuff of Red, White and Blue. • Red: Amplifies the enemy's damage taken by 15%. • White: Shooting the enemy repairs the attacking agent's armor by 2% once every second. • Blue: Decreases the enemy's damage dealt by 10%. • Full Flag: Enemies that die while under the effect of all 3 debuffs create a 5m explosion, dealing damage equal to their total health and armor. (Explosion damage reduced on Named enemy deaths.)",
+    backpack: "Increases Red, White and Blue debuff strength. Red: From 15% to 30% White: From 2% to 5% Blue: From 10% to 20%.",
+    chest: "Increases Red, White and Blue rotation speed to 1s."
+  },
+  "Aces and Eights": {
+    p2: "30% MMR Damage • 30% Rifle Damage", p3: "30% Headshot Damage • 30% Weapon Handling (15% PvP)",
+    t4: "Flip a card when landing shots with a Rifle or Marksman Rifle. After 5 cards are flipped, the damage of your next shot is amplified by 75%. More shots are enhanced the better the hand revealed. Four of a Kind: 4 shots. Full House: 3 shots. Aces and Eights: 2 shots. Flip an additional card on headshots.",
+    backpack: "", chest: "Increases Dead Man's Hand damage bonus from 75% to 100%."
+  },
+  "Breaking Point": {
+    p2: "30% MMR Damage; 30% Rifle Damage", p3: "30% Headshot Damage; 30% Weapon Handling",
+    t4: "Hitting a shot with a Rifle or MMR grants a stack. Reloading will grant +2% Weapon Handling and +4% Weapon Damage per stack, for 20 seconds. No stacks are acquired while the bonuses are active. The timer running out will refill your magazine. Switching weapons while the bonuses are active will stop the effect and refill your magazine. Switching weapons while the bonuses are not active will remove all stacks and refill your magazine.",
+    backpack: "Increase On Point Weapon Damage bonus from 4% to 9%.", chest: "Increases On Point timer from 20 to 40."
+  },
+  "Hotshot": {
+    p2: "", p3: "The 30% Weapon Handling bonus has been transferred from the 2pc to the 3pc.",
+    t4: "First Headshot with a Marksman Rifle will increase next headshot by 80%, second consecutive headshot with a Marksman Rifle will give +10% armor (if at full armor it will give bonus armor max +50% of current armor value), third consecutive headshot will refill magazine. From the fourth headshot forward agents will get all 3 bonuses for each consecutive headshot kill. Missing a headshot will reset the cycle.",
+    backpack: "", chest: ""
+  },
+  "Concentrated Company": {
+    p2: "", p3: "",
+    t4: "Shooting an enemy marks them for 10s. When a marked enemy dies, receive one stack of 3% Weapon Damage and 3% Critical Hit Damage for each Ally of Skill that has contributed to killing that enemy, including yourself. Max stack is 35. Stacks decay every 10s. Maximum amount of marks that can be placed is 4.",
+    backpack: "Increase the Weapon Damage bonus per stack from 3% to 6%.", chest: ""
+  },
+  "Negotiator’s Dilemma": {
+    p2: "", p3: "",
+    t4: "Critical hits mark enemies for 20s, up to 3 marks total. When you critically hit a marked enemy, all other marked enemies take 60% of the damage dealt. Whenever a marked enemy dies, gain +10% critical hit damage, stacking up to 10 times, or until combat ends.",
+    backpack: "", chest: ""
+  },
+  "Ongoing Directive": {
+    p2: "", p3: "",
+    t4: "Shooting a status affected enemy will apply a mark. Killing a marked enemy grants a full clip of Hollow-Point Ammo for your active weapon, and half a clip of the agent's active weapon to the rest of the party. Mark lasts for 10s. Hollow-Point Ammo amplifies weapon damage by 40% and applies bleed on hit.",
+    backpack: "", chest: "Increases Hollow-Point Ammo damage amplification to 60%. This bonus does not apply to party members."
+  },
+  "Tipping Scales": {
+    p2: "", p3: "",
+    t4: "Shooting builds stacks to a max of 50. Each stack provides +0.5% Weapon Handling and +5% Critical Hit Damage. Lose 6 stacks per second while not shooting. No stacks are lost if an enemy is Suppressed.",
+    backpack: "Increase the Critical Hit Damage received per stack from 5 to 8.", chest: ""
+  }
+};
+
 gearSets.forEach((s, i) => {
   const card = document.createElement('div');
   card.className = 'card gear';
@@ -1724,6 +1774,11 @@ gearSets.forEach((s, i) => {
       <div class="t-body">${s[5]}</div>
     </div>
   `;
+  const en = gearSetEnglish[s[0]];
+  if (en) {
+    card.dataset.enP2=en.p2||s[1]; card.dataset.enP3=en.p3||s[2];
+    card.dataset.enT4=en.t4||s[3]; card.dataset.enBackpack=en.backpack||s[4]; card.dataset.enChest=en.chest||s[5];
+  }
   gearGrid.appendChild(card);
 });
 
@@ -2522,6 +2577,24 @@ applyFilters();
     });
 
     localizeItemNames();
+
+    /* Gear Sets from the Ubisoft Red Horizon PDF: keep complete source text in EN and translated text in DE. */
+    document.querySelectorAll('.card.gear').forEach(card=>{
+      const name=card.dataset.name;
+      const src=gearSetEnglish[Object.keys(gearSetEnglish).find(k=>k.toLowerCase()===name)];
+      if(!src) return;
+      const vals=card.querySelectorAll('.bonus-block .v');
+      if(english){
+        if(vals[0] && card.dataset.enP2) vals[0].innerHTML=card.dataset.enP2;
+        if(vals[1] && card.dataset.enP3) vals[1].innerHTML=card.dataset.enP3;
+      }
+      const talents=card.querySelectorAll('.talent .t-body');
+      if(english){
+        if(talents[0] && card.dataset.enT4) talents[0].innerHTML=card.dataset.enT4;
+        if(talents[1] && card.dataset.enBackpack) talents[1].innerHTML=card.dataset.enBackpack;
+        if(talents[2] && card.dataset.enChest) talents[2].innerHTML=card.dataset.enChest;
+      }
+    });
 
     /* Exotic Gear has dedicated, complete English descriptions. */
     document.querySelectorAll('.exo-group-label').forEach(el=>{
