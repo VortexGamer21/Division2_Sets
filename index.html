@@ -1068,7 +1068,7 @@ const gearSets = [
  "Safe Charging — erhöht den Schutzaufbau auf 10% pro Sekunde.",
  "Overcharging — erhöht das Maximum der eingehenden Schadensreduktion auf 50%.", false],
 ["Ortiz: Exuro","+20% Brenndauer &amp; +15% Skill-Leben","+40% Brandschaden",
- "",
+ "Ortiz Incinerator Turret Prototype — • Der Incinerator Turret dreht sich um 360°. • Du bist gegen das Feuer deines eigenen Incinerator Turret immun. • Der Incinerator Turret explodiert, wenn er deaktiviert wird.",
  "Heatstroke — Verursacht +40% verstärkten Schaden bei Gegnern, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden. +25% Reichweite des Ortiz Incinerator Turret Prototype. Hinweis: Die Talentbeschreibung bezeichnet den verstärkten Schaden fälschlicherweise als erhöhten Waffenschaden; der Bonus ist ein Verstärker.",
  "Chain Combustion — Vom Ortiz Incinerator Turret Prototype in Brand gesetzte Gegner entzünden weitere Gegner innerhalb von 10 m.", false],
 ["Aegis","+70 Leben","+15% Gesamtrüstung",
@@ -1773,12 +1773,12 @@ function namedItemNote(brandName){
 const gearSetEnglish = {
   "Ortiz: Exuro": {
     p2: "+20% Burn Duration & +15% Skill Health", p3: "+40% Burn Damage",
-    t4: "",
+    t4: "Ortiz Incinerator Turret Prototype — • The Incinerator Turret spins 360°. • You are immune to your own Incinerator Turret's fire. • The Incinerator Turret explodes when disabled.",
     backpack: "Heatstroke — Deal +40% Amplified Damage to enemies set on fire by the Ortiz Incinerator Turret Prototype +25% Ortiz Incinerator Turret Prototype Range. Note: The Backpack Talent’s description incorrectly describes Amplified Damage as Increased Weapon Damage. The Talent’s bonus is an Amplifier.",
     chest: "Chain Combustion — Enemies set ablaze by the Ortiz Incinerator Turret Prototype ignite other enemies within 10m."
   },
   "True Patriot": {
-    p2: "15% Weapon Handling (15% PvP) - previously 30% Ammo Capacity", p3: "",
+    p2: "+15% Weapon Handling", p3: "+30% Magazine Size",
     t4: "Every 2s, enemies you shoot receive a stacking debuff of Red, White and Blue. • Red: Amplifies the enemy's damage taken by 15%. • White: Shooting the enemy repairs the attacking agent's armor by 2% once every second. • Blue: Decreases the enemy's damage dealt by 10%. • Full Flag: Enemies that die while under the effect of all 3 debuffs create a 5m explosion, dealing damage equal to their total health and armor. (Explosion damage reduced on Named enemy deaths.)",
     backpack: "Increases Red, White and Blue debuff strength. Red: From 15% to 30% White: From 2% to 5% Blue: From 10% to 20%.",
     chest: "Increases Red, White and Blue rotation speed to 1s."
@@ -1804,9 +1804,9 @@ const gearSetEnglish = {
     backpack: "Increase the Weapon Damage bonus per stack from 3% to 6%.", chest: "All for One — Increases Camaraderie amount of marks that can be placed from 4 to 8."
   },
   "Negotiator’s Dilemma": {
-    p2: "", p3: "",
+    p2: "+15% Critical Hit Chance", p3: "+20% Critical Hit Damage",
     t4: "Critical hits mark enemies for 20s, up to 3 marks total. When you critically hit a marked enemy, all other marked enemies take 60% of the damage dealt. Whenever a marked enemy dies, gain +10% critical hit damage, stacking up to 10 times, or until combat ends.",
-    backpack: "", chest: ""
+    backpack: "Critical Measures — Increases the damage transferred from 60% to 112%.", chest: "Target Rich Environment — Increases the number of marks from 3 to 5."
   },
   "Ongoing Directive": {
     p2: "+15% Status Effects", p3: "+30% Reload Speed",
@@ -1823,7 +1823,7 @@ const gearSetEnglish = {
 /* German localization for the complete Ubisoft Red Horizon gear-set texts. */
 const gearSetGerman = {
   "Ortiz: Exuro": {
-    p2: "+20% Brenndauer & +15% Skill-Leben", p3: "+40% Brandschaden", t4: "",
+    p2: "+20% Brenndauer & +15% Skill-Leben", p3: "+40% Brandschaden", t4: "Ortiz Incinerator Turret Prototype — • Der Incinerator Turret dreht sich um 360°. • Du bist gegen das Feuer deines eigenen Incinerator Turret immun. • Der Incinerator Turret explodiert, wenn er deaktiviert wird.",
     backpack: "Heatstroke — Verursacht +40% verstärkten Schaden bei Gegnern, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden. +25% Reichweite des Ortiz Incinerator Turret Prototype.",
     chest: "Chain Combustion — Gegner, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden, entzünden weitere Gegner innerhalb von 10 m."
   },
@@ -1854,9 +1854,9 @@ const gearSetGerman = {
     backpack: "Erhöht den Waffenschadensbonus pro Stack von 3% auf 6%.", chest: "All for One — Erhöht die maximale Anzahl der durch Camaraderie platzierbaren Markierungen von 4 auf 8."
   },
   "Negotiator’s Dilemma": {
-    p2: "", p3: "",
+    p2: "+15% Krit-Chance", p3: "+20% Krit-Schaden",
     t4: "Hostile Negotiations — Kritische Treffer markieren Gegner 20 Sekunden lang, insgesamt bis zu 3 Markierungen. Wenn du einen markierten Gegner kritisch triffst, erleiden alle anderen markierten Gegner 60% des verursachten Schadens. Wenn ein markierter Gegner stirbt, erhältst du +10% kritischen Trefferschaden, bis zu 10-mal stapelbar oder bis der Kampf endet.",
-    backpack: "", chest: ""
+    backpack: "Critical Measures — erhöht den übertragenen Schaden von 60% auf 112%.", chest: "Target Rich Environment — erhöht die Markierungen von 3 auf 5."
   },
   "Ongoing Directive": {
     p2: "+15% Status-Effekte", p3: "+30% Nachladegeschwindigkeit",
