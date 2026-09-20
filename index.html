@@ -697,6 +697,58 @@
     .controls{ top: 8px; }
   }
 
+
+  /* ---------- WIP status badge ---------- */
+  .wip-badge{
+    position:absolute;
+    top:52px;
+    right:0;
+    display:flex;
+    align-items:flex-start;
+    gap:9px;
+    width:min(330px, 42vw);
+    padding:10px 12px;
+    border:1px solid rgba(232,137,27,.45);
+    border-radius:6px;
+    background:rgba(232,137,27,.08);
+    color:var(--text-dim);
+    box-shadow:0 8px 24px rgba(0,0,0,.18);
+    backdrop-filter:blur(10px);
+    z-index:19;
+    box-sizing:border-box;
+  }
+  .wip-badge .wip-icon{
+    flex:0 0 24px;
+    width:24px; height:24px;
+    display:grid; place-items:center;
+    border-radius:50%;
+    background:var(--gold);
+    color:#191204;
+    font:800 14px/1 'JetBrains Mono',monospace;
+  }
+  .wip-badge .wip-title{
+    display:block;
+    margin:0 0 3px;
+    color:#fff;
+    font:700 11px/1.2 'JetBrains Mono',monospace;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .wip-badge .wip-text{
+    display:block;
+    font:400 10.5px/1.5 'JetBrains Mono',monospace;
+  }
+  @media (max-width:900px){
+    .wip-badge{ width:min(300px, 48vw); }
+  }
+  @media (max-width:560px){
+    .wip-badge{
+      position:static;
+      width:100%;
+      margin:0 0 18px auto;
+    }
+  }
+
   /* ---------- language switcher ---------- */
   .lang-switch{
     position:absolute;
@@ -827,6 +879,13 @@
 
   <header class="hero">
 
+    <div class="wip-badge" role="status" aria-live="polite">
+      <span class="wip-icon" aria-hidden="true">!</span>
+      <span>
+        <span class="wip-title">IN BEARBEITUNG</span>
+        <span class="wip-text">Die Seite wird laufend aktualisiert. Größere Updates und Patchnotes werden geprüft, damit Änderungen an Waffen, Sets und Talenten möglichst zeitnah übernommen werden.</span>
+      </span>
+    </div>
     <div class="lang-switch" role="group" aria-label="Language">
       <button type="button" data-lang="de" class="active">DE</button>
       <button type="button" data-lang="en">EN</button>
@@ -928,11 +987,11 @@
 
 <script>
 const gearSets = [
-["Striker's Battlegear","+15% Waffenhandling","+15% Feuerrate",
+["Striker's Battlegear","+15% Waffenhandhabung","+15% Feuerrate",
  "Striker's Gamble — Treffer erhöhen den Gesamtwaffenschaden um 0,65%, stapelbar bis 100x. 1 Stackverlust/s bei 0–50 Stacks, 2/s bei 51–100.",
  "Risk Management — erhöht den Schadensbonus pro Stack von 0,65% auf 0,9%.",
  "Press the Advantage — erhöht die maximalen Stacks von 100 auf 200; bei 101–200 gehen 3 Stacks/s verloren.", true],
-["Heartbreaker","+15% AR-Schaden &amp; +15% LMG-Schaden","+15% Waffenhandling",
+["Heartbreaker","+15% AR-Schaden &amp; +15% LMG-Schaden","+15% Waffenhandhabung",
  "Heartstopper — Kopfschüsse pulsen 5s. Treffer auf gepulste Gegner geben +1% Bonus-Rüstung und +1,1% Schaden gegen gepulste Gegner pro Stack, max. 50; 2 Stacks/s Verlust.",
  "Cold — erhöht die Bonus-Rüstung pro Stack von 1% auf 2%.",
  "Max BPM — erhöht die maximalen Stacks von 50 auf 100.", true],
@@ -948,19 +1007,19 @@ const gearSets = [
  "Hostile Negotiations — Krits markieren Gegner 20s, max. 3 Marken; markierte Gegner erhalten 60% des an einen anderen markierten Gegner verursachten Krit-Schadens. Getötete markierte Gegner geben +2% Krit-Schaden, max. 20 Stacks.",
  "Critical Measures — erhöht den übertragenen Schaden von 60% auf 112%.",
  "Target Rich Environment — erhöht die Markierungen von 3 auf 5.", true],
-["Hotshot","+30% Scharfschützengewehr-Schaden","+30% Waffenhandling &amp; +30% Kopfschuss-Schaden",
+["Hotshot","+30% Scharfschützengewehr-Schaden","+30% Waffenhandhabung &amp; +30% Kopfschuss-Schaden",
  "Headache — 1. Kopfschuss: nächster Kopfschuss +80%; 2.: +10% Rüstung bzw. bei voller Rüstung bis zu 50% Bonus-Rüstung; 3.: Magazin auffüllen. Ab dem 4. Kopfschuss alle 3 Boni. Fehlschuss setzt die Kombo zurück.",
  "Blessed — ein Kopfschuss darf verfehlt werden, bevor die Kombo zurückgesetzt wird.",
  "Daring — erhöht die Bonus-Rüstung von 50% auf 100%.", true],
-["Rigger","+15% Skill Haste","+15% Skilldauer",
+["Rigger","+15% Fertigkeitsbeschleunigung","+15% Skilldauer",
  "Tend and Befriend — Interaktion mit eingesetzten Skills gibt +25% Skillschaden für 10s; nicht erneuerbar.",
  "Complete Uptime — Abbrechen eines Skills setzt dessen Cooldown zurück.",
  "Best Buds — erhöht den Schadensbonus von 25% auf 50%.", false],
-["Eclipse Protocol","+15% Status-Effekte","+15% Skill Haste &amp; +30% Gefahrenschutz",
+["Eclipse Protocol","+15% Status-Effekte","+15% Fertigkeitsbeschleunigung &amp; +30% Gefahrenschutz",
  "Indirect Transmission — Statuseffekte springen bei einem Kill auf alle Gegner innerhalb 15m über und erneuern 50% ihrer Dauer.",
  "Symptom Aggravator — +15% auf allen Schaden gegen von Statuseffekten betroffene Ziele.",
  "Proliferation — erhöht die Reichweite von 15m auf 20m und die erneuerte Dauer von 50% auf 75%.", true],
-["Future Initiative","+30% Reparaturskills","+30% Skilldauer &amp; +15% Skill Haste",
+["Future Initiative","+30% Reparaturskills","+30% Skilldauer &amp; +15% Fertigkeitsbeschleunigung",
  "Ground Control — bei voller Rüstung +15% Gesamt-Waffen- und Skillschaden für dich und Verbündete; Heilung eines Verbündeten heilt dich und Verbündete innerhalb 5m zusätzlich für 60% dieses Betrags.",
  "Advanced Combat Tactics — erhöht die geteilte Heilung von 60% auf 120%.",
  "Tactical Superiority — erhöht den Schadensbonus von 15% auf 25%.", true],
@@ -968,7 +1027,7 @@ const gearSets = [
  "Makeshift Repairs — 25% des erlittenen Schadens an dir oder deinem Schild werden über 10s repariert.",
  "Process Refinery — verkürzt die Reparaturzeit von 10s auf 5s.",
  "Improved Materials — erhöht die Reparatur von 25% auf 35%.", true],
-["Hard Wired","+15% Skill Haste","+30% Reparaturskills &amp; +15% Skillschaden",
+["Hard Wired","+15% Fertigkeitsbeschleunigung","+30% Reparaturskills &amp; +15% Skillschaden",
  "Feedback Loop — Skill nutzen/abbrechen reduziert den Cooldown des anderen Skills um 30s und gibt +10% Skill-/Reparaturschaden für 20s; höchstens alle 10s.",
  "Short Circuit — verkürzt den Feedback-Loop-Cooldown von 10s auf 5s.",
  "Positive Reinforcement — erhöht den Bonus von 10% auf 25%.", false],
@@ -976,11 +1035,11 @@ const gearSets = [
  "Rules of Engagement — Hollow-Point-Munition gibt +40% Waffenschaden und verursacht Blutung; Markierung 10s. Sie wird bei Kills statusbetroffener Gegner automatisch der aktiven Waffe hinzugefügt.",
  "Trauma Specialist — erhöht die Blutungsdauer um 50% und den Blutungsschaden um 100%; erhöht den 3-Teile-Nachladebonus von 20% auf 30%.",
  "Parabellum Rounds — erhöht die Hollow-Point-Schadensverstärkung von 40% auf 60% (nicht für Team-Munition).", false],
-["True Patriot","+15% Waffenhandling","+30% Magazingröße",
+["True Patriot","+15% Waffenhandhabung","+30% Magazingröße",
  "Red, White and Blue — alle 2s erhalten beschossene Gegner einen Debuff: Rot +15% erlittener Schaden, Weiß repariert 2% Rüstung/s, Blau -10% ausgeteilter Schaden. Bei allen 3 Debuffs erzeugt der Tod eine 5m-Explosion.",
  "Patriotic Boost — verstärkt Rot von 15% auf 30%, Weiß von 2% auf 5% und Blau von 10% auf 20%.",
  "Waving the Flag — beschleunigt die Debuff-Rotation auf 1s.", false],
-["Aces and Eights","+30% Scharfschützengewehr-Schaden &amp; +30% Gewehr-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandling",
+["Aces and Eights","+30% Scharfschützengewehr-Schaden &amp; +30% Gewehr-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandhabung",
  "Dead Man's Hand — nach 5 aufgedeckten Karten wird der nächste Schuss um 75% verstärkt; je nach Hand werden 2, 3 oder 4 Schüsse verstärkt.",
  "Ace in the Sleeve — Verstärkt beim Aufdecken der Hand einen zusätzlichen Schuss.",
  "No Limit — erhöht den Dead-Man's-Hand-Schadensbonus von 75% auf 100%.", false],
@@ -1004,11 +1063,11 @@ const gearSets = [
  "Stoic — +4% Schadensresistenz pro Gegner, der dich anvisiert; der Bonus wird mit der Gruppengröße multipliziert.",
  "Polyethylene Plating — Gegner, die deinen Decoy anvisieren, zählen ebenfalls für Stoic.",
  "Deceit — erhöht den Stoic-Schadensresistenzbonus von 4% auf 5%.", false],
-["Breaking Point","+30% Gewehr-Schaden &amp; +30% MMR-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandling",
- "On Point — Treffer mit Gewehr/MMR geben einen Stack; Nachladen gibt +2% Waffenhandling und +4% Waffenschaden pro Stack für 20s. Keine neuen Stacks während der Boni; Ablauf füllt das Magazin.",
+["Breaking Point","+30% Gewehr-Schaden &amp; +30% MMR-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandhabung",
+ "On Point — Treffer mit Gewehr/MMR geben einen Stack; Nachladen gibt +2% Waffenhandhabung und +4% Waffenschaden pro Stack für 20s. Keine neuen Stacks während der Boni; Ablauf füllt das Magazin.",
  "Point of Honor — erhöht den Waffenschaden pro Stack von 4% auf 9%.",
  "Point of No Return — erhöht den On-Point-Timer von 20s auf 40s.", false],
-["Virtuoso","+15% Waffenhandling &amp; +15% Magazingröße","+15% Waffenschaden",
+["Virtuoso","+15% Waffenhandhabung &amp; +15% Magazingröße","+15% Waffenschaden",
  "Symphony — Kill >25m: +40% Waffenschaden für Schrotflinten/SMGs/Pistolen, +20% für ARs/LMGs und +25% Bonus-Rüstung für 15s. Kill <25m: +40% für MMR/Gewehre, +20% für ARs/LMGs und +30% Kopfschussschaden für 15s. Bei 4 Stacks werden alle Boni 1,5× gleichzeitig ausgelöst.",
  "Accelerando — reduziert die nötigen Stacks für die verdoppelten Symphony-Boni von 4 auf 3.",
  "Fortissimo — verdoppelt die Waffenschadens-Boni von Symphony.", false],
@@ -1016,19 +1075,19 @@ const gearSets = [
  "Return to Sender — PvE: du erhältst Reparatur in Höhe von 10% des von Skills verursachten Schadens, Verbündete 20%. PvP: 5% bzw. 10%.",
  "Over-engineered — bei voller Rüstung wird die erhaltene Reparatur zu Bonus-Rüstung, bis 80% deiner Gesamtrüstung.",
  "Increased Interest — PvE erhöht die Reparaturwerte auf 15% und 20%; PvP auf 25% und 35%.", true],
-["Measured Assembly","+15% Skill Haste","+60% Reparaturskills &amp; +40% Explosionswiderstand",
+["Measured Assembly","+15% Fertigkeitsbeschleunigung","+60% Reparaturskills &amp; +40% Explosionswiderstand",
  "Huddle — +1 Skill-Tier pro Verbündeten im Bereich von Hive/Smart Cover. Bei Tier 6 und mindestens einem Verbündeten für 4s: Overcharge 15s; Cooldown 40s. Feindliche Skills/Mörser im Bereich werden zerstört; Basis-Cooldown 10s, 20% schneller je Verbündeten.",
  "Hivemind — verkürzt den Overcharge-Cooldown von 40s auf 25s.",
  "Smart Cooperation — verkürzt den Zerstörungs-Cooldown von 10s auf 1s.", false],
 ["Tipping Scales","+30% Magazingröße","+30% LMG-Schaden",
- "Throttle Control — Schießen baut bis 50 Stacks auf; jeder Stack +0,5% Waffenhandling und +5% Krit-Schaden. 6 Stacks/s Verlust ohne Schießen; keine Verluste bei unterdrücktem Gegner.",
+ "Throttle Control — Schießen baut bis 50 Stacks auf; jeder Stack +0,5% Waffenhandhabung und +5% Krit-Schaden. 6 Stacks/s Verlust ohne Schießen; keine Verluste bei unterdrücktem Gegner.",
  "Snowball — erhöht den Krit-Schaden pro Stack von 5% auf 8%.",
  "Sustainability — erhöht die maximalen Stacks von 50 auf 75.", true],
-["Concentrated Company","+10% Waffenschaden","+30% Waffenhandling",
+["Concentrated Company","+10% Waffenschaden","+30% Waffenhandhabung",
  "Camaraderie — markierte Gegner bleiben 10s markiert. Beim Tod gibt es je beteiligtem Verbündeten/Skill 1 Stack mit +3% Waffenschaden und +3% Krit-Schaden; max. 35 Stacks, Verfall nach 10s; max. 4 Markierungen.",
  "One for All — erhöht den Waffenschaden pro Stack von 3% auf 6%.",
  "All for One — erhöht die möglichen Markierungen von 4 auf 8.", false],
-["Core Strength","+10% Waffenhandling","+5% Waffenschaden, +5% Rüstung &amp; +5% Skill-Effizienz",
+["Core Strength","+10% Waffenhandhabung","+5% Waffenschaden, +5% Rüstung &amp; +5% Skill-Effizienz",
  "Core Exercise — für jedes Kernattribut erhältst du 40% der Boni der beiden anderen Kernattribute. Skill-Tiers zählen dabei als 15% Skill-Effizienz.",
  "Outer Core — der Rucksack trägt drei Kernattribute statt eines.",
  "Inner Core — erhöht den Übertragungsanteil von 40% auf 75%.", true],
@@ -1048,38 +1107,38 @@ const brandSets = [
 ["Empress International","+10% Skill-Leben","+13% Skillschaden","+8% Skill-Effizienz", true],
 ["Wyvern Wear","+8% Skillschaden","+20% Status-Effekte","+45% Skilldauer", true],
 ["Belstone Armory","+1% Rüstungsregen","+100% erhöhte Bedrohung","+36% Schutz vor Elite-Gegnern", false],
-["Alps Summit","+18% Reparaturskills","+30% Skilldauer","+30% Skill Haste", true],
-["China Light","+15% Explosionsschaden","+20% Status-Effekte","+30% Skill Haste", true],
+["Alps Summit","+18% Reparaturskills","+30% Skilldauer","+30% Fertigkeitsbeschleunigung", true],
+["China Light","+15% Explosionsschaden","+20% Status-Effekte","+30% Fertigkeitsbeschleunigung", true],
 ["Palisade Steelworks","+10% Rüstung bei Kill","+24% Schutz vor Elite-Gegnern","+1 Skill-Tier", true],
-["Brazos de Arcabuz","+10% Skill Haste","+1 Skill-Tier","+50% Magazingröße", true],
+["Brazos de Arcabuz","+10% Fertigkeitsbeschleunigung","+1 Skill-Tier","+50% Magazingröße", true],
 ["Gila Guard","+5% Gesamtrüstung","+20% Gefahrenschutz","+2% Rüstungsregen", true],
 ["Fenris Group","+12% Sturmgewehr-Schaden","+32% Magazingröße","+50% Stabilität", true],
-["Petrov Defense Group","+12% LMG-Schaden","+15% Waffenhandling","+50% Munitionskapazität", true],
-["Overlord Armaments","+12% Gewehr-Schaden","+30% Genauigkeit","+30% Waffenhandling", true],
+["Petrov Defense Group","+12% LMG-Schaden","+15% Waffenhandhabung","+50% Munitionskapazität", true],
+["Overlord Armaments","+12% Gewehr-Schaden","+30% Genauigkeit","+30% Waffenhandhabung", true],
 ["Walker, Harris &amp; Co","+6% Waffenschaden","+5% Schaden gegen Rüstung","+10% Schaden gegen Leben", true],
 ["Yaahl Gear","+10% Gefahrenschutz","+12% Waffenschaden","+40% Pulswiderstand", false],
 ["Electrique","+10% Status-Effekte","+20% Gefahrenschutz","+8% Skill-Effizienz", false],
-["Hana-U","+10% Skill Haste","+13% Skillschaden","+18% Waffenschaden", false],
+["Hana-U","+10% Fertigkeitsbeschleunigung","+13% Skillschaden","+18% Waffenschaden", false],
 ["Murakami Industries","+15% Skilldauer","+35% Reparaturskills","+18% Skillschaden", false],
-["Richter &amp; Kaiser","+10% Skill Haste","+40% Explosionswiderstand","+52% Reparaturskills", false],
+["Richter &amp; Kaiser","+10% Fertigkeitsbeschleunigung","+40% Explosionswiderstand","+52% Reparaturskills", false],
 ["5.11 Tactical","+12% Schutz vor Elite-Gegnern","+100% erhöhte Bedrohung","+30% Gefahrenschutz", false],
 ["Badger Tuff","+12% Schrotflinten-Schaden","+10% Rüstung bei Kill","+15% Gesamtrüstung", false],
 ["Golan Gear","+20% Explosionswiderstand","+1,5% Rüstungsregen","+150% erhöhte Bedrohung", false],
 ["Habsburg Guard","+13% Kopfschuss-Schaden","+24% Scharfschützengewehr-Schaden","+25% Status-Effekte", false],
-["Lengmo","+15% Nachladegeschwindigkeit","+24% LMG-Schaden","+30% Waffenhandling", false],
+["Lengmo","+15% Nachladegeschwindigkeit","+24% LMG-Schaden","+30% Waffenhandhabung", false],
 ["Ceska Vyroba","+8% Krit-Chance","+24% Schrotflinten-Schaden","+30% Gefahrenschutz", false],
 ["Douglas &amp; Harding","+24% Pistolen-Schaden","+20% Skill-Leben","+50% Genauigkeit", false],
 ["Grupo Sombra","+13% Krit-Schaden","+20% Explosionsschaden","+39% Kopfschuss-Schaden", false],
 ["Airaldi","+12% Scharfschützengewehr-Schaden","+26% Kopfschuss-Schaden","+5% Schaden gegen Rüstung", false],
 ["Sokolov","+12% SMG-Schaden","+13% Krit-Schaden","+8% Krit-Chance", false],
-["Zwiadowka","+15% Magazingröße","+24% Gewehr-Schaden","+30% Waffenhandling", false],
+["Zwiadowka","+15% Magazingröße","+24% Gewehr-Schaden","+30% Waffenhandhabung", false],
 ["Legatus","+15% Magazingröße","+24% SMG-Schaden","+105% optimale Reichweite", false],
 ["Shiny Monkey Gear","+15% Skilldauer","+5% Skill-Effizienz","+52% Reparaturskills", false],
 ["Imminence Armaments","+6% Waffenschaden","+48% Pistolen-Schaden","+30% Skill-Leben", false],
-["Urban Lookout","+5% Waffenhandling","+24% Scharfschützengewehr-Schaden","+45% Skilldauer", false],
+["Urban Lookout","+5% Waffenhandhabung","+24% Scharfschützengewehr-Schaden","+45% Skilldauer", false],
 ["Unit Alloys","+5% Feuerrate","+24% Sturmgewehr-Schaden","+50% Magazingröße", true],
-["Royal Works","+5% Waffenhandling","+24% LMG-Schaden","+50% Genauigkeit", false],
-["Edelweiss GPz","+18% Reparaturskills","+20% Skill Haste","+8% Skill-Effizienz", false]
+["Royal Works","+5% Waffenhandhabung","+24% LMG-Schaden","+50% Genauigkeit", false],
+["Edelweiss GPz","+18% Reparaturskills","+20% Fertigkeitsbeschleunigung","+8% Skill-Effizienz", false]
 ];
 
 /* ---------- Exotische Kleidung ----------
@@ -1756,23 +1815,23 @@ const gearSetGerman = {
     chest: "Chain Combustion — Gegner, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden, entzünden weitere Gegner innerhalb von 10 m."
   },
   "True Patriot": {
-    p2: "+15% Waffenhandling", p3: "+30% Magazingröße",
+    p2: "+15% Waffenhandhabung", p3: "+30% Magazingröße",
     t4: "Red, White and Blue — Alle 2 Sekunden erhalten Gegner, auf die du schießt, einen stapelbaren Debuff aus Rot, Weiß und Blau. • Rot: Verstärkt den erlittenen Schaden des Gegners um 15%. • Weiß: Wenn du auf den Gegner schießt, wird die Rüstung des angreifenden Agents einmal pro Sekunde um 2% repariert. • Blau: Verringert den vom Gegner verursachten Schaden um 10%. • Full Flag: Gegner, die unter dem Einfluss aller 3 Debuffs sterben, erzeugen eine Explosion mit 5 m Radius, die Schaden in Höhe ihrer gesamten Gesundheit und Rüstung verursacht. (Explosionsschaden bei benannten Gegnern reduziert.)",
     backpack: "Erhöht die Stärke der Rot-, Weiß- und Blau-Debuffs. Rot: von 15% auf 30%. Weiß: von 2% auf 5%. Blau: von 10% auf 20%.",
     chest: "Erhöht die Rot-, Weiß- und Blau-Rotationsgeschwindigkeit auf 1 Sekunde."
   },
   "Aces and Eights": {
-    p2: "+30% MMR-Schaden • +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden • +30% Waffenhandling (15% PvP)",
+    p2: "+30% MMR-Schaden • +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden • +30% Waffenhandhabung (15% PvP)",
     t4: "Dead Man's Hand — Wenn du mit einem Gewehr oder Scharfschützengewehr Treffer landest, wird eine Karte aufgedeckt. Nach 5 aufgedeckten Karten wird der Schaden deines nächsten Schusses um 75% verstärkt. Je besser die aufgedeckte Hand, desto mehr Schüsse werden verstärkt. Vierling: 4 Schüsse. Full House: 3 Schüsse. Aces and Eights: 2 Schüsse. Kopfschüsse decken eine zusätzliche Karte auf.",
     backpack: "Ace in the Sleeve — Verstärkt beim Aufdecken der Hand einen zusätzlichen Schuss.", chest: "Erhöht den Schadensbonus von Dead Man's Hand von 75% auf 100%."
   },
   "Breaking Point": {
-    p2: "+30% MMR-Schaden; +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden; +30% Waffenhandling",
-    t4: "On Point — Ein Treffer mit einem Gewehr oder MMR gewährt einen Stack. Nachladen gewährt pro Stack für 20 Sekunden +2% Waffenhandling und +4% Waffenschaden. Während die Boni aktiv sind, werden keine neuen Stacks erworben. Wenn der Timer abläuft, wird dein Magazin aufgefüllt. Ein Waffenwechsel während der aktiven Boni beendet den Effekt und füllt dein Magazin auf. Ein Waffenwechsel, während die Boni nicht aktiv sind, entfernt alle Stacks und füllt dein Magazin auf.",
+    p2: "+30% MMR-Schaden; +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden; +30% Waffenhandhabung",
+    t4: "On Point — Ein Treffer mit einem Gewehr oder MMR gewährt einen Stack. Nachladen gewährt pro Stack für 20 Sekunden +2% Waffenhandhabung und +4% Waffenschaden. Während die Boni aktiv sind, werden keine neuen Stacks erworben. Wenn der Timer abläuft, wird dein Magazin aufgefüllt. Ein Waffenwechsel während der aktiven Boni beendet den Effekt und füllt dein Magazin auf. Ein Waffenwechsel, während die Boni nicht aktiv sind, entfernt alle Stacks und füllt dein Magazin auf.",
     backpack: "Erhöht den Waffenschadensbonus von On Point von 4% auf 9%.", chest: "Erhöht den On-Point-Timer von 20 auf 40."
   },
   "Hotshot": {
-    p2: "", p3: "Der Bonus von 30% Waffenhandling wurde vom 2-Teile-Bonus auf den 3-Teile-Bonus übertragen.",
+    p2: "", p3: "Der Bonus von 30% Waffenhandhabung wurde vom 2-Teile-Bonus auf den 3-Teile-Bonus übertragen.",
     t4: "Headache — Der erste Kopfschuss mit einem Scharfschützengewehr erhöht den nächsten Kopfschuss um 80%. Ein zweiter aufeinanderfolgender Kopfschuss mit einem Scharfschützengewehr gewährt +10% Rüstung (bei voller Rüstung stattdessen Bonus-Rüstung bis zu 50% des aktuellen Rüstungswerts). Ein dritter aufeinanderfolgender Kopfschuss füllt das Magazin auf. Ab dem vierten Kopfschuss erhalten Agents für jeden weiteren aufeinanderfolgenden Kopfschuss-Kill alle 3 Boni. Ein verfehlter Kopfschuss setzt den Zyklus zurück.",
     backpack: "", chest: ""
   },
@@ -1793,7 +1852,7 @@ const gearSetGerman = {
   },
   "Tipping Scales": {
     p2: "", p3: "",
-    t4: "Throttle Control — Schießen baut bis zu 50 Stacks auf. Jeder Stack gewährt +0,5% Waffenhandling und +5% kritischen Trefferschaden. Wenn du nicht schießt, verlierst du 6 Stacks pro Sekunde. Es gehen keine Stacks verloren, wenn ein Gegner unterdrückt wird.",
+    t4: "Throttle Control — Schießen baut bis zu 50 Stacks auf. Jeder Stack gewährt +0,5% Waffenhandhabung und +5% kritischen Trefferschaden. Wenn du nicht schießt, verlierst du 6 Stacks pro Sekunde. Es gehen keine Stacks verloren, wenn ein Gegner unterdrückt wird.",
     backpack: "Erhöht den pro Stack erhaltenen kritischen Trefferschaden von 5% auf 8%.", chest: "Sustainability — Erhöht die maximale Anzahl der Stacks von Throttle Control von 50 auf 75."
   }
 };
@@ -1852,7 +1911,7 @@ brandSets.forEach((s, i) => {
 });
 
 /* ---------- English translations for Exotic Gear ---------- */
-const exoticGearEnglish = {"Coyote's Mask": "<b>Talent – Pack Instinct:</b> You and your allies gain a bonus based on the distance to the last enemy hit: 0–15 m: +25% Critical Hit Damage; 15–25 m: +10% Critical Hit Damage and +10% Critical Hit Chance; 25 m+: +25% Critical Hit Chance.", "Vile": "<b>Talent – Toxic Delivery:</b> Status effects also apply a 10-second damage-over-time debuff. The total damage equals 50% of Concussion Grenade damage and is increased by your Status Effects values.", "Catharsis": "<b>Talent – Vicious Cycle:</b> Taking damage builds up to 30 stacks; each stack grants +1% weapon damage. At maximum stacks, taking further damage triggers a purge, removes all stacks and status effects, and creates a healing cloud that restores 5% of maximum armor per second for 10 seconds to allies inside the cloud.", "Catalyst": "<b>Talent – Chemical Agent:</b> Status effects on you or applied by you build Catalysis, up to 12 stacks. Each stack grants +2% weapon damage and +2% Status Effects. Affected enemies within 15 m generate stacks; at maximum stacks, killing an enemy also grants +25% bonus armor and +20% reload speed for 5 seconds. <b>Stabilizer:</b> While burning, you can continue aiming without losing ADS.", "Tinkerer": "<b>Talent – Abridged:</b> If your primary and secondary weapons are neither Exotic nor Named and are the same weapon type, the secondary weapon's talent is also applied to the primary weapon. Talents that require a weapon swap are not transferred.", "Investor": "<b>Talent – Slotted:</b> Gain bonuses for each non-core attribute on this item based on its color: Red +10% Critical Hit Damage, Yellow +5% Skill Efficiency, Blue +1% Armor Regeneration; in PvP +0.5% Armor Regeneration. The item can roll any core attribute and has a third random attribute instead of a mod slot.", "Tardigrade Armor System": "<b>Talent – Ablative Nano-Plating:</b> When your armor or an ally's armor breaks, that person gains bonus armor equal to 80% of your armor for 10 seconds. Cooldown per ally: 45 seconds. A kill with your specialization weapon removes this cooldown for all allies.", "Ridgeway's Pride": "<b>Talent – Bleeding Edge:</b> Shots against enemies within 15 m cause Bleed. For each bleeding enemy within 15 m, 3–48% of your armor is repaired per second; the repair scales with the number of bleeding enemies.", "Collector": "<b>Talent – Hoarder:</b> +3 grenade capacity, +50% grenade radius, and +35% grenade damage; each additional enemy caught in the blast radius adds +25% grenade damage. If you have fewer than two grenades, a grenade is automatically regenerated every 30 seconds.", "Provocator": "<b>Talent – Challenger:</b> [PvE] Gain +25% damage resistance against enemies within 20 m. [PvP] Gain +20% damage resistance against enemies within 15 m.", "Beacon / Iron Will": "<b>Talent – Bond:</b> You and allies gain +30% Critical Hit Damage, +15% Skill Efficiency, and +2% Armor Regeneration when an ally is within 10 m. If one of your skills is instead within 10 m, you gain +15% Critical Hit Damage, +7.5% Skill Efficiency, and +1% Armor Regeneration.", "Memento": "<b>Talent – Kill Confirmed:</b> Killed enemies drop trophies. Picking one up grants a short-term bonus that scales with your core attributes: Red +5% weapon damage, Blue +10% bonus armor, Yellow +5% Skill Efficiency. Each trophy also grants +1% weapon damage, +1% Skill Efficiency, and +0.1% Armor Regeneration for 300 seconds, up to 30 stacks.", "NinjaBike Messenger Bag": "<b>Talent – Resourceful:</b> Counts as a required piece of an equipped Gear or Brand Set and can therefore unlock bonuses from multiple sets at the same time.", "Acosta's Go-Bag": "<b>Talent – One in Hand:</b> Throwing a grenade refunds the grenade and grants +1 Skill Tier for 15 seconds; if you are already at Skill Tier 6, Overcharge is granted. <b>Two in the Bag:</b> +1 Armor Kit, +3 grenades, +25% ammo capacity, +10% Repair Skills, and +10% Status Effects.", "Birdie's Quick Fix": "<b>Talent:</b> <i>Currently marked as WIP on The Division Wiki; no complete talent description is available on the linked wiki page.</i>", "Harrier Pride": "<b>Talent – Rebalance:</b> Kills and hitting enemies three times build Red stacks; each grants +0.5% weapon damage. Being hit three times builds Blue stacks; each grants +0.5% damage resistance. At 80 total stacks, all stacks are removed and a separate bonus is granted: +0.5% damage resistance per Red stack and +0.5% weapon damage per Blue stack until the stack limit is reached again.", "Dodge City Gunslinger": "<b>Talent – Quick Draw:</b> While the pistol is holstered, you gain one stack every 0.5 seconds, up to 100. When you draw the pistol, the first shot consumes the stacks and deals +10% damage per stack; the hit counts as headshot damage regardless of where it hits.", "Waveform": "<b>Talent – Alternating Current:</b> Every second, one of your skills gains a stack of +3% Skill Damage, up to 10 stacks. After reaching maximum stacks for 10 seconds, the stacks transfer to the other skill; the process repeats continuously.", "Imperial Dynasty": "<b>Talent – Dragon's Glare:</b> While in combat, the enemy within 20 m who is closest to you is automatically set on fire. Cooldown: 40 seconds.", "Shocker Punch": "<b>Talent – Defibrillator:</b> Shock duration on you is reduced by 50%. With a shield, you gain +100% melee damage; together with St. Elmo's Engine, you also gain +100% melee damage and your next melee attack applies Shock. With all three pieces, the melee attack's Shock has a 5 m radius. Cooldown: 15 seconds.", "Centurion's Scabbard": "<b>Talent – Counter:</b> Weapon swapping activates bonus groups in sequence. PvE: +20% rate of fire and +20% weapon damage, followed by +50% magazine size and +50% reload speed. The bonuses last 12 seconds or until the next weapon swap; swapping to the pistol does not trigger the next group.", "Nimble Holster": "<b>Talent – Bob and Weave:</b> PvE: Gain 5% repair for every meter traveled during a cover-to-cover move. Damage taken during the move is healed over 10 seconds. PvP: 3% repair per meter.", "BTSU Datagloves": "<b>Talent – Transference Overclock:</b> +15% Hive Skill Haste per Skill Tier. Detonating a Hive refreshes skill cooldowns and grants Overcharge for 15 seconds. Allies who receive this effect cannot receive it again for 120 seconds.", "Bloody Knuckles": "<b>Talent – Over the Top:</b> Grenade damage or a melee hit activates Seeing Red: +25% weapon damage and +100% melee damage for 20 seconds. While on cooldown, a melee hit or a hit with a grenade effect instantly completes the cooldown.", "Overdogs": "<b>Talent – Weakest Link:</b> Amplifies weapon damage by 30% against the lowest-ranked enemies within the enemy tier hierarchy: Tier 1 includes Hunters, Rogues, Leaders, and Tanks; Tier 2 includes Support, Engineers, and Bombers; Tier 3 includes the remaining enemies and skill proxies.", "Rugged Gauntlets": "<b>Talent – Iron Grip:</b> -50% recoil penalty while firing from the hip and -50% recoil penalty while blind-firing from cover.", "Exodus": "<b>Talent:</b> <i>No complete talent description for Exodus is available on the linked wiki page; the entry is not presented there with a fully developed talent text.</i>", "Sawyer's Kneepads": "<b>Talent – Stand Your Ground:</b> Cannot be staggered by explosions. Gain +3% damage per second while not moving, up to 10 stacks. No new stacks are built while moving; after 10 seconds of movement, the stacks are lost.", "NinjaBike Kneepads": "<b>Talent – Parkour!:</b> A cover-to-cover move or vaulting over an obstacle reloads your drawn weapon and grants +25% bonus armor for 5 seconds.", "Nurse's Kneepads": "<b>Talent – Impervious:</b> You and allies within 10 m gain +40% Hazard Protection.", "Acosta's Kneepads": "<b>Talent – Escape Plan:</b> Vaulting, climbing, or dropping from an object grants +10% movement speed for 3 seconds. After 5 seconds without moving, gain +20% for 5 seconds. While affected by a status effect, gain +10% for 5 seconds; movement speed can reach a maximum of +20%. Also reduces movement impairment from status effects by 50%.", "Blacklisters Kneepads": "<b>Talent – Forbidden Impact:</b> <i>No reliable, complete talent description is available for this entry in the linked wiki source; the existing HTML text is therefore not presented as a wiki fact.</i>"};
+const exoticGearEnglish = {"Coyote's Mask": "<b>Talent – Pack Instinct:</b> You and your allies gain a bonus based on the distance to the last enemy hit: 0–15 m: +25% Critical Hit Damage; 15–25 m: +10% Critical Hit Damage and +10% Critical Hit Chance; 25 m+: +25% Critical Hit Chance.", "Vile": "<b>Talent – Toxic Delivery:</b> Status effects also apply a 10-second damage-over-time debuff. The total damage equals 50% of Concussion Grenade damage and is increased by your Status Effects values.", "Catharsis": "<b>Talent – Vicious Cycle:</b> Taking damage builds up to 30 stacks; each stack grants +1% weapon damage. At maximum stacks, taking further damage triggers a purge, removes all stacks and status effects, and creates a healing cloud that restores 5% of maximum armor per second for 10 seconds to allies inside the cloud.", "Catalyst": "<b>Talent – Chemical Agent:</b> Status effects on you or applied by you build Catalysis, up to 12 stacks. Each stack grants +2% weapon damage and +2% Status Effects. Affected enemies within 15 m generate stacks; at maximum stacks, killing an enemy also grants +25% bonus armor and +20% reload speed for 5 seconds. <b>Stabilizer:</b> While burning, you can continue aiming without losing ADS.", "Tinkerer": "<b>Talent – Abridged:</b> If your primary and secondary weapons are neither Exotic nor Named and are the same weapon type, the secondary weapon's talent is also applied to the primary weapon. Talents that require a weapon swap are not transferred.", "Investor": "<b>Talent – Slotted:</b> Gain bonuses for each non-core attribute on this item based on its color: Red +10% Critical Hit Damage, Yellow +5% Skill Efficiency, Blue +1% Armor Regeneration; in PvP +0.5% Armor Regeneration. The item can roll any core attribute and has a third random attribute instead of a mod slot.", "Tardigrade Armor System": "<b>Talent – Ablative Nano-Plating:</b> When your armor or an ally's armor breaks, that person gains bonus armor equal to 80% of your armor for 10 seconds. Cooldown per ally: 45 seconds. A kill with your specialization weapon removes this cooldown for all allies.", "Ridgeway's Pride": "<b>Talent – Bleeding Edge:</b> Shots against enemies within 15 m cause Bleed. For each bleeding enemy within 15 m, 3–48% of your armor is repaired per second; the repair scales with the number of bleeding enemies.", "Collector": "<b>Talent – Hoarder:</b> +3 grenade capacity, +50% grenade radius, and +35% grenade damage; each additional enemy caught in the blast radius adds +25% grenade damage. If you have fewer than two grenades, a grenade is automatically regenerated every 30 seconds.", "Provocator": "<b>Talent – Challenger:</b> [PvE] Gain +25% damage resistance against enemies within 20 m. [PvP] Gain +20% damage resistance against enemies within 15 m.", "Beacon / Iron Will": "<b>Talent – Bond:</b> You and allies gain +30% Critical Hit Damage, +15% Skill Efficiency, and +2% Armor Regeneration when an ally is within 10 m. If one of your skills is instead within 10 m, you gain +15% Critical Hit Damage, +7.5% Skill Efficiency, and +1% Armor Regeneration.", "Memento": "<b>Talent – Kill Confirmed:</b> Killed enemies drop trophies. Picking one up grants a short-term bonus that scales with your core attributes: Red +5% weapon damage, Blue +10% bonus armor, Yellow +5% Skill Efficiency. Each trophy also grants +1% weapon damage, +1% Skill Efficiency, and +0.1% Armor Regeneration for 300 seconds, up to 30 stacks.", "NinjaBike Messenger Bag": "<b>Talent – Resourceful:</b> Counts as a required piece of an equipped Gear or Brand Set and can therefore unlock bonuses from multiple sets at the same time.", "Acosta's Go-Bag": "<b>Talent – One in Hand:</b> Throwing a grenade refunds the grenade and grants +1 Skill Tier for 15 seconds; if you are already at Skill Tier 6, Overcharge is granted. <b>Two in the Bag:</b> +1 Armor Kit, +3 grenades, +25% ammo capacity, +10% Repair Skills, and +10% Status Effects.", "Birdie's Quick Fix": "<b>Talent:</b> <i>Currently marked as WIP on The Division Wiki; no complete talent description is available on the linked wiki page.</i>", "Harrier Pride": "<b>Talent – Rebalance:</b> Kills and hitting enemies three times build Red stacks; each grants +0.5% weapon damage. Being hit three times builds Blue stacks; each grants +0.5% damage resistance. At 80 total stacks, all stacks are removed and a separate bonus is granted: +0.5% damage resistance per Red stack and +0.5% weapon damage per Blue stack until the stack limit is reached again.", "Dodge City Gunslinger": "<b>Talent – Quick Draw:</b> While the pistol is holstered, you gain one stack every 0.5 seconds, up to 100. When you draw the pistol, the first shot consumes the stacks and deals +10% damage per stack; the hit counts as headshot damage regardless of where it hits.", "Waveform": "<b>Talent – Alternating Current:</b> Every second, one of your skills gains a stack of +3% Skill Damage, up to 10 stacks. After reaching maximum stacks for 10 seconds, the stacks transfer to the other skill; the process repeats continuously.", "Imperial Dynasty": "<b>Talent – Dragon's Glare:</b> While in combat, the enemy within 20 m who is closest to you is automatically set on fire. Cooldown: 40 seconds.", "Shocker Punch": "<b>Talent – Defibrillator:</b> Shock duration on you is reduced by 50%. With a shield, you gain +100% melee damage; together with St. Elmo's Engine, you also gain +100% melee damage and your next melee attack applies Shock. With all three pieces, the melee attack's Shock has a 5 m radius. Cooldown: 15 seconds.", "Centurion's Scabbard": "<b>Talent – Counter:</b> Weapon swapping activates bonus groups in sequence. PvE: +20% rate of fire and +20% weapon damage, followed by +50% magazine size and +50% reload speed. The bonuses last 12 seconds or until the next weapon swap; swapping to the pistol does not trigger the next group.", "Nimble Holster": "<b>Talent – Bob and Weave:</b> PvE: Gain 5% repair for every meter traveled during a cover-to-cover move. Damage taken during the move is healed over 10 seconds. PvP: 3% repair per meter.", "BTSU Datagloves": "<b>Talent – Transference Overclock:</b> +15% Hive Fertigkeitsbeschleunigung per Skill Tier. Detonating a Hive refreshes skill cooldowns and grants Overcharge for 15 seconds. Allies who receive this effect cannot receive it again for 120 seconds.", "Bloody Knuckles": "<b>Talent – Over the Top:</b> Grenade damage or a melee hit activates Seeing Red: +25% weapon damage and +100% melee damage for 20 seconds. While on cooldown, a melee hit or a hit with a grenade effect instantly completes the cooldown.", "Overdogs": "<b>Talent – Weakest Link:</b> Amplifies weapon damage by 30% against the lowest-ranked enemies within the enemy tier hierarchy: Tier 1 includes Hunters, Rogues, Leaders, and Tanks; Tier 2 includes Support, Engineers, and Bombers; Tier 3 includes the remaining enemies and skill proxies.", "Rugged Gauntlets": "<b>Talent – Iron Grip:</b> -50% recoil penalty while firing from the hip and -50% recoil penalty while blind-firing from cover.", "Exodus": "<b>Talent:</b> <i>No complete talent description for Exodus is available on the linked wiki page; the entry is not presented there with a fully developed talent text.</i>", "Sawyer's Kneepads": "<b>Talent – Stand Your Ground:</b> Cannot be staggered by explosions. Gain +3% damage per second while not moving, up to 10 stacks. No new stacks are built while moving; after 10 seconds of movement, the stacks are lost.", "NinjaBike Kneepads": "<b>Talent – Parkour!:</b> A cover-to-cover move or vaulting over an obstacle reloads your drawn weapon and grants +25% bonus armor for 5 seconds.", "Nurse's Kneepads": "<b>Talent – Impervious:</b> You and allies within 10 m gain +40% Hazard Protection.", "Acosta's Kneepads": "<b>Talent – Escape Plan:</b> Vaulting, climbing, or dropping from an object grants +10% movement speed for 3 seconds. After 5 seconds without moving, gain +20% for 5 seconds. While affected by a status effect, gain +10% for 5 seconds; movement speed can reach a maximum of +20%. Also reduces movement impairment from status effects by 50%.", "Blacklisters Kneepads": "<b>Talent – Forbidden Impact:</b> <i>No reliable, complete talent description is available for this entry in the linked wiki source; the existing HTML text is therefore not presented as a wiki fact.</i>"};
 const exoticSlotEnglish = {"Masken": "Masks", "Brust": "Chest", "Rucksack": "Backpack", "Holster": "Holster", "Handschuhe": "Gloves", "Knie": "Kneepads"};
 
 /* ---------- Exotische Kleidung render ---------- */
@@ -2115,12 +2174,12 @@ applyFilters();
     ["KERN-EIGENSCHAFT / FOKUS","CORE ATTRIBUTE / FOCUS"],
     ["4-TEILE-TALENT","4-PIECE TALENT"],["RUCKSACK-TALENT (4-TLG.)","BACKPACK TALENT (4-PIECE)"],
     ["BRUST-TALENT (4-TLG.)","CHEST TALENT (4-PIECE)"],["2-TEILE","2-PIECE"],["3-TEILE","3-PIECE"],["1-TEIL","1-PIECE"],
-    ["Waffenhandling","Weapon Handling"],["Feuerrate","Rate of Fire"],["Nachladegeschwindigkeit","Reload Speed"],
+    ["Waffenhandhabung","Weapon Handling"],["Feuerrate","Rate of Fire"],["Nachladegeschwindigkeit","Reload Speed"],
     ["Krit-Chance","Critical Hit Chance"],["Krit-Schaden","Critical Hit Damage"],["Gesamtrüstung","Total Armor"],
     ["Rüstungsregen","Armor Regeneration"],["Rüstungsregeneration","Armor Regeneration"],["Rüstung bei Kill","Armor on Kill"],
     ["Gefahrenschutz","Hazard Protection"],["Schutz vor Elite-Gegnern","Protection from Elites"],
-    ["Skillschaden","Skill Damage"],["Skill-Effizienz","Skill Efficiency"],["Skilldauer","Skill Duration"],
-    ["Skill Haste","Skill Haste"],["Reparaturskills","Repair Skills"],["Status-Effekte","Status Effects"],
+    ["Skillschaden","Skill Damage"],["Fertigkeitsbeschleunigung","Skill Haste"],["Skill-Effizienz","Skill Efficiency"],["Skilldauer","Skill Duration"],
+    ["Fertigkeitsbeschleunigung","Fertigkeitsbeschleunigung"],["Reparaturskills","Repair Skills"],["Status-Effekte","Status Effects"],
     ["Explosionsschaden","Explosive Damage"],["Magazingröße","Magazine Size"],["Stabilität","Stability"],
     ["Munitionskapazität","Ammo Capacity"],["Genauigkeit","Accuracy"],["Sturmgewehr-Schaden","Assault Rifle Damage"],
     ["Scharfschützengewehr-Schaden","Marksman Rifle Damage"],["Gewehr-Schaden","Rifle Damage"],
@@ -2243,7 +2302,7 @@ applyFilters();
     ["Körpertreffer","body shots"],
     ["Beintreffer","leg shots"],
     ["Nachladegeschwindigkeit","reload speed"],
-    ["Waffenhandling","weapon handling"],
+    ["Waffenhandhabung","weapon handling"],
     ["Magazingröße","magazine size"],
     ["Munitionskapazität","ammo capacity"],
     ["Feuerrate","rate of fire"],
@@ -2251,7 +2310,7 @@ applyFilters();
     ["Skill-Effizienz","Skill Efficiency"],
     ["Skillschaden","Skill Damage"],
     ["Skilldauer","Skill Duration"],
-    ["Skill Haste","Skill Haste"],
+    ["Fertigkeitsbeschleunigung","Fertigkeitsbeschleunigung"],
     ["Reparaturskills","Repair Skills"],
     ["Status-Effekte","Status Effects"],
     ["Gefahrenschutz","Hazard Protection"],
@@ -2508,7 +2567,7 @@ applyFilters();
       ["Skill-Effizienz","skill efficiency"],["Skilldauer","skill duration"],["Reparaturskills","repair skills"],
       ["Status-Effekte","status effects"],["Explosionsschaden","explosive damage"],
       ["Magazingröße","magazine size"],["Munitionskapazität","ammo capacity"],["Magazinschaden","magazine damage"],
-      ["Waffenhandling","weapon handling"],["Feuerrate","rate of fire"],["Nachladegeschwindigkeit","reload speed"],
+      ["Waffenhandhabung","weapon handling"],["Feuerrate","rate of fire"],["Nachladegeschwindigkeit","reload speed"],
       ["Stabilität","stability"],["Genauigkeit","accuracy"],["Reichweiten","ranges"],["Reichweite","range"],
       ["Abklingzeit","cooldown"],["Markierungen","marks"],["Markierung","mark"],
       ["Gegnern","enemies"],["Gegner","enemy"],["Verbündeten","allies"],["Verbündete","allies"],["Verbündeter","ally"],
@@ -2616,6 +2675,12 @@ applyFilters();
     document.documentElement.lang=lang;
     document.title=english ? "Division 2 — Gear & Weapon Database" : "Division 2 — Sets Datenbank";
     buttons.forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+    const wipTitle=document.querySelector('.wip-badge .wip-title');
+    const wipText=document.querySelector('.wip-badge .wip-text');
+    if(wipTitle) wipTitle.textContent=english ? 'WORK IN PROGRESS' : 'IN BEARBEITUNG';
+    if(wipText) wipText.textContent=english
+      ? 'This page is continuously updated. Major updates and patch notes are reviewed so changes to weapons, sets and talents can be added as promptly as possible.'
+      : 'Die Seite wird laufend aktualisiert. Größere Updates und Patchnotes werden geprüft, damit Änderungen an Waffen, Sets und Talenten möglichst zeitnah übernommen werden.';
 
     textNodes.forEach(([node,de])=>node.nodeValue=english ? translate(de) : de);
     placeholders.forEach(([el,de])=>el.placeholder=english ? translate(de) : de);
@@ -2627,6 +2692,19 @@ applyFilters();
     });
 
     localizeItemNames();
+
+    /* Brand Sets: use the German source values in DE and translate those exact
+       values to English in EN. This prevents English attribute names such as
+       "Skill Haste" from leaking into the German view. */
+    document.querySelectorAll('.card.brand').forEach(card=>{
+      const name=card.dataset.name;
+      const source=brandSets.find(s=>s[0].toLowerCase()===name);
+      if(!source) return;
+      const vals=card.querySelectorAll('.bonus-block .v');
+      [1,2,3].forEach((idx,i)=>{
+        if(vals[i]) vals[i].innerHTML=english ? translate(source[idx]) : source[idx];
+      });
+    });
 
     /* Gear Sets from the Ubisoft Red Horizon PDF: complete EN source text and explicit DE translations. */
     document.querySelectorAll('.card.gear').forEach(card=>{
