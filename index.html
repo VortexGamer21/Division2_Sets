@@ -470,6 +470,30 @@
     background: rgba(201,67,46,0.05);
   }
   .wp-note a{ color: var(--weapon); text-decoration: underline; }
+  .source-list{
+    display:grid;
+    gap:10px;
+  }
+  .source-item{
+    padding:10px 12px;
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-sm);
+    background:rgba(255,255,255,0.018);
+    color:var(--text-dim);
+    font-size:12px;
+    line-height:1.6;
+  }
+  .source-item strong{ color:var(--text); font-weight:600; }
+  .source-item a{ color:var(--weapon); text-decoration:underline; }
+  .source-item .source-type{
+    display:inline-block;
+    margin-right:7px;
+    color:var(--weapon);
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    font-weight:700;
+  }
   .wp-jump{
     display:flex; flex-wrap:wrap; gap:8px;
     margin: -10px 0 36px;
@@ -652,29 +676,6 @@
   }
   @media (prefers-reduced-motion: reduce){
     .witem .wtalent summary::before{ transition: none; }
-  }
-
-  .wp-search{
-    position:relative;
-    max-width: 340px;
-    margin-bottom: 34px;
-  }
-  .wp-search input{
-    width:100%;
-    background: var(--panel-2);
-    border: 1px solid var(--line);
-    color: var(--text);
-    border-radius: 999px;
-    font-family:'JetBrains Mono', monospace;
-    font-size: 13px;
-    padding: 9px 14px 9px 34px;
-    outline: none;
-    transition: border-color .15s ease, box-shadow .15s ease;
-  }
-  .wp-search input:focus{ border-color: var(--weapon); box-shadow: 0 0 0 3px rgba(201,67,46,0.15); }
-  .wp-search svg{
-    position:absolute; left:12px; top:50%; transform:translateY(-50%);
-    opacity:.5; width:13px; height:13px;
   }
 
   /* ---------- footer ---------- */
@@ -906,7 +907,7 @@
     <div class="controls-inner">
       <div class="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="searchInput" type="text" placeholder="Set suchen…">
+        <input id="searchInput" type="text" placeholder="Alles durchsuchen…">
       </div>
       <div class="filters">
         <button class="active" data-f="all">Alle</button>
@@ -935,7 +936,6 @@
   </div>
   <div class="grid" id="brandGrid"></div>
 
-  <p class="wp-note" style="margin-top:-8px;">Talente der exotischen Kleidung: The Division Wiki (Fandom), soweit dort für Division 2 dokumentiert. Einträge, die das Wiki als WIP führt oder für die dort keine vollständige Talentbeschreibung vorliegt, sind entsprechend gekennzeichnet.</p>
 
   <div class="section-head exogear">
     <h2>Exotische Kleidung</h2>
@@ -950,13 +950,8 @@
     <div class="rule"></div>
   </div>
   <p class="wp-intro">Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic mit Unique-Talent). Tier-Badges (S/A/B/C) zeigen die aktuelle Meta-Einstufung 2026 je Waffenklasse. Bei den Exotic-Waffen lässt sich das jeweilige Exotic-Talent per Klick aufklappen.</p>
-  <div class="wp-search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input id="wpSearchInput" type="text" placeholder="Waffe suchen…">
-  </div>
   <div class="wp-jump" id="wpJump"></div>
   <div id="wpCategories"></div>
-  <p class="wp-note">Quelle für Namen/Einstufung: grindout.com Waffen-Guide (Stand 29.08.2026). Die Waffenwerte (Base Damage, RPM, Mag, Reload, Optimal Range, Mag Damage, Burst-/Sustain-DPS) stammen aus der Tabelle auf <a href="https://djtickle.com/weapons" target="_blank" rel="noopener">djtickle.com/weapons</a> (Stand 17.09.2026), inkl. aller vom Nutzer bereitgestellten Screenshots für AR, MMR, Pistole, Rifle (inkl. der Rifle-Exotic Vindicator), Shotgun, SMG und LMG. Noch nicht erfasst: alle Exotic-/Named-SMGs außer Emeline's Guard (Ouroboros, The Chatterbox, Lady Death, Backfire, Oxpecker, Underboss, Dark Winter, The Grudge). Waffen mit identischen Werten wie eine bereits gelistete Waffe (z.&nbsp;B. baugleiche Namensvarianten) sind bewusst als eigene Einträge aufgeführt, da sie im Spiel als eigenständige Drops/Skins erscheinen. <br><br><b>Exotic-Talente:</b> sinngemäß zusammengefasst aus dem <a href="https://thedivision.fandom.com/wiki/Category:Exotic" target="_blank" rel="noopener">The Division Wiki (Fandom)</a>, soweit die Waffenseiten dort für Division 2 gepflegt sind. Wo das Wiki veraltet ist oder nur die Division-1-Version beschreibt (z.&nbsp;B. Pakhan), stammen die Angaben aus Ubisoft-Season-News/Patchnotes sowie Guides (KeenGamer, Sportskeeda, Destructoid, games.gg, Grindout). Zahlenwerte können sich mit Title Updates ändern.</p>
 
   <div class="extras">
     <div class="panel">
@@ -976,11 +971,28 @@
         </div>
       </div>
     </div>
+    <div class="panel">
+      <h3><span class="dot"></span>Quellen</h3>
+      <div class="source-list">
+        <div class="source-item" data-source-de="OFFIZIELL|<strong>Ubisoft – The Division 2 Patch Notes &amp; Season News:</strong> Offizielle Patch Notes und Season-News werden zur Prüfung von Änderungen an Waffen, Talenten, Gear-/Brand-Sets und Spielwerten herangezogen. Dazu gehören insbesondere die offiziellen Ubisoft Patch Notes und PTS Patch Notes."
+             data-source-en="OFFICIAL|<strong>Ubisoft – The Division 2 Patch Notes &amp; Season News:</strong> Official patch notes and season news are used to verify changes to weapons, talents, Gear/Brand Sets, and game values. This includes the official Ubisoft Patch Notes and PTS Patch Notes."></div>
+        <div class="source-item" data-source-de="WIKI|<strong>The Division Wiki (Fandom):</strong> Wird für Namen und Beschreibungen von Exotic-Talenten und Exotic-Gear verwendet, soweit die jeweilige Division-2-Seite gepflegt ist. Veraltete oder unvollständige Wiki-Einträge werden entsprechend berücksichtigt."
+             data-source-en="WIKI|<strong>The Division Wiki (Fandom):</strong> Used for names and descriptions of Exotic talents and Exotic Gear where the relevant Division 2 page is maintained. Outdated or incomplete wiki entries are treated accordingly."></div>
+        <div class="source-item" data-source-de="DATEN|<strong>grindout.com:</strong> Community-Quelle für Gear-/Brand-Sets sowie Namen und Einstufungen der erfassten Waffen."
+             data-source-en="DATA|<strong>grindout.com:</strong> Community source for Gear/Brand Sets as well as names and classifications of the weapons tracked here."></div>
+        <div class="source-item" data-source-de="WAFFENWERTE|<strong>djtickle.com/weapons:</strong> Quelle für Waffenwerte wie Base Damage, RPM, Magazin, Reload, Optimal Range sowie Burst-/Sustain-DPS, ergänzt durch die bereitgestellten Screenshots."
+             data-source-en="WEAPON STATS|<strong>djtickle.com/weapons:</strong> Source for weapon values such as Base Damage, RPM, magazine size, reload, Optimal Range, and Burst/Sustain DPS, supplemented by the provided screenshots."></div>
+        <div class="source-item" data-source-de="GUIDES|<strong>KeenGamer, Sportskeeda, Destructoid und games.gg:</strong> Ergänzende Community- und Guide-Quellen, wenn das Wiki oder die offiziellen Angaben keine vollständige Beschreibung liefern."
+             data-source-en="GUIDES|<strong>KeenGamer, Sportskeeda, Destructoid and games.gg:</strong> Additional community and guide sources when the Wiki or official information does not provide a complete description."></div>
+        <div class="source-item" data-source-de="HINWEIS|<strong>Stand der Daten:</strong> Die Angaben können sich durch neue Title Updates und Patch Notes ändern. Die Seite ist eine inoffizielle Community-Datenbank und steht nicht in Verbindung mit Ubisoft."
+             data-source-en="NOTE|<strong>Data status:</strong> The information may change with new Title Updates and Patch Notes. This site is an unofficial community database and is not affiliated with Ubisoft."></div>
+      </div>
+    </div>div>
   </div>
 
   <footer>
-    <span>Quellen: grindout.com (Gear/Brand Sets &amp; Waffen), djtickle.com (Waffenliste) — Community-Guides, Stand 2026</span>
-    <span>Nicht offiziell mit Ubisoft verbunden</span>
+    <span id="sourceFooter">Quellenübersicht siehe Quellen-Panel — Community-Datenbank, Stand 2026</span>
+    <span id="ubisoftFooter">Nicht offiziell mit Ubisoft verbunden</span>
   </footer>
 
 </div>
@@ -2024,10 +2036,8 @@ document.getElementById('wpCountStat').textContent = totalWeapons;
 const searchInput = document.getElementById('searchInput');
 const filterButtons = document.querySelectorAll('.filters button');
 const countNote = document.getElementById('countNote');
-const wpSearchInput = document.getElementById('wpSearchInput');
 const weaponSectionHead = document.querySelector('.section-head.weapon');
 const wpIntro = document.querySelector('.wp-intro');
-const wpSearchBox = document.querySelector('.wp-search');
 const wpJumpEl = document.getElementById('wpJump');
 let activeFilter = 'all';
 const weaponRarities = ['exotic','named','standard'];
@@ -2083,8 +2093,8 @@ function applyFilters(){
     countNote.textContent = `${visibleGear + visibleBrand} von 65 Sets`;
   }
 
-  /* Waffen-Bereich: nach Kategorie (Exotic/Named/Standard) und eigener Suche filtern */
-  const wq = wpSearchInput.value.trim().toLowerCase();
+  /* Waffen-Bereich: mit derselben globalen Suche wie Sets/Brand Sets filtern */
+  const wq = q;
   let visibleWeapons = 0;
   document.querySelectorAll('.wp-group').forEach(group => {
     const rarityOK = !weaponFilterActive || group.dataset.rarity === activeFilter;
@@ -2103,6 +2113,8 @@ function applyFilters(){
 
   if(weaponFilterActive){
     countNote.textContent = `${visibleWeapons} Waffen`;
+  } else if(activeFilter === 'all' && q){
+    countNote.textContent = `${visibleGear + visibleBrand + visibleExo + visibleWeapons} Treffer`;
   }
 
 
@@ -2120,7 +2132,6 @@ function applyFilters(){
 }
 
 searchInput.addEventListener('input', applyFilters);
-wpSearchInput.addEventListener('input', applyFilters);
 filterButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     filterButtons.forEach(b => b.classList.remove('active'));
@@ -2751,6 +2762,22 @@ applyFilters();
           ${t[2]?`<p class="tnote">${escHTML(t[2])}</p>`:''}
         </div>`).join('');
     });
+
+    /* Sources panel: use complete DE/EN text so no mixed-language fragments remain. */
+    document.querySelectorAll('.source-item[data-source-de]').forEach(el=>{
+      const raw=(english ? el.dataset.sourceEn : el.dataset.sourceDe) || '';
+      const parts=raw.split('|');
+      const badge=parts.shift() || '';
+      el.innerHTML=`<span class="source-type">${escHTML(badge)}</span>${parts.join('|')}`;
+    });
+    const sourceFooter=document.getElementById('sourceFooter');
+    const ubisoftFooter=document.getElementById('ubisoftFooter');
+    if(sourceFooter) sourceFooter.textContent=english
+      ? 'See the Sources panel — Community database, data current as of 2026'
+      : 'Quellenübersicht siehe Quellen-Panel — Community-Datenbank, Stand 2026';
+    if(ubisoftFooter) ubisoftFooter.textContent=english
+      ? 'Not officially affiliated with Ubisoft'
+      : 'Nicht offiziell mit Ubisoft verbunden';
 
     localStorage.setItem('division2-language',lang);
   }
