@@ -982,7 +982,7 @@ const gearSets = [
  "Waving the Flag — beschleunigt die Debuff-Rotation auf 1s.", false],
 ["Aces and Eights","+30% Scharfschützengewehr-Schaden &amp; +30% Gewehr-Schaden","+30% Kopfschuss-Schaden &amp; +30% Waffenhandling",
  "Dead Man's Hand — nach 5 aufgedeckten Karten wird der nächste Schuss um 75% verstärkt; je nach Hand werden 2, 3 oder 4 Schüsse verstärkt.",
- "Ace in the Sleeve — verstärkt beim Aufdecken der Hand einen zusätzlichen Schuss; der 3-Teile-Kopfschussschaden ist additiv und erhöht sich auf 30%.",
+ "Ace in the Sleeve — Verstärkt beim Aufdecken der Hand einen zusätzlichen Schuss.",
  "No Limit — erhöht den Dead-Man's-Hand-Schadensbonus von 75% auf 100%.", false],
 ["Tip of the Spear","+20% Signaturwaffen-Schaden","+10% Waffenschaden",
  "Aggressive Recon — Signaturwaffen-Kill gibt +15% Signaturwaffen-Schaden für 10s und +25% Nachladegeschwindigkeit für das nächste Nachladen; Signaturwaffen-Munition regeneriert automatisch alle 60s.",
@@ -1714,7 +1714,7 @@ const gearSetEnglish = {
   "Aces and Eights": {
     p2: "30% MMR Damage • 30% Rifle Damage", p3: "30% Headshot Damage • 30% Weapon Handling (15% PvP)",
     t4: "Flip a card when landing shots with a Rifle or Marksman Rifle. After 5 cards are flipped, the damage of your next shot is amplified by 75%. More shots are enhanced the better the hand revealed. Four of a Kind: 4 shots. Full House: 3 shots. Aces and Eights: 2 shots. Flip an additional card on headshots.",
-    backpack: "", chest: "Increases Dead Man's Hand damage bonus from 75% to 100%."
+    backpack: "Ace in the Sleeve — Amplifies 1 extra shot when revealing your hand.", chest: "Increases Dead Man's Hand damage bonus from 75% to 100%."
   },
   "Breaking Point": {
     p2: "30% MMR Damage; 30% Rifle Damage", p3: "30% Headshot Damage; 30% Weapon Handling",
@@ -1729,7 +1729,7 @@ const gearSetEnglish = {
   "Concentrated Company": {
     p2: "", p3: "",
     t4: "Shooting an enemy marks them for 10s. When a marked enemy dies, receive one stack of 3% Weapon Damage and 3% Critical Hit Damage for each Ally of Skill that has contributed to killing that enemy, including yourself. Max stack is 35. Stacks decay every 10s. Maximum amount of marks that can be placed is 4.",
-    backpack: "Increase the Weapon Damage bonus per stack from 3% to 6%.", chest: ""
+    backpack: "Increase the Weapon Damage bonus per stack from 3% to 6%.", chest: "All for One — Increases Camaraderie amount of marks that can be placed from 4 to 8."
   },
   "Negotiator’s Dilemma": {
     p2: "", p3: "",
@@ -1739,12 +1739,62 @@ const gearSetEnglish = {
   "Ongoing Directive": {
     p2: "", p3: "",
     t4: "Shooting a status affected enemy will apply a mark. Killing a marked enemy grants a full clip of Hollow-Point Ammo for your active weapon, and half a clip of the agent's active weapon to the rest of the party. Mark lasts for 10s. Hollow-Point Ammo amplifies weapon damage by 40% and applies bleed on hit.",
-    backpack: "", chest: "Increases Hollow-Point Ammo damage amplification to 60%. This bonus does not apply to party members."
+    backpack: "Trauma Specialist — Increases the duration of your bleed Status Effect by 50% and all bleed damage done by 100%.", chest: "Increases Hollow-Point Ammo damage amplification to 60%. This bonus does not apply to party members."
   },
   "Tipping Scales": {
     p2: "", p3: "",
     t4: "Shooting builds stacks to a max of 50. Each stack provides +0.5% Weapon Handling and +5% Critical Hit Damage. Lose 6 stacks per second while not shooting. No stacks are lost if an enemy is Suppressed.",
-    backpack: "Increase the Critical Hit Damage received per stack from 5 to 8.", chest: ""
+    backpack: "Increase the Critical Hit Damage received per stack from 5 to 8.", chest: "Sustainability — Increase Throttle Control maximum number of stacks from 50 to 75."
+  }
+};
+
+/* German localization for the complete Ubisoft Red Horizon gear-set texts. */
+const gearSetGerman = {
+  "Ortiz: Exuro": {
+    p2: "+20% Brenndauer & +15% Skill-Leben", p3: "+40% Brandschaden", t4: "",
+    backpack: "Heatstroke — Verursacht +40% verstärkten Schaden bei Gegnern, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden. +25% Reichweite des Ortiz Incinerator Turret Prototype.",
+    chest: "Chain Combustion — Gegner, die durch den Ortiz Incinerator Turret Prototype in Brand gesetzt wurden, entzünden weitere Gegner innerhalb von 10 m."
+  },
+  "True Patriot": {
+    p2: "+15% Waffenhandling", p3: "+30% Magazingröße",
+    t4: "Red, White and Blue — Alle 2 Sekunden erhalten Gegner, auf die du schießt, einen stapelbaren Debuff aus Rot, Weiß und Blau. • Rot: Verstärkt den erlittenen Schaden des Gegners um 15%. • Weiß: Wenn du auf den Gegner schießt, wird die Rüstung des angreifenden Agents einmal pro Sekunde um 2% repariert. • Blau: Verringert den vom Gegner verursachten Schaden um 10%. • Full Flag: Gegner, die unter dem Einfluss aller 3 Debuffs sterben, erzeugen eine Explosion mit 5 m Radius, die Schaden in Höhe ihrer gesamten Gesundheit und Rüstung verursacht. (Explosionsschaden bei benannten Gegnern reduziert.)",
+    backpack: "Erhöht die Stärke der Rot-, Weiß- und Blau-Debuffs. Rot: von 15% auf 30%. Weiß: von 2% auf 5%. Blau: von 10% auf 20%.",
+    chest: "Erhöht die Rot-, Weiß- und Blau-Rotationsgeschwindigkeit auf 1 Sekunde."
+  },
+  "Aces and Eights": {
+    p2: "+30% MMR-Schaden • +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden • +30% Waffenhandling (15% PvP)",
+    t4: "Dead Man's Hand — Wenn du mit einem Gewehr oder Scharfschützengewehr Treffer landest, wird eine Karte aufgedeckt. Nach 5 aufgedeckten Karten wird der Schaden deines nächsten Schusses um 75% verstärkt. Je besser die aufgedeckte Hand, desto mehr Schüsse werden verstärkt. Vierling: 4 Schüsse. Full House: 3 Schüsse. Aces and Eights: 2 Schüsse. Kopfschüsse decken eine zusätzliche Karte auf.",
+    backpack: "Ace in the Sleeve — Verstärkt beim Aufdecken der Hand einen zusätzlichen Schuss.", chest: "Erhöht den Schadensbonus von Dead Man's Hand von 75% auf 100%."
+  },
+  "Breaking Point": {
+    p2: "+30% MMR-Schaden; +30% Gewehr-Schaden", p3: "+30% Kopfschussschaden; +30% Waffenhandling",
+    t4: "On Point — Ein Treffer mit einem Gewehr oder MMR gewährt einen Stack. Nachladen gewährt pro Stack für 20 Sekunden +2% Waffenhandling und +4% Waffenschaden. Während die Boni aktiv sind, werden keine neuen Stacks erworben. Wenn der Timer abläuft, wird dein Magazin aufgefüllt. Ein Waffenwechsel während der aktiven Boni beendet den Effekt und füllt dein Magazin auf. Ein Waffenwechsel, während die Boni nicht aktiv sind, entfernt alle Stacks und füllt dein Magazin auf.",
+    backpack: "Erhöht den Waffenschadensbonus von On Point von 4% auf 9%.", chest: "Erhöht den On-Point-Timer von 20 auf 40."
+  },
+  "Hotshot": {
+    p2: "", p3: "Der Bonus von 30% Waffenhandling wurde vom 2-Teile-Bonus auf den 3-Teile-Bonus übertragen.",
+    t4: "Headache — Der erste Kopfschuss mit einem Scharfschützengewehr erhöht den nächsten Kopfschuss um 80%. Ein zweiter aufeinanderfolgender Kopfschuss mit einem Scharfschützengewehr gewährt +10% Rüstung (bei voller Rüstung stattdessen Bonus-Rüstung bis zu 50% des aktuellen Rüstungswerts). Ein dritter aufeinanderfolgender Kopfschuss füllt das Magazin auf. Ab dem vierten Kopfschuss erhalten Agents für jeden weiteren aufeinanderfolgenden Kopfschuss-Kill alle 3 Boni. Ein verfehlter Kopfschuss setzt den Zyklus zurück.",
+    backpack: "", chest: ""
+  },
+  "Concentrated Company": {
+    p2: "", p3: "",
+    t4: "Camaraderie — Wenn du auf einen Gegner schießt, wird er 10 Sekunden lang markiert. Wenn ein markierter Gegner stirbt, erhältst du für jeden Verbündeten oder Skill, der zu seinem Tod beigetragen hat, einschließlich dir selbst, einen Stack mit +3% Waffenschaden und +3% kritischem Trefferschaden. Maximal 35 Stacks. Die Stacks verfallen alle 10 Sekunden. Es können maximal 4 Markierungen gleichzeitig platziert werden.",
+    backpack: "Erhöht den Waffenschadensbonus pro Stack von 3% auf 6%.", chest: "All for One — Erhöht die maximale Anzahl der durch Camaraderie platzierbaren Markierungen von 4 auf 8."
+  },
+  "Negotiator’s Dilemma": {
+    p2: "", p3: "",
+    t4: "Hostile Negotiations — Kritische Treffer markieren Gegner 20 Sekunden lang, insgesamt bis zu 3 Markierungen. Wenn du einen markierten Gegner kritisch triffst, erleiden alle anderen markierten Gegner 60% des verursachten Schadens. Wenn ein markierter Gegner stirbt, erhältst du +10% kritischen Trefferschaden, bis zu 10-mal stapelbar oder bis der Kampf endet.",
+    backpack: "", chest: ""
+  },
+  "Ongoing Directive": {
+    p2: "", p3: "",
+    t4: "Rules of Engagement — Wenn du auf einen von einem Statuseffekt betroffenen Gegner schießt, erhält er eine Markierung. Das Töten eines markierten Gegners gewährt ein volles Magazin Hollow-Point-Munition für deine aktive Waffe und ein halbes Magazin der aktiven Waffe des Agents für den Rest der Gruppe. Die Markierung hält 10 Sekunden. Hollow-Point-Munition verstärkt den Waffenschaden um 40% und verursacht bei Treffern Blutung.",
+    backpack: "Trauma Specialist — Erhöht die Dauer deines Blutungs-Statuseffekts um 50% und den gesamten verursachten Blutungsschaden um 100%.", chest: "Parabellum Rounds — Erhöht die Schadensverstärkung der Hollow-Point-Munition auf 60%. Dieser Bonus gilt nicht für Gruppenmitglieder."
+  },
+  "Tipping Scales": {
+    p2: "", p3: "",
+    t4: "Throttle Control — Schießen baut bis zu 50 Stacks auf. Jeder Stack gewährt +0,5% Waffenhandling und +5% kritischen Trefferschaden. Wenn du nicht schießt, verlierst du 6 Stacks pro Sekunde. Es gehen keine Stacks verloren, wenn ein Gegner unterdrückt wird.",
+    backpack: "Erhöht den pro Stack erhaltenen kritischen Trefferschaden von 5% auf 8%.", chest: "Sustainability — Erhöht die maximale Anzahl der Stacks von Throttle Control von 50 auf 75."
   }
 };
 
@@ -2578,22 +2628,20 @@ applyFilters();
 
     localizeItemNames();
 
-    /* Gear Sets from the Ubisoft Red Horizon PDF: keep complete source text in EN and translated text in DE. */
+    /* Gear Sets from the Ubisoft Red Horizon PDF: complete EN source text and explicit DE translations. */
     document.querySelectorAll('.card.gear').forEach(card=>{
       const name=card.dataset.name;
-      const src=gearSetEnglish[Object.keys(gearSetEnglish).find(k=>k.toLowerCase()===name)];
+      const key=Object.keys(gearSetEnglish).find(k=>k.toLowerCase()===name);
+      if(!key) return;
+      const src=english ? gearSetEnglish[key] : gearSetGerman[key];
       if(!src) return;
       const vals=card.querySelectorAll('.bonus-block .v');
-      if(english){
-        if(vals[0] && card.dataset.enP2) vals[0].innerHTML=card.dataset.enP2;
-        if(vals[1] && card.dataset.enP3) vals[1].innerHTML=card.dataset.enP3;
-      }
+      if(vals[0] && src.p2 !== undefined) vals[0].innerHTML=src.p2;
+      if(vals[1] && src.p3 !== undefined) vals[1].innerHTML=src.p3;
       const talents=card.querySelectorAll('.talent .t-body');
-      if(english){
-        if(talents[0] && card.dataset.enT4) talents[0].innerHTML=card.dataset.enT4;
-        if(talents[1] && card.dataset.enBackpack) talents[1].innerHTML=card.dataset.enBackpack;
-        if(talents[2] && card.dataset.enChest) talents[2].innerHTML=card.dataset.enChest;
-      }
+      if(talents[0] && src.t4 !== undefined) talents[0].innerHTML=src.t4;
+      if(talents[1] && src.backpack !== undefined) talents[1].innerHTML=src.backpack;
+      if(talents[2] && src.chest !== undefined) talents[2].innerHTML=src.chest;
     });
 
     /* Exotic Gear has dedicated, complete English descriptions. */
