@@ -876,7 +876,9 @@
   </div>
   <div class="grid" id="brandGrid"></div>
 
-  <p class="wp-note" style="margin-top:-8px;">Talente der exotischen Kleidung: The Division Wiki (Fandom), soweit dort für Division 2 dokumentiert. Einträge, die das Wiki als WIP führt oder für die dort keine vollständige Talentbeschreibung vorliegt, sind entsprechend gekennzeichnet.</p>\n\n  <div class="section-head exogear">
+  <p class="wp-note" style="margin-top:-8px;">Talente der exotischen Kleidung: The Division Wiki (Fandom), soweit dort für Division 2 dokumentiert. Einträge, die das Wiki als WIP führt oder für die dort keine vollständige Talentbeschreibung vorliegt, sind entsprechend gekennzeichnet.</p>
+
+  <div class="section-head exogear">
     <h2>Exotische Kleidung</h2>
     <span class="tag">MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE</span>
     <div class="rule"></div>
@@ -1796,7 +1798,7 @@ bestBrand.forEach(n => { const li = document.createElement('li'); li.textContent
 
 /* ---------- Waffen render ---------- */
 const rarityLabel = { exotic:"Exotic", named:"Named", standard:"Standard" };
-const groupLabel = { exotic:"Exotic-Waffen", named:"Named-Waffen (Perfect-Talent)", standard:"Standard- / High-End-Waffen" };
+const groupLabel = { exotic:"Exotic Weapons", named:"Named Weapons (Perfect Talent)", standard:"Standard / High-End Weapons" };
 
 function tierClass(t){
   if(t === 'S') return 's';
@@ -1970,160 +1972,528 @@ applyFilters();
 <script>
 /* ==========================================================
    BILINGUAL UI — DE / EN
-   English wording is aligned with the terminology used by
-   The Division Wiki / Fandom where applicable.
-   The original German data remains untouched.
+   Complete UI/data translation layer.
+   Original German data remains the source of truth.
    ========================================================== */
 (function(){
   const root = document.querySelector('.wrap');
   const buttons = document.querySelectorAll('.lang-switch button');
   if(!root || !buttons.length) return;
 
-  const germanNames = {"Striker's Battlegear": "Stürmer", "Heartbreaker": "Herzbrecher", "Umbra Initiative": "Umbra-Initiative", "Hunter's Fury": "Zorn des Jägers", "Negotiator's Dilemma": "Dilemma des Verhandlungsführers", "Hotshot": "Überflieger", "Rigger": "Tüftler", "Eclipse Protocol": "Eclipse-Protokoll", "Future Initiative": "Zukunftsinitiative", "Foundry Bulwark": "Gießerei-Bollwerk", "Hard Wired": "Verkabelt", "Ongoing Directive": "Aktivierte Direktive", "True Patriot": "Wahrer Patriot", "Aces and Eights": "Asse und Achten", "Tip of the Spear": "Spitze des Speers", "System Corruption": "Systemkorruption", "Cavalier": "Kavalier", "Ortiz: Exuro": "Ortiz: Exuro", "Aegis": "Aegis", "Breaking Point": "Breaking Point", "Virtuoso": "Virtuose", "Refactor": "Refaktor", "Measured Assembly": "Measured Assembly", "Tipping Scales": "Tipping Scales", "Concentrated Company": "Concentrated Company", "Core Strength": "Core Strength", "Ortiz: Reficere": "Ortiz: Reficere", "Ember Engine": "Ember Engine", "St. Elmo's Engine": "St. Elmos Motor", "Capacitor": "Kondensator", "Eagle Bearer": "Adlerträger", "Chameleon": "Chamäleon", "The Bighorn": "Der Bighorn", "Chatterbox": "Gesprächsstoff", "The Chatterbox": "Gesprächsstoff", "Lady Death": "Lady Death", "Backfire": "Rückschlag", "Ouroboros": "Ouroboros", "Scorpio": "Skorpion", "Memento": "Andenken", "Coyote's Mask": "Kojotenmaske", "Vile": "Niedertracht", "Waveform": "Wellenform", "Acosta's Go-Bag": "Acostas Notfalltasche", "Ravenous": "Gefräßiger", "Regulus": "Regulus", "Nemesis": "Nemesis", "Bullet King": "Kugelkönig", "Merciless": "Gnadenlos", "Sweet Dreams": "Süße Träume", "Liberty": "Freiheit", "Diamondback": "Diamantenrücken", "Strega": "Strega"};
-function localizedName(name){
-  return germanNames[name] || name;
-}
-function localizeItemNames(){
-  document.querySelectorAll('.card.gear h3, .card.brand h3, .card.exo h3, .witem .wname').forEach(el=>{
-    if(!el.dataset.enName) el.dataset.enName = el.textContent.trim();
-    el.textContent = document.documentElement.lang === 'de'
-      ? localizedName(el.dataset.enName)
-      : el.dataset.enName;
-  });
-}
+  const germanNames = {
+    "Striker's Battlegear":"Stürmer","Heartbreaker":"Herzbrecher","Umbra Initiative":"Umbra-Initiative",
+    "Hunter's Fury":"Zorn des Jägers","Negotiator's Dilemma":"Dilemma des Verhandlungsführers","Hotshot":"Überflieger",
+    "Rigger":"Tüftler","Eclipse Protocol":"Eclipse-Protokoll","Future Initiative":"Zukunftsinitiative",
+    "Foundry Bulwark":"Gießerei-Bollwerk","Hard Wired":"Verkabelt","Ongoing Directive":"Aktivierte Direktive",
+    "True Patriot":"Wahrer Patriot","Aces and Eights":"Asse und Achten","Tip of the Spear":"Spitze des Speers",
+    "System Corruption":"Systemkorruption","Cavalier":"Kavalier","Virtuoso":"Virtuose","St. Elmo's Engine":"St. Elmos Motor",
+    "Capacitor":"Kondensator","Eagle Bearer":"Adlerträger","Chameleon":"Chamäleon","The Bighorn":"Der Bighorn",
+    "The Chatterbox":"Gesprächsstoff","Chatterbox":"Gesprächsstoff","Lady Death":"Lady Death","Backfire":"Rückschlag",
+    "Scorpio":"Skorpion","Memento":"Andenken","Coyote's Mask":"Kojotenmaske","Vile":"Niedertracht",
+    "Waveform":"Wellenform","Acosta's Go-Bag":"Acostas Notfalltasche","Ravenous":"Gefräßiger","Regulus":"Regulus",
+    "Nemesis":"Nemesis","Bullet King":"Kugelkönig","Merciless":"Gnadenlos","Sweet Dreams":"Süße Träume",
+    "Liberty":"Freiheit","Diamondback":"Diamantenrücken","Strega":"Strega"
+  };
 
-const exact = new Map([
-    ["Alle","All"], ["Set suchen…","Search sets…"], ["Gear Sets","Gear Sets"],
-    ["Brand Sets","Brand Sets"], ["Exotische Kleidung","Exotic Gear"],
-    ["Exotic-Waffen","Exotic Weapons"], ["Named-Waffen","Named Weapons"],
-    ["Standard-Waffen","Standard Weapons"], ["Waffen","Weapons"],
-    ["SETS GESAMT","SETS TOTAL"], ["EXOTISCHE KLEIDUNG","EXOTIC GEAR"],
-    ["WAFFEN ERFASST","WEAPONS TRACKED"], ["GEAR SETS","GEAR SETS"],
-    ["BRAND SETS","BRAND SETS"], ["2 / 3 / 4-TEILE","2 / 3 / 4-PIECE"],
+  const exact = new Map([
+    ["Alle Ausrüstungs- und Marken-Sets aus The Division 2 in einer durchsuchbaren Übersicht — jedes Set mit vollständigen Set-Boni und Talenten direkt sichtbar. Dazu alle exotischen Kleidungsstücke (Masken, Brust, Rucksack, Holster, Handschuhe, Knie) mit ihrem Kern-Talent, sowie alle Standard-, Named- und Exotic-Waffen, sortiert nach Waffenklasse.","All Gear Sets and Brand Sets from The Division 2 in a searchable overview — every set with complete set bonuses and talents directly visible. Also included are all Exotic Gear pieces (Masks, Chest, Backpack, Holster, Gloves, Kneepads) with their core talent, as well as all Standard, Named, and Exotic weapons, sorted by weapon class."],
+    ["Talente der exotischen Kleidung: The Division Wiki (Fandom), soweit dort für Division 2 dokumentiert. Einträge, die das Wiki als WIP führt oder für die dort keine vollständige Talentbeschreibung vorliegt, sind entsprechend gekennzeichnet.","Exotic Gear talents: The Division Wiki (Fandom), where documented there for Division 2. Entries marked as WIP by the wiki, or for which no complete talent description is available there, are labeled accordingly."],
+    ["Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic mit Unique-Talent). Tier-Badges (S/A/B/C) zeigen die aktuelle Meta-Einstufung 2026 je Waffenklasse. Bei den Exotic-Waffen lässt sich das jeweilige Exotic-Talent per Klick aufklappen.","All weapons from The Division 2, divided by weapon class and rarity (Standard/High-End, Named with Perfect Talent, Exotic with Unique Talent). Tier badges (S/A/B/C) show the current 2026 meta ranking for each weapon class. For Exotic weapons, the respective Exotic talent can be expanded by clicking it."],
+    ["Alle","All"],["Set suchen…","Search sets…"],["Waffe suchen…","Search weapons…"],
+    ["Gear Sets","Gear Sets"],["Brand Sets","Brand Sets"],["Exotische Kleidung","Exotic Gear"],
+    ["Exotic-Waffen","Exotic Weapons"],["Named-Waffen","Named Weapons"],["Standard-Waffen","Standard Weapons"],
+    ["Waffen","Weapons"],["SETS GESAMT","SETS TOTAL"],["EXOTISCHE KLEIDUNG","EXOTIC GEAR"],
+    ["WAFFEN ERFASST","WEAPONS TRACKED"],["2 / 3 / 4-TEILE","2 / 3 / 4-PIECE"],
     ["1 / 2 / 3-TEILE","1 / 2 / 3-PIECE"],
     ["MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE","MASK / CHEST / BACKPACK / HOLSTER / GLOVES / KNEEPADS"],
     ["STANDARD / NAMED / EXOTIC","STANDARD / NAMED / EXOTIC"],
-    ["Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic).","All weapons from The Division 2, grouped by weapon class and rarity (Standard/High-End, Named with Perfect Talent, Exotic)."],
-    ["Waffenklasse","Weapon Class"], ["Exotic-Waffen","Exotic Weapons"],
-    ["Named-Waffen (Perfect-Talent)","Named Weapons (Perfect Talent)"],
-    ["Standard- / High-End-Waffen","Standard / High-End Weapons"],
     ["KERN-EIGENSCHAFT / FOKUS","CORE ATTRIBUTE / FOCUS"],
-    ["4-TEILE-TALENT","4-PIECE TALENT"], ["RUCKSACK-TALENT (4-TLG.)","BACKPACK TALENT (4-PIECE)"],
-    ["BRUST-TALENT (4-TLG.)","CHEST TALENT (4-PIECE)"],
-    ["2-TEILE","2-PIECE"], ["3-TEILE","3-PIECE"], ["1-TEIL","1-PIECE"],
-    ["Waffenhandling","Weapon Handling"], ["Feuerrate","Rate of Fire"],
-    ["Nachladegeschwindigkeit","Reload Speed"], ["Krit-Chance","Critical Hit Chance"],
-    ["Krit-Schaden","Critical Hit Damage"], ["Gesamtrüstung","Total Armor"],
-    ["Rüstungsregen","Armor Regen"], ["Rüstung bei Kill","Armor on Kill"],
-    ["Gefahrenschutz","Hazard Protection"], ["Schutz vor Elite-Gegnern","Protection from Elites"],
-    ["Skillschaden","Skill Damage"], ["Skill-Effizienz","Skill Efficiency"],
-    ["Skilldauer","Skill Duration"], ["Skill Haste","Skill Haste"],
-    ["Reparaturskills","Repair Skills"], ["Status-Effekte","Status Effects"],
-    ["Explosionsschaden","Explosive Damage"], ["Magazingröße","Magazine Size"],
-    ["Stabilität","Stability"], ["Munitionskapazität","Ammo Capacity"],
-    ["Genauigkeit","Accuracy"], ["Schrotflinten-/SMG-Schaden","Shotgun / SMG Damage"],
-    ["Sturmgewehr-Schaden","Assault Rifle Damage"], ["LMG-Schaden","LMG Damage"],
-    ["Gewehr-Schaden","Rifle Damage"], ["Kopfschuss-Schaden","Headshot Damage"],
-    ["Krit-Schaden","Critical Hit Damage"], ["Bedrohung","Threat"],
-    ["Magazinschaden","Magazine Damage"], ["Optimal Range","Optimal Range"],
-    ["BURST DPS","BURST DPS"], ["SUSTAIN DPS","SUSTAIN DPS"],
-    ["Waffen","Weapons"], ["Waffen erfasst","Weapons tracked"],
-    ["Waffenklasse","Weapon Class"], ["Waffen","Weapons"],
-    ["Standard","Standard"], ["Named","Named"], ["Exotic","Exotic"],
-    ["META","META"], ["Masken","Masks"], ["Brust","Chest"], ["Rucksack","Backpack"],
-    ["Holster","Holster"], ["Handschuhe","Gloves"], ["Knie","Kneepads"],
-    ["Waffenwerte","Weapon Stats"], ["Talent","Talent"], ["Perfektes Talent","Perfect Talent"],
-    ["Alle Kategorien","All Categories"], ["Waffen suchen…","Search weapons…"],
-    ["Perfect-Talent-Item:","Perfect Talent Item:"],
-    ["Alle Ausrüstungs- und Marken-Sets aus The Division 2 in einer durchsuchbaren Übersicht — jedes Set mit vollständigen Set-Boni und Talenten direkt sichtbar. Dazu alle exotischen Kleidungsstücke (Masken, Brust, Rucksack, Holster, Handschuhe, Knie) mit ihrem Kern-Talent, sowie alle Standard-, Named- und Exotic-Waffen, sortiert nach Waffenklasse.","All Gear Sets and Brand Sets from The Division 2 in a searchable overview — each set shows its complete set bonuses and talents. Also includes exotic gear (masks, chest, backpack, holster, gloves, kneepads) with its core talent, plus all Standard, Named and Exotic weapons sorted by weapon class."],
-    ["GEAR //","GEAR //"], ["BRAND //","BRAND //"], ["EXOTIC //","EXOTIC //"],
-    ["Waffen","Weapons"], ["Waffen","Weapons"]
+    ["4-TEILE-TALENT","4-PIECE TALENT"],["RUCKSACK-TALENT (4-TLG.)","BACKPACK TALENT (4-PIECE)"],
+    ["BRUST-TALENT (4-TLG.)","CHEST TALENT (4-PIECE)"],["2-TEILE","2-PIECE"],["3-TEILE","3-PIECE"],["1-TEIL","1-PIECE"],
+    ["Waffenhandling","Weapon Handling"],["Feuerrate","Rate of Fire"],["Nachladegeschwindigkeit","Reload Speed"],
+    ["Krit-Chance","Critical Hit Chance"],["Krit-Schaden","Critical Hit Damage"],["Gesamtrüstung","Total Armor"],
+    ["Rüstungsregen","Armor Regeneration"],["Rüstungsregeneration","Armor Regeneration"],["Rüstung bei Kill","Armor on Kill"],
+    ["Gefahrenschutz","Hazard Protection"],["Schutz vor Elite-Gegnern","Protection from Elites"],
+    ["Skillschaden","Skill Damage"],["Skill-Effizienz","Skill Efficiency"],["Skilldauer","Skill Duration"],
+    ["Skill Haste","Skill Haste"],["Reparaturskills","Repair Skills"],["Status-Effekte","Status Effects"],
+    ["Explosionsschaden","Explosive Damage"],["Magazingröße","Magazine Size"],["Stabilität","Stability"],
+    ["Munitionskapazität","Ammo Capacity"],["Genauigkeit","Accuracy"],["Sturmgewehr-Schaden","Assault Rifle Damage"],
+    ["Scharfschützengewehr-Schaden","Marksman Rifle Damage"],["Gewehr-Schaden","Rifle Damage"],
+    ["Schrotflinten-Schaden","Shotgun Damage"],["SMG-Schaden","SMG Damage"],["LMG-Schaden","LMG Damage"],
+    ["Kopfschuss-Schaden","Headshot Damage"],["Magazinschaden","Magazine Damage"],["Optimal Range","Optimal Range"],
+    ["BURST DPS","BURST DPS"],["SUSTAIN DPS","SUSTAIN DPS"],["Waffen erfasst","Weapons tracked"],
+    ["Waffenklasse","Weapon Class"],["Standard","Standard"],["Named","Named"],["Exotic","Exotic"],
+    ["META","META"],["Masken","Masks"],["Brust","Chest"],["Rucksack","Backpack"],["Holster","Holster"],
+    ["Handschuhe","Gloves"],["Knie","Kneepads"],["Waffenwerte","Weapon Stats"],["Talent","Talent"],
+    ["Perfektes Talent","Perfect Talent"],["Alle Kategorien","All Categories"],["Perfect-Talent-Item:","Perfect Talent Item:"],["Stand ","As of "],["Quelle für Namen/Einstufung:","Source for names/rating:"],["inkl. aller vom Nutzer bereitgestellten Screenshots für","including all user-provided screenshots for"],["Noch nicht erfasst:","Not yet recorded:"],["sinngemäß zusammengefasst aus dem","summarized from the"],["soweit die Waffenseiten dort für Division 2 gepflegt sind","where the weapon pages are maintained for Division 2"],["Wo das Wiki veraltet ist oder nur die Division-1-Version beschreibt","Where the wiki is outdated or only describes the Division 1 version"],["stammen die Angaben aus","the information comes from"],["Zahlenwerte können sich mit Title Updates ändern.","Numeric values may change with Title Updates."],
+    ["Werte noch nicht erfasst","Stats not yet recorded"],["Talent anzeigen","Show talent"],
+    ["Quellen","Sources"],["Nicht offiziell mit Ubisoft verbunden","Not officially affiliated with Ubisoft"],
+    ["BESTE GEAR SETS","TOP GEAR SETS"],["BESTE BRAND SETS","TOP BRAND SETS"],
+    ["Perfect-Talent-Items","Perfect Talent Items"],["Meta-Empfehlungen 2026","2026 Meta Recommendations"]
   ]);
 
-  // Common German → English phrasing used by the current data.
-  const replacements = [
-    [/Treffer erhöhen den Gesamtwaffenschaden um/g,"Weapon hits increase total weapon damage by"],
-    [/Treffer erhöhen den Waffenschaden um/g,"Weapon hits increase weapon damage by"],
-    [/stapelbar bis/g,"stacking up to"],
-    [/Stapel/g,"stack"],
-    [/Stacks/g,"stacks"],
-    [/erhöht den Schadensbonus/g,"increases the damage bonus"],
-    [/erhöht die maximalen Stacks/g,"increases the maximum stacks"],
-    [/mehr Stacks/g,"more stacks"],
-    [/Kopfschüsse/g,"headshots"], [/Kopftreffer/g,"headshots"], [/Körpertreffer/g,"body shots"],
-    [/Beintreffer/g,"leg shots"], [/Kopfschussschaden/g,"headshot damage"],
-    [/Waffenschaden/g,"weapon damage"], [/Schaden/g,"damage"], [/Bonus-Rüstung/g,"bonus armor"],
-    [/Rüstung/g,"armor"], [/Leben/g,"health"], [/Feuerrate/g,"rate of fire"],
-    [/Nachladegeschwindigkeit/g,"reload speed"], [/Krit-Chance/g,"critical hit chance"],
-    [/Krit-Schaden/g,"critical hit damage"], [/Waffenhandling/g,"weapon handling"],
-    [/Skillschaden/g,"skill damage"], [/Skill-Effizienz/g,"skill efficiency"],
-    [/Skilldauer/g,"skill duration"], [/Skill Haste/g,"skill haste"],
-    [/Reparaturskills/g,"repair skills"], [/Status-Effekte/g,"status effects"],
-    [/Gefahrenschutz/g,"hazard protection"], [/Gesamtrüstung/g,"total armor"],
-    [/Rüstungsregen/g,"armor regeneration"], [/Rüstung bei Kill/g,"armor on kill"],
-    [/Magazingröße/g,"magazine size"], [/Munitionskapazität/g,"ammo capacity"],
-    [/Explosionsschaden/g,"explosive damage"], [/Genauigkeit/g,"accuracy"],
-    [/Stabilität/g,"stability"], [/Bedrohung/g,"threat"], [/Schutz vor Elite-Gegnern/g,"protection from elites"],
-    [/bei Kill/g,"on kill"], [/pro Sekunde/g,"per second"], [/pro Stack/g,"per stack"],
-    [/erleidet/g,"takes"], [/erhalten/g,"receive"], [/erhält/g,"receives"],
-    [/gewährt/g,"grants"], [/gibt/g,"gives"], [/verursacht/g,"deals"],
-    [/verringert/g,"reduces"], [/erhöht/g,"increases"], [/erweitert/g,"increases"],
-    [/während/g,"while"], [/außerhalb Deckung/g,"out of cover"], [/in Deckung/g,"in cover"],
-    [/außerhalb des Kampfes/g,"out of combat"], [/im Kampf/g,"in combat"],
-    [/Gegner/g,"enemies"], [/Gegnern/g,"enemies"], [/nahe Gegner/g,"nearby enemies"],
-    [/alle Gegner/g,"all enemies"], [/Team/g,"team"], [/Verbündete/g,"allies"],
-    [/Aufbau/g,"build-up"], [/Verbrauch/g,"consumption"], [/Modus/g,"mode"],
-    [/Treffer/g,"hits"], [/Kill/g,"kill"], [/Kills/g,"kills"], [/Waffen/g,"weapons"],
-    [/Waffe/g,"weapon"], [/Munition/g,"ammo"], [/Magazin/g,"magazine"],
-    [/Sichtlinie/g,"line of sight"], [/Deckung/g,"cover"], [/Nahkampf/g,"melee"],
-    [/Sekunden/g,"seconds"], [/Sekunde/g,"second"], [/Minuten/g,"minutes"],
-    [/maximal/g,"maximum"], [/mindestens/g,"at least"], [/bis zu/g,"up to"],
-    [/jeder/g,"each"], [/jedes/g,"each"], [/zusätzlich/g,"additional"],
-    [/schneller/g,"faster"], [/schnell/g,"fast"], [/stark/g,"strong"],
-    [/automatisch/g,"automatically"], [/sofort/g,"instantly"], [/verzögert/g,"delayed"],
-    [/wird/g,"is"], [/werden/g,"are"], [/werden zu/g,"become"], [/kann/g,"can"],
-    [/können/g,"can"], [/wenn/g,"if"], [/dann/g,"then"], [/und/g,"and"], [/oder/g,"or"],
-    [/mit/g,"with"], [/ohne/g,"without"], [/für/g,"for"], [/durch/g,"through"],
-    [/auf/g,"on"], [/von/g,"of"], [/des/g,"of the"], [/der/g,"the"], [/die/g,"the"],
-    [/das/g,"the"], [/ein/g,"a"], [/eine/g,"a"], [/einer/g,"a"], [/einem/g,"a"],
-    [/einen/g,"a"], [/ist/g,"is"], [/sind/g,"are"], [/wird/g,"is"], [/werden/g,"are"],
-    [/Zwei Modi/g,"Two modes"], [/Team-Buffs/g,"team buffs"], [/Neue/g,"New"],
-    [/stapeln/g,"stack"], [/stapelbar/g,"stackable"], [/Bonus auf/g,"bonus to"],
-    [/Schutz/g,"protection"], [/Wiederherstellung/g,"repair"], [/Heilung/g,"healing"],
-    [/Heilwolke/g,"healing cloud"], [/Schock-Munition/g,"shock ammo"],
-    [/Kern-Eigenschaft/g,"core attribute"], [/Fokus/g,"focus"]
+  /* Dynamic labels with counts/badges need their own complete English forms. */
+  const dynamicExact = new Map([
+    ["Exotic-Waffen","Exotic Weapons"],
+    ["Named-Waffen (Perfect-Talent)","Named Weapons (Perfect Talent)"],
+    ["Standard- / High-End-Waffen","Standard / High-End Weapons"],
+    ["Sturmgewehre (AR)","Assault Rifles (AR)"],
+    ["Maschinenpistolen (SMG)","Submachine Guns (SMG)"],
+    ["Leichte Maschinengewehre (LMG)","Light Machine Guns (LMG)"],
+    ["Scharfschützengewehre (MMR)","Marksman Rifles (MMR)"],
+    ["Gewehre (Rifles)","Rifles"],
+    ["Schrotflinten","Shotguns"],
+    ["Pistolen","Pistols"],
+    ["Signaturwaffen (Spezialisierungen)","Signature Weapons (Specializations)"],
+    ["Waffen","Weapons"],
+    ["Waffe","Weapon"],
+    ["Gear Sets","Gear Sets"],
+    ["Brand Sets","Brand Sets"],
+    ["Waffenwerte","Weapon Stats"],
+    ["Waffen erfasst","Weapons tracked"],
+    ["Tier-Badges","Tier badges"],
+    ["aktuelle Meta-Einstufung","current meta ranking"],
+    ["Waffenklasse","Weapon class"],
+    ["Perfect-Talent-Item:","Perfect Talent Item:"]
+  ]);
+
+  /* Phrase-level translations come first so that grammar is preserved
+     for the most common sentences in the data. */
+  const phrases = [
+    ["Treffer erhöhen den Gesamtwaffenschaden um","Weapon hits increase total weapon damage by"],
+    ["Treffer erhöhen den Waffenschaden um","Weapon hits increase weapon damage by"],
+    ["erhöht den Schadensbonus pro Stack von","increases the damage bonus per stack from"],
+    ["erhöht den Waffenschaden pro Stack von","increases weapon damage per stack from"],
+    ["erhöht die Bonus-Rüstung pro Stack von","increases bonus armor per stack from"],
+    ["erhöht die maximalen Stacks von","increases the maximum stacks from"],
+    ["erhöht die Markierungen von","increases the number of marks from"],
+    ["verlängert die Stackdauer von","increases the stack duration from"],
+    ["verkürzt den Cooldown von","reduces the cooldown from"],
+    ["vergrößert den Desorientierungs-Radius von","increases the disorient radius from"],
+    ["erhöht die Reichweite von","increases the range from"],
+    ["erhöht die Dauer von","increases the duration from"],
+    ["erhöht die Wirkzeit der Boni von","increases the duration of the bonuses from"],
+    ["erhöht den übertragenen Schaden von","increases transferred damage from"],
+    ["erhöht den Bonus von","increases the bonus from"],
+    ["erhöht die Reparatur von","increases the repair from"],
+    ["erhöht die Brand-Auslösechance von","increases the Burn application chance from"],
+    ["erhöht die Bonus-Rüstung von","increases bonus armor from"],
+    ["erhöht den Schutzaufbau auf","increases protection build-up to"],
+    ["erhöht das Maximum der eingehenden Schadensreduktion auf","increases the maximum incoming damage reduction to"],
+    ["reduziert die Wirkzeit","reduces the duration"],
+    ["reduziert den Reichweiten-/Dauerverlust von","reduces the range/duration loss from"],
+    ["verkürzt die nötigen Stacks für","reduces the required stacks for"],
+    ["Kopfschüsse markieren Gegner","Headshots mark enemies"],
+    ["Kopfschüsse pulsen","Headshots apply Pulse to"],
+    ["Treffer auf gepulste Gegner","Hits against pulsed enemies"],
+    ["Treffer auf die Markierung","Hits on the mark"],
+    ["Treffer auf verschiedene Gegner","Hits on different enemies"],
+    ["Treffer bauen Stacks auf","Hits build stacks"],
+    ["Treffer geben","Hits grant"],
+    ["Kills setzen","Kills reset"],
+    ["Kills geben","Kills grant"],
+    ["Kill eines","Killing a"],
+    ["Kill eines debufften Gegners","Killing a debuffed enemy"],
+    ["Beim Nachladen","When reloading"],
+    ["Nachladen gibt","Reloading grants"],
+    ["Nachladen verbraucht","Reloading consumes"],
+    ["Nachladen füllt","Reloading refills"],
+    ["Magazin auffüllen","refill the magazine"],
+    ["Magazin füllen","fill the magazine"],
+    ["volle Rüstung","full armor"],
+    ["bei voller Rüstung","at full armor"],
+    ["bei vollem Magazin","with a full magazine"],
+    ["in Deckung","in cover"],
+    ["außerhalb der Deckung","out of cover"],
+    ["außerhalb des Kampfes","out of combat"],
+    ["im Kampf","in combat"],
+    ["im Kampf außerhalb der Deckung","in combat while out of cover"],
+    ["innerhalb von","within"],
+    ["innerhalb 15m","within 15m"],
+    ["innerhalb 5m","within 5m"],
+    ["innerhalb 10m","within 10m"],
+    ["gegen von Statuseffekten betroffene Ziele","against status-affected targets"],
+    ["Schaden gegen","damage against"],
+    ["Schaden von","damage from"],
+    ["Schaden an","damage to"],
+    ["Schaden verursacht","damage dealt"],
+    ["Schaden erleiden","take damage"],
+    ["Schadensbonus","damage bonus"],
+    ["Schadensreduktion","damage reduction"],
+    ["verstärkter Schaden","amplified damage"],
+    ["verstärkten Schaden","amplified damage"],
+    ["Bonusrüstung","bonus armor"],
+    ["Bonus-Rüstung","bonus armor"],
+    ["Rüstungsregeneration","armor regeneration"],
+    ["Rüstungsregen","armor regeneration"],
+    ["Rüstung repariert","repairs armor"],
+    ["Rüstung regeneriert","regenerates armor"],
+    ["Rüstung bei Kill","armor on kill"],
+    ["Waffenschaden","weapon damage"],
+    ["Krit-Chance","Critical Hit Chance"],
+    ["Krit-Schaden","Critical Hit Damage"],
+    ["Kopfschussschaden","Headshot Damage"],
+    ["Kopftreffer","headshot"],
+    ["Kopfschüsse","headshots"],
+    ["Körpertreffer","body shots"],
+    ["Beintreffer","leg shots"],
+    ["Nachladegeschwindigkeit","reload speed"],
+    ["Waffenhandling","weapon handling"],
+    ["Magazingröße","magazine size"],
+    ["Munitionskapazität","ammo capacity"],
+    ["Feuerrate","rate of fire"],
+    ["Schussrate","rate of fire"],
+    ["Skill-Effizienz","Skill Efficiency"],
+    ["Skillschaden","Skill Damage"],
+    ["Skilldauer","Skill Duration"],
+    ["Skill Haste","Skill Haste"],
+    ["Reparaturskills","Repair Skills"],
+    ["Status-Effekte","Status Effects"],
+    ["Gefahrenschutz","Hazard Protection"],
+    ["Explosionswiderstand","Explosive Resistance"],
+    ["Pulswiderstand","Pulse Resistance"],
+    ["Schutz vor Elite-Gegnern","Protection from Elites"],
+    ["Gesamtrüstung","Total Armor"],
+    ["Gesamtwaffenschaden","total weapon damage"],
+    ["Gesamtschaden","total damage"],
+    ["Scharfschützengewehr","marksman rifle"],
+    ["Sturmgewehr","assault rifle"],
+    ["Schrotflinte","shotgun"],
+    ["Maschinenpistole","submachine gun"],
+    ["Maschinenpistolen","submachine guns"],
+    ["Leichte Maschinengewehre","light machine guns"],
+    ["Gewehre","rifles"],
+    ["Pistolen","pistols"],
+    ["Waffenklasse","weapon class"],
+    ["Waffen","weapons"],
+    ["Waffe","weapon"],
+    ["Munition","ammo"],
+    ["Magazin","magazine"],
+    ["Deckung","cover"],
+    ["Gegner","enemy"],
+    ["Gegnern","enemies"],
+    ["Verbündeten","allies"],
+    ["Verbündete","allies"],
+    ["Verbündeter","ally"],
+    ["Stapel","stack"],
+    ["Stacks","stacks"],
+    ["Stapel/s","stacks/s"],
+    ["Sekunden","seconds"],
+    ["Sekunde","second"],
+    ["Minuten","minutes"],
+    ["Minute","minute"],
+    ["Abklingzeit","cooldown"],
+    ["Dauer","duration"],
+    ["Reichweite","range"],
+    ["Markierung","mark"],
+    ["Markierungen","marks"],
+    ["markiert","marked"],
+    ["markieren","mark"],
+    ["markiert werden","are marked"],
+    ["Desorientierung","Disorient"],
+    ["desorientiert","disorients"],
+    ["Blutung","Bleed"],
+    ["Brennen","Burn"],
+    ["Schock","Shock"],
+    ["Gift","Poison"],
+    ["Disrupt","Disrupt"],
+    ["Fesseln","Ensnare"],
+    ["Leben","health"],
+    ["Fähigkeit","ability"],
+    ["Fähigkeiten","abilities"],
+    ["Kern-Eigenschaft","core attribute"],
+    ["Eigenschaft","attribute"],
+    ["Fokus","focus"],
+    ["Widerstand","resistance"],
+    ["Schutz","protection"],
+    ["Bedrohung","threat"],
+    ["Aufbau","build-up"],
+    ["Verbrauch","consumption"],
+    ["Verbrauchte","Consumed"],
+    ["verbraucht","consumed"],
+    ["Verlust","loss"],
+    ["verliert","loses"],
+    ["verloren","lost"],
+    ["nächste","next"],
+    ["nächsten","next"],
+    ["nächster","next"],
+    ["nächstes","next"],
+    ["jeder","each"],
+    ["jede","each"],
+    ["jedes","each"],
+    ["jeden","each"],
+    ["jedem","each"],
+    ["je","per"],
+    ["alle","all"],
+    ["allem","everything"],
+    ["mehr","more"],
+    ["weniger","less"],
+    ["mindestens","at least"],
+    ["höchstens","at most"],
+    ["maximal","maximum"],
+    ["bis zu","up to"],
+    ["zusätzlich","additional"],
+    ["zusätzlichen","additional"],
+    ["vollständig","fully"],
+    ["sofort","instantly"],
+    ["automatisch","automatically"],
+    ["schneller","faster"],
+    ["schnell","fast"],
+    ["langsam","slow"],
+    ["erhöht","increases"],
+    ["erhöhen","increase"],
+    ["erhöhte","increased"],
+    ["erhöhtem","increased"],
+    ["erhöhten","increased"],
+    ["reduziert","reduces"],
+    ["reduzieren","reduce"],
+    ["verkürzt","reduces"],
+    ["verlängert","increases"],
+    ["vergrößert","increases"],
+    ["verstärkt","increases"],
+    ["verstärkte","increased"],
+    ["gibt","gives"],
+    ["geben","give"],
+    ["gibst","give"],
+    ["gibt dir","gives you"],
+    ["erhält","receives"],
+    ["erhältst","receive"],
+    ["erhalten","receive"],
+    ["gewährt","grants"],
+    ["verursacht","deals"],
+    ["verursachen","deal"],
+    ["verringert","reduces"],
+    ["setzt zurück","resets"],
+    ["setzt","sets"],
+    ["lösen","trigger"],
+    ["löst","triggers"],
+    ["ausgelöst","triggered"],
+    ["werden","are"],
+    ["wird","is"],
+    ["wurde","was"],
+    ["kann","can"],
+    ["können","can"],
+    ["wenn","if"],
+    ["falls","if"],
+    ["dann","then"],
+    ["und","and"],
+    ["oder","or"],
+    ["mit","with"],
+    ["ohne","without"],
+    ["für","for"],
+    ["von","of"],
+    ["auf","on"],
+    ["bei","at"],
+    ["durch","through"],
+    ["gegen","against"],
+    ["über","over"],
+    ["unter","under"],
+    ["in","in"],
+    ["an","at"],
+    ["zu","to"],
+    ["des","of the"],
+    ["der","the"],
+    ["die","the"],
+    ["das","the"],
+    ["ein","a"],
+    ["eine","a"],
+    ["einen","a"],
+    ["einer","a"],
+    ["einem","a"],
+    ["eines","of a"],
+    ["ist","is"],
+    ["sind","are"],
+    ["nur","only"],
+    ["sowie","as well as"],
+    ["dafür","instead"],
+    ["dabei","while doing so"],
+    ["jeweils","each"],
+    ["pro Sekunde","per second"],
+    ["pro Stack","per stack"],
+    ["pro Kill","per kill"],
+    ["bei Kill","on kill"],
+    ["bei einem Kill","on a kill"],
+    ["Kampf","combat"],
+    ["Schießen","firing"],
+    ["schießen","shoot"],
+    ["Schuss","shot"],
+    ["Schüsse","shots"],
+    ["Abzug","trigger"],
+    ["drücken","pull"],
+    ["halten","hold"],
+    ["loslassen","release"],
+    ["Zielen","aiming"],
+    ["Ziel","target"],
+    ["Ziele","targets"],
+    ["Treffer","hits"],
+    ["treffen","hit"],
+    ["Getötete","Killed"],
+    ["getötete","killed"],
+    ["töten","kill"],
+    ["Kill","kill"],
+    ["Kills","kills"],
+    ["Körpers","body"],
+    ["Körper","body"],
+    ["Schulter","shoulder"],
+    ["Schultern","shoulders"],
+    ["Reichweiten","ranges"],
+    ["Chance","chance"],
+    ["Möglichkeit","ability"],
+    ["möglich","possible"],
+    ["voller","full"],
+    ["volle","full"],
+    ["voll","full"],
+    ["aktiven","active"],
+    ["aktive","active"],
+    ["aktiver","active"],
+    ["eingesetzten","deployed"],
+    ["eingesetzt","applied"],
+    ["angewandte","applied"],
+    ["angewendet","applied"],
+    ["betroffene","affected"],
+    ["betroffenen","affected"],
+    ["niedrigsten","lowest"],
+    ["höchsten","highest"],
+    ["übrigen","remaining"],
+    ["restlichen","remaining"],
+    ["bereits","already"],
+    ["während","while"],
+    ["außerhalb","outside"],
+    ["innerhalb","within"],
+    ["jeweilig","respective"],
+    ["jeweilige","respective"],
+    ["entsprechend","accordingly"],
+    ["sinnemäß","in essence"],
+    ["sinngemäß","in essence"]
   ];
 
-  // Fandom wording for the most important current Gear Set talents.
-  const fandom = {
-    "Striker's Gamble — Treffer erhöhen den Gesamtwaffenschaden um 0,65%, stapelbar bis 100x.":"Striker's Gamble — Weapon hits increase total weapon damage by 0.65%, stacking up to 100 times.",
-    "Risk Management — erhöht den Schadensbonus pro Stack von 0,65% auf 1%.":"Risk Management — Increases total weapon damage gained per stack of Striker's Gamble from 0.65% to 1%.",
-    "Press the Advantage — erhöht die maximalen Stacks von 100 auf 200.":"Press the Advantage — Increases max stacks for Striker's Gamble from 100 to 200.",
-    "Heartstopper — Kopfschüsse pulsen Gegner; Treffer geben stapelbare Bonus-Rüstung & -Schaden, bis 50 Stacks.":"Heartstopper — Headshots apply Pulse for 5s. Weapon hits on pulsed enemies add a stack of +1% bonus armor and +1% weapon damage, up to 50 stacks.",
-    "Cold — erhöht die Bonus-Rüstung pro Stack von 1% auf 2%.":"Cold — Increases total bonus armor gained per stack of Heartbreaker from 1% to 2%.",
-    "Max BPM — erhöht die maximalen Stacks von 50 auf 100.":"Max BPM — Increases max stacks for Heartstopper from 50 to 100.",
-    "Zwei Modi: in Deckung Krit-Schaden/RPM aufbauen, außerhalb Deckung Rüstungsregeneration aufbauen.":"Two modes: while in cover, build Critical Hit Damage and RPM; while out of cover, build Armor regeneration.",
-    "Into the Light — mehr Stacks, Aufbau und Verbrauch für den Rüstungsregen-Modus.":"Into the Light — Increases stacks, stack gain and consumption for the Armor regeneration mode.",
-    "From the Shadows — mehr Stacks und schnellerer Aufbau für den Krit-Modus.":"From the Shadows — Increases stacks and stack gain for the Critical Hit mode.",
-    "Apex Predator — Debuff auf nahe Gegner verstärkt Schaden; Kills desorientieren und stapeln weiteren Bonus.":"Apex Predator — Enemies within 15m receive a debuff, increasing your weapon damage against them by 20%. Killing a debuffed enemy disorients nearby enemies and grants additional weapon damage stacks.",
-    "Overwhelming Force — vergrößert den Radius der Desorientierung.":"Overwhelming Force — Increases the disorient radius of Apex Predator kills.",
-    "Endless Hunger — verlängert die Dauer der Apex Predator-Stacks.":"Endless Hunger — Increases the duration of Apex Predator stacks.",
-    "Hostile Negotiations — Krits markieren Gegner; Schaden an markierten Zielen wird auf andere markierte Gegner übertragen.":"Hostile Negotiations — Critical hits mark enemies. Critical hits against a marked enemy cause other marked enemies to take a portion of the damage dealt.",
-    "Rules of Engagement — Statuseffekte markieren Gegner; Kills geben Hollow-Point-Munition.":"Rules of Engagement — Shooting a status-affected enemy applies a mark. Killing a marked enemy grants Hollow-Point Ammo."
-  };
+  function localizedName(name){ return germanNames[name] || name; }
 
   function translate(str){
     if(!str) return str;
-    if(fandom.hasOwnProperty(str)) return fandom[str];
     if(exact.has(str)) return exact.get(str);
-    let out=str;
-    // Preserve common HTML entities while translating the visible words.
-    replacements.forEach(([re, v]) => { out = out.replace(re, v); });
+    if(dynamicExact.has(str)) return dynamicExact.get(str);
+    const counted = str.match(/^(.*?)\s+—\s+(\d+)$/);
+    if(counted && dynamicExact.has(counted[1])) return dynamicExact.get(counted[1]) + " — " + counted[2];
+    let out = str;
+    for(const [from,to] of phrases){
+      if(from.length <= 3) continue;
+      out = out.split(from).join(to);
+    }
+    /* Safe fallback: translate only complete German terms. Do not replace
+       short words that can occur inside English item/talent names. */
+    const words = [
+      ["Scharfschützengewehre","marksman rifles"],["Scharfschützengewehr","marksman rifle"],
+      ["Sturmgewehre","assault rifles"],["Sturmgewehr","assault rifle"],
+      ["Leichte Maschinengewehre","light machine guns"],["Leichte Maschinengewehre","light machine guns"],
+      ["Maschinenpistolen","submachine guns"],["Maschinenpistole","submachine gun"],
+      ["Maschinengewehre","machine guns"],["Maschinengewehr","machine gun"],
+      ["Schrotflinten","shotguns"],["Schrotflinte","shotgun"],
+      ["Gewehre","rifles"],["Gewehr","rifle"],["Pistolen","pistols"],["Pistole","pistol"],
+      ["Signaturwaffen","signature weapons"],["Signaturwaffe","signature weapon"],
+      ["Kopfschuss-Schaden","headshot damage"],["Kopfschussschaden","headshot damage"],["Kopfschüsse","headshots"],
+      ["Kopftreffer","headshot"],["Körpertreffer","body shots"],["Beintreffer","leg shots"],
+      ["Gesamtwaffenschaden","total weapon damage"],["Waffenschaden","weapon damage"],
+      ["Schadensverstärkung","damage amplification"],["Schadensreduktion","damage reduction"],
+      ["Bonus-Rüstung","bonus armor"],["Bonusrüstung","bonus armor"],["Gesamtrüstung","total armor"],
+      ["Rüstungsregeneration","armor regeneration"],["Rüstungsregen","armor regeneration"],["Rüstung","armor"],
+      ["Rüstung bei Kill","armor on kill"],["Gefahrenschutz","hazard protection"],
+      ["Explosionswiderstand","explosive resistance"],["Pulswiderstand","pulse resistance"],
+      ["Schutz vor Elite-Gegnern","protection from elites"],["Skillschaden","skill damage"],
+      ["Skill-Effizienz","skill efficiency"],["Skilldauer","skill duration"],["Reparaturskills","repair skills"],
+      ["Status-Effekte","status effects"],["Explosionsschaden","explosive damage"],
+      ["Magazingröße","magazine size"],["Munitionskapazität","ammo capacity"],["Magazinschaden","magazine damage"],
+      ["Waffenhandling","weapon handling"],["Feuerrate","rate of fire"],["Nachladegeschwindigkeit","reload speed"],
+      ["Stabilität","stability"],["Genauigkeit","accuracy"],["Reichweiten","ranges"],["Reichweite","range"],
+      ["Abklingzeit","cooldown"],["Markierungen","marks"],["Markierung","mark"],
+      ["Gegnern","enemies"],["Gegner","enemy"],["Verbündeten","allies"],["Verbündete","allies"],["Verbündeter","ally"],
+      ["Sekunden","seconds"],["Sekunde","second"],["Minuten","minutes"],["Minute","minute"],
+      ["Kampfes","combat"],["Kampf","combat"],["Deckung","cover"],["Schießen","firing"],
+      ["Schüsse","shots"],["Schuss","shot"],["Treffer","hits"],["Munition","ammo"],["Magazin","magazine"],
+      ["Abzug","trigger"],["Zielen","aiming"],["Ziel","target"],["Ziele","targets"],["Fähigkeiten","abilities"],
+      ["Fähigkeit","ability"],["Eigenschaft","attribute"],["Kernattribute","core attributes"],["Kernattributen","core attributes"],
+      ["Kern-Eigenschaft","core attribute"],["Widerstand","resistance"],["Schutz","protection"],
+      ["Bedrohung","threat"],["Verbrauch","consumption"],["Verlust","loss"],["Chance","chance"],
+      ["Schaden","damage"],["Talent","talent"],["Nachladen","reloading"],["Nachladebonus","reload bonus"],
+      ["Blutungsschaden","bleed damage"],["Blutungsdauer","bleed duration"],["Blutung","bleed"],
+      ["Brandschaden","burn damage"],["Branddauer","burn duration"],["Brenndauer","burn duration"],
+      ["Brennen","burn"],["Feuer","fire"],["Giftwolke","poison cloud"],["Fesseln","ensnare"],
+      ["Desorientierung","disorient"],["Immunität","immunity"],["Bewegungseinschränkung","movement restriction"],
+      ["Bewegungstempo","movement speed"],["Schwachstelle","weak point"],["Karten","cards"],
+      ["Kleidungsstücke","gear pieces"],["Exotische Kleidung","Exotic Gear"],["Exotische","Exotic"],
+      ["Perfektes Talent","Perfect Talent"],["Meta-Empfehlungen","Meta Recommendations"],
+      ["stapelbar","stackable"],["Stackverlust","stack loss"],["Stackverluste","stack losses"],
+      ["Stackdauer","stack duration"],["gehen","are lost"],["geht","goes"],["bis","up to"],
+      ["danach","afterward"],["anschließend","afterward"],["zusammen","together"],["jeweiligen","respective"],
+      ["beschossene","shot"],["erlittenen","taken"],["ausgeteilten","dealt"],["erhaltene","received"],
+      ["erhaltenen","received"],["gewonnen","gained"],["entferntem","removed"],["entfernten","removed"],
+      ["entfernt","removed"],["füllt","fills"],["füllen","fill"],["gefüllt","filled"],["verwendet","used"],
+      ["verwenden","use"],["nutzen","use"],["Nutzung","use"],["Abbrechen","cancelling"],["abbrechen","cancel"],
+      ["ausgerüstet","equipped"],["ausgerüstete","equipped"],["aktiven","active"],["aktive","active"],
+      ["aktiver","active"],["feindliche","enemy"],["feindlichen","enemy"],["Feindliche","Enemy"],["Feind","Enemy"],
+      ["heilt","heals"],["Heilung","healing"],["heilen","heal"],["Reparatur","repair"],["Reparaturen","repairs"],
+      ["repariert","repairs"],["reparieren","repair"],["Anzahl","number"],["Anteil","share"],["Anteile","shares"],
+      ["Übertragung","transfer"],["übertragen","transfer"],["übertragenen","transferred"],["geteilt","shared"],
+      ["geteilte","shared"],["beteiligten","participating"],["beteiligt","participating"],["gleichzeitig","simultaneously"],
+      ["mindestens","at least"],["höchstens","at most"],["Kampfes","combat"],["Nachladen","reloading"],
+      ["Quellen","Sources"],["Quelle","Source"],["Namen","names"],["Einstufung","rating"],
+      ["Angaben","information"],["Screenshots","screenshots"],["Nutzer","user"],["bereitgestellten","provided"],
+      ["Nicht offiziell mit Ubisoft verbunden","Not officially affiliated with Ubisoft"],
+      ["Zahlenwerte können sich mit Title Updates ändern.","Numeric values may change with Title Updates."],
+      ["höchstens","at most"],["mindestens","at least"],["zusätzlich","additional"],["zusätzlichen","additional"],
+      ["vollständig","fully"],["sofort","instantly"],["automatisch","automatically"],["schneller","faster"],
+      ["erhöhten","increased"],["erhöhte","increased"],["erhöhtem","increased"],["erhöht","increases"],["erhöhen","increase"],
+      ["reduziert","reduces"],["reduzieren","reduce"],["verkürzt","reduces"],["verlängert","increases"],["vergrößert","increases"],
+      ["verstärkt","increases"],["verstärkte","increased"],["verursacht","deals"],["verursachen","deal"],
+      ["gewährt","grants"],["erhältst","receive"],["erhält","receives"],["erhalten","receive"],["verringert","reduces"],
+      ["verloren","lost"],["verliert","loses"],["verbraucht","consumed"],["verbrauchen","consume"],
+      ["markiert","marked"],["markieren","mark"],["betroffene","affected"],["betroffenen","affected"],
+      ["eingesetzt","deployed"],["eingesetzten","deployed"],["niedrigsten","lowest"],["höchsten","highest"],
+      ["übrigen","remaining"],["restlichen","remaining"],["bereits","already"],["entsprechend","accordingly"],
+      ["möglich","possible"],["nötigen","required"],["vollständige","full"],["vollständigem","full"],
+      ["nächste","next"],["nächsten","next"],["nächstes","next"],["nächster","next"],["jeder","each"],
+      ["jede","each"],["jedes","each"],["jeden","each"],["jedem","each"],["alle","all"],["allem","everything"],
+      ["mehr","more"],["weniger","less"],["maximal","maximum"],["bis zu","up to"],["außerhalb","outside"],
+      ["innerhalb","within"],["während","while"],["ohne","without"],["mit","with"],["für","for"],
+      ["gegen","against"],["durch","through"],["unter","under"],["über","over"],["auf","on"],["bei","at"],
+      ["von","of"],["der","the"],["die","the"],["das","the"],["ein","a"],["eine","a"],["einen","a"],
+      ["einer","a"],["einem","a"],["eines","of a"],["ist","is"],["sind","are"],["nur","only"],["und","and"],["oder","or"],
+      ["wenn","if"],["falls","if"],["dann","then"],["wird","is"],["werden","are"],["kann","can"],["können","can"],
+      ["gibt","gives"],["geben","give"],["setzt zurück","resets"],["setzt","sets"],["löst","triggers"],["ausgelöst","triggered"],
+      ["Kampfe","combat"],["Kampf","combat"],["Schaden-über-Zeit-Debuff","damage-over-time debuff"]
+    ];
+    for(const [from,to] of words){
+      const escaped = from.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const re = new RegExp('\\b' + escaped + '\\b', 'gi');
+      out = out.replace(re,to);
+    }
+    out = out.replace(/\\bTEILE\\b/gi,'PIECES').replace(/\\bTeil\\b/gi,'piece')
+             .replace(/\\bWerte\\b/gi,'values').replace(/\\bWert\\b/gi,'value')
+             .replace(/\\bBonus\\b/gi,'bonus').replace(/\\bGesamt\\b/gi,'total');
+    out = out.replace(/\bfrom (\d+(?:[.,]\d+)?%?) on (\d+(?:[.,]\d+)?%?)/gi, 'from $1 to $2');
+    out = out.replace(/\bfrom (\d+(?:[.,]\d+)?s?) on (\d+(?:[.,]\d+)?s?)/gi, 'from $1 to $2');
+    out = out.replace(/(\d+)\s+Waffen\b/gi, '$1 Weapons');
+    out = out.replace(/(\d+)\s+Waffe\b/gi, '$1 Weapon');
     return out;
   }
 
+  function localizeItemNames(){
+    document.querySelectorAll('.card.gear h3,.card.brand h3,.card.exo h3,.witem .wname').forEach(el=>{
+      if(!el.dataset.enName) el.dataset.enName=el.textContent.trim();
+      el.textContent=document.documentElement.lang==='de' ? localizedName(el.dataset.enName) : el.dataset.enName;
+    });
+    document.querySelectorAll('.named-item .set').forEach(el=>{
+      if(!el.dataset.enName) el.dataset.enName=el.textContent.trim();
+      el.textContent=document.documentElement.lang==='de' ? localizedName(el.dataset.enName) : el.dataset.enName;
+    });
+    document.querySelectorAll('.named-item .slot').forEach(el=>{
+      if(!el.dataset.deSlot) el.dataset.deSlot=el.textContent.trim();
+      el.textContent=document.documentElement.lang==='de' ? el.dataset.deSlot : translate(el.dataset.deSlot);
+    });
+  }
+
   const textNodes=[];
-  const walker=document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+  const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       const p=node.parentElement;
       if(!p || p.closest('.lang-switch,script,style')) return NodeFilter.FILTER_REJECT;
@@ -2131,75 +2501,62 @@ const exact = new Map([
       return NodeFilter.FILTER_ACCEPT;
     }
   });
-  while(walker.nextNode()){
-    const n=walker.currentNode;
-    textNodes.push([n,n.nodeValue]);
-  }
+  while(walker.nextNode()) textNodes.push([walker.currentNode,walker.currentNode.nodeValue]);
 
   const placeholders=[];
-  root.querySelectorAll('input[placeholder]').forEach(el=>{
-    placeholders.push([el,el.getAttribute('placeholder')]);
-  });
+  root.querySelectorAll('input[placeholder]').forEach(el=>placeholders.push([el,el.getAttribute('placeholder')]));
 
   function setLanguage(lang){
     const english=lang==='en';
     document.documentElement.lang=lang;
     document.title=english ? "Division 2 — Gear & Weapon Database" : "Division 2 — Sets Datenbank";
-    buttons.forEach(b=>b.classList.toggle('active', b.dataset.lang===lang));
+    buttons.forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
 
-    textNodes.forEach(([node,de])=>{ node.nodeValue=english ? translate(de) : de; });
-    placeholders.forEach(([el,de])=>{ el.placeholder=english ? translate(de) : de; });
+    textNodes.forEach(([node,de])=>node.nodeValue=english ? translate(de) : de);
+    placeholders.forEach(([el,de])=>el.placeholder=english ? translate(de) : de);
 
-    // Translate dynamic labels whose content is created after initial capture.
-    document.querySelectorAll('.wp-group-label,.wp-cat-head .cnt,.named-note').forEach(el=>{
+    /* Dynamic category/count labels and weapon jump links. */
+    document.querySelectorAll('.wp-group-label,.wp-cat-head .cnt,.named-note,.wp-jump a,.wp-cat-head h3').forEach(el=>{
       if(!el.dataset.deText) el.dataset.deText=el.textContent;
       el.textContent=english ? translate(el.dataset.deText) : el.dataset.deText;
     });
 
-    // Localized in-game names for gear sets and weapons.
     localizeItemNames();
 
-    // Dedicated English text for Exotic Gear: no word-by-word German/English mix.
+    /* Exotic Gear has dedicated, complete English descriptions. */
     document.querySelectorAll('.exo-group-label').forEach(el=>{
-      if(!el.dataset.deSlot) el.dataset.deSlot = el.textContent.trim();
-      el.textContent = english ? (exoticSlotEnglish[el.dataset.deSlot] || el.dataset.deSlot) : el.dataset.deSlot;
+      if(!el.dataset.deSlot) el.dataset.deSlot=el.textContent.trim();
+      const slotMap={Masken:"Masks",Brust:"Chest",Rucksack:"Backpack",Holster:"Holster",Handschuhe:"Gloves",Knie:"Kneepads"};
+      el.textContent=english ? (slotMap[el.dataset.deSlot]||translate(el.dataset.deSlot)) : el.dataset.deSlot;
     });
     document.querySelectorAll('.card.exo').forEach(card=>{
-      const body = card.querySelector('.t-body');
-      const label = card.querySelector('.t-label');
-      const badge = card.querySelector('.meta-badge');
-      if(body) body.innerHTML = english ? (body.dataset.enHtml || body.dataset.deHtml) : body.dataset.deHtml;
-      if(label) label.textContent = english ? 'CORE ATTRIBUTE / FOCUS' : 'KERN-EIGENSCHAFT / FOKUS';
-      if(badge) badge.textContent = english ? (exoticSlotEnglish[card.dataset.deSlot] || card.dataset.deSlot).toUpperCase() : card.dataset.deSlot.toUpperCase();
+      const body=card.querySelector('.t-body'), label=card.querySelector('.t-label'), badge=card.querySelector('.meta-badge');
+      if(body) body.innerHTML=english ? (body.dataset.enHtml||translate(body.dataset.deHtml)) : body.dataset.deHtml;
+      if(label) label.textContent=english ? 'CORE ATTRIBUTE / FOCUS' : 'KERN-EIGENSCHAFT / FOKUS';
+      if(badge) badge.textContent=english ? (({Masken:"Masks",Brust:"Chest",Rucksack:"Backpack",Holster:"Holster",Handschuhe:"Gloves",Knie:"Kneepads"})[card.dataset.deSlot]||card.dataset.deSlot).toUpperCase() : card.dataset.deSlot.toUpperCase();
     });
 
-    // Translate the expandable Exotic-weapon talent blocks as well.
+    /* Expandable Exotic Weapon talents use dedicated English source text. */
     document.querySelectorAll('.wtalent[data-weapon-name]').forEach(details=>{
-      const weaponName = details.dataset.weaponName;
-      const deList = exoticTalents[weaponName];
-      const enList = exoticWeaponEnglish[weaponName];
-      if(!deList || !enList) return;
-      const list = english ? enList : deList;
-      const names = list.map(t => t[0]).filter(Boolean);
-      const summary = details.querySelector('summary');
-      const body = details.querySelector('.tbody');
-      if(summary) summary.innerHTML = names.length
-        ? `Talent: <b>${names.map(escHTML).join(' · ')}</b>`
-        : 'Talent anzeigen';
-      if(body) body.innerHTML = list.map(t => `
+      const weaponName=details.dataset.weaponName;
+      const deList=exoticTalents[weaponName], enList=exoticWeaponEnglish[weaponName];
+      if(!deList) return;
+      const list=english && enList ? enList : deList;
+      const names=list.map(t=>t[0]).filter(Boolean);
+      const summary=details.querySelector('summary'), body=details.querySelector('.tbody');
+      if(summary) summary.innerHTML=names.length ? `Talent: <b>${names.map(escHTML).join(' · ')}</b>` : (english?'Show talent':'Talent anzeigen');
+      if(body) body.innerHTML=list.map(t=>`
         <div class="titem">
-          ${t[0] ? `<div class="tname">${escHTML(t[0])}</div>` : ''}
+          ${t[0]?`<div class="tname">${escHTML(t[0])}</div>`:''}
           <p class="ttext">${escHTML(t[1])}</p>
-          ${t[2] ? `<p class="tnote">${escHTML(t[2])}</p>` : ''}
+          ${t[2]?`<p class="tnote">${escHTML(t[2])}</p>`:''}
         </div>`).join('');
     });
 
-    // Search/filter still works because dataset names remain unchanged.
     localStorage.setItem('division2-language',lang);
   }
 
   buttons.forEach(b=>b.addEventListener('click',()=>setLanguage(b.dataset.lang)));
-
   const saved=localStorage.getItem('division2-language');
   setLanguage(saved==='en' ? 'en' : 'de');
 })();
