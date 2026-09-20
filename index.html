@@ -1019,10 +1019,10 @@ const gearSets = [
  "Hostile Negotiations — Krits markieren Gegner 20s, max. 3 Marken; markierte Gegner erhalten 60% des an einen anderen markierten Gegner verursachten Krit-Schadens. Getötete markierte Gegner geben +2% Krit-Schaden, max. 20 Stacks.",
  "Critical Measures — erhöht den übertragenen Schaden von 60% auf 112%.",
  "Target Rich Environment — erhöht die Markierungen von 3 auf 5.", true],
-["Hotshot","+30% Scharfschützengewehr-Schaden","+30% Waffenhandhabung &amp; +30% Kopfschuss-Schaden",
+["Hotshot","+30% Scharfschützengewehr-Schaden &amp; +30% Waffenhandhabung","+30% Kopfschussschaden",
  "Headache — 1. Kopfschuss: nächster Kopfschuss +80%; 2.: +10% Rüstung bzw. bei voller Rüstung bis zu 50% Bonus-Rüstung; 3.: Magazin auffüllen. Ab dem 4. Kopfschuss alle 3 Boni. Fehlschuss setzt die Kombo zurück.",
- "Blessed — ein Kopfschuss darf verfehlt werden, bevor die Kombo zurückgesetzt wird.",
- "Daring — erhöht die Bonus-Rüstung von 50% auf 100%.", true],
+ "Lucky — ein Kopfschuss darf verfehlt werden, bevor der Headache-Zyklus zurückgesetzt wird.",
+ "Stand Tall — erhöht die Bonus-Rüstung von Headache von 50% auf 100%.", true],
 ["Rigger","+15% Fertigkeitsbeschleunigung","+15% Skilldauer",
  "Tend and Befriend — Interaktion mit eingesetzten Skills gibt +25% Skillschaden für 10s; nicht erneuerbar.",
  "Complete Uptime — Abbrechen eines Skills setzt dessen Cooldown zurück.",
@@ -1794,9 +1794,9 @@ const gearSetEnglish = {
     backpack: "Increase On Point Weapon Damage bonus from 4% to 9%.", chest: "Increases On Point timer from 20 to 40."
   },
   "Hotshot": {
-    p2: "", p3: "The 30% Weapon Handling bonus has been transferred from the 2pc to the 3pc.",
+    p2: "+30% Marksman Rifle Damage &amp; +30% Weapon Handling", p3: "+30% Headshot Damage",
     t4: "First Headshot with a Marksman Rifle will increase next headshot by 80%, second consecutive headshot with a Marksman Rifle will give +10% armor (if at full armor it will give bonus armor max +50% of current armor value), third consecutive headshot will refill magazine. From the fourth headshot forward agents will get all 3 bonuses for each consecutive headshot kill. Missing a headshot will reset the cycle.",
-    backpack: "", chest: ""
+    backpack: "Lucky — Agents can miss a headshot before resetting the Headache cycle.", chest: "Stand Tall — Increases Headache bonus armor from 50% to 100%."
   },
   "Concentrated Company": {
     p2: "", p3: "",
@@ -1844,9 +1844,9 @@ const gearSetGerman = {
     backpack: "Erhöht den Waffenschadensbonus von On Point von 4% auf 9%.", chest: "Erhöht den On-Point-Timer von 20 auf 40."
   },
   "Hotshot": {
-    p2: "", p3: "Der Bonus von 30% Waffenhandhabung wurde vom 2-Teile-Bonus auf den 3-Teile-Bonus übertragen.",
+    p2: "+30% Scharfschützengewehr-Schaden &amp; +30% Waffenhandhabung", p3: "+30% Kopfschussschaden",
     t4: "Headache — Der erste Kopfschuss mit einem Scharfschützengewehr erhöht den nächsten Kopfschuss um 80%. Ein zweiter aufeinanderfolgender Kopfschuss mit einem Scharfschützengewehr gewährt +10% Rüstung (bei voller Rüstung stattdessen Bonus-Rüstung bis zu 50% des aktuellen Rüstungswerts). Ein dritter aufeinanderfolgender Kopfschuss füllt das Magazin auf. Ab dem vierten Kopfschuss erhalten Agents für jeden weiteren aufeinanderfolgenden Kopfschuss-Kill alle 3 Boni. Ein verfehlter Kopfschuss setzt den Zyklus zurück.",
-    backpack: "", chest: ""
+    backpack: "Lucky — Ein Kopfschuss darf verfehlt werden, bevor der Headache-Zyklus zurückgesetzt wird.", chest: "Stand Tall — Erhöht die Bonus-Rüstung von Headache von 50% auf 100%."
   },
   "Concentrated Company": {
     p2: "", p3: "",
