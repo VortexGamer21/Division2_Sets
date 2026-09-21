@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Division 2 — Sets Datenbank</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <style>
   :root{
     --bg: #0A0C0F;
@@ -1267,436 +1268,413 @@
 </style>
 </head>
 <body>
-
 <div class="wrap">
-
-  <header class="hero">
-
-    <div class="wip-badge" role="status" aria-live="polite">
-      <span class="wip-icon" aria-hidden="true">!</span>
-      <span>
-        <span class="wip-title">IN BEARBEITUNG</span>
-        <span class="wip-text">Die Seite wird laufend aktualisiert. Größere Updates und Patchnotes werden geprüft, damit Änderungen an Waffen, Sets und Talenten möglichst zeitnah übernommen werden.</span>
-      </span>
-    </div>
-    <div class="lang-switch" role="group" aria-label="Language">
-      <button type="button" data-lang="de" class="active">DE</button>
-      <button type="button" data-lang="en">EN</button>
-    </div>
-    <div class="kicker">ISAC DATABASE // AGENT REFERENCE</div>
-    <h1>Gear Sets, Brand Sets <span>&amp;</span> Waffen</h1>
-    <p class="lede">Alle Ausrüstungs- und Marken-Sets aus The Division 2 in einer durchsuchbaren Übersicht — jedes Set mit vollständigen Set-Boni und Talenten direkt sichtbar. Dazu alle exotischen Kleidungsstücke (Masken, Brust, Rucksack, Holster, Handschuhe, Knie) mit ihrem Kern-Talent, sowie alle Standard-, Named- und Exotic-Waffen, sortiert nach Waffenklasse.</p>
-    <div class="stat-row">
-      <div class="stat"><div class="num">28</div><div class="lbl" data-de="GEAR SETS" data-en="GEAR SETS">GEAR SETS</div></div>
-      <div class="stat"><div class="num">37</div><div class="lbl" data-de="MARKEN-SETS" data-en="BRAND SETS">MARKEN-SETS</div></div>
-      <div class="stat"><div class="num">65</div><div class="lbl" data-de="SETS GESAMT" data-en="TOTAL SETS">SETS GESAMT</div></div>
-      <div class="stat"><div class="num">30</div><div class="lbl" data-de="EXOTISCHE KLEIDUNG" data-en="EXOTIC GEAR">EXOTISCHE KLEIDUNG</div></div>
-      <div class="stat"><div class="num">46</div><div class="lbl" data-de="BENANNTES GEAR" data-en="NAMED GEAR">BENANNTES GEAR</div></div>
-      <div class="stat"><div class="num" id="wpCountStat">—</div><div class="lbl" data-de="WAFFEN ERFASST" data-en="WEAPONS TRACKED">WAFFEN ERFASST</div></div>
-    </div>
-  </header>
-
-  <div class="controls">
-    <div class="controls-inner">
-      <div class="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="searchInput" type="text" placeholder="Alles durchsuchen…">
-      </div>
-      <div class="filters">
-        <button class="active" data-f="all">Alle</button>
-        <button data-f="gear">Gear Sets</button>
-        <button data-f="brand">Brand Sets</button>
-        <button data-f="exogear">Exotische Kleidung</button>
-        <button data-f="namedgear">Named Gear</button>
-        <button data-f="exotic">Exotic-Waffen</button>
-        <button data-f="named">Named-Waffen</button>
-        <button data-f="standard">Standard-Waffen</button>
-        <button data-f="escalation">Escalation</button>
-        <button data-f="augments">Prototypen-Augments</button>
-      </div>
-      <div class="count-note" id="countNote"></div>
-    </div>
-  </div>
-
-  <section class="esc-section" id="escSection" hidden aria-label="Escalation"></section>
-  <section class="aug-section" id="augSection" hidden aria-label="Prototypen-Augments"></section>
-
-  <div class="section-head gear">
-    <h2>Gear Sets</h2>
-    <span class="tag">2 / 3 / 4-TEILE</span>
-    <div class="rule"></div>
-  </div>
-  <div class="grid" id="gearGrid"></div>
-
-  <div class="section-head brand">
-    <h2>Brand Sets</h2>
-    <span class="tag">1 / 2 / 3-TEILE</span>
-    <div class="rule"></div>
-  </div>
-  <div class="grid" id="brandGrid"></div>
-
-
-  <div class="section-head exogear">
-    <h2>Exotische Kleidung</h2>
-    <span class="tag">MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE</span>
-    <div class="rule"></div>
-  </div>
-  <div class="grid" id="exoGrid"></div>
-
-  <div class="section-head namedgear" id="namedGearSection">
-    <h2 data-de="Benanntes Gear" data-en="Named Gear">Benanntes Gear</h2>
-    <span class="tag" data-de="46 BENANNTE RÜSTUNGSTEILE" data-en="46 NAMED GEAR PIECES">46 BENANNTE RÜSTUNGSTEILE</span>
-    <div class="rule"></div>
-  </div>
-  <div class="grid named-gear-grid" id="namedGearGrid">
+<header class="hero">
+<div aria-live="polite" class="wip-badge" role="status">
+<span aria-hidden="true" class="wip-icon">!</span>
+<span>
+<span class="wip-title">IN BEARBEITUNG</span>
+<span class="wip-text">Die Seite wird laufend aktualisiert. Größere Updates und Patchnotes werden geprüft, damit Änderungen an Waffen, Sets und Talenten möglichst zeitnah übernommen werden.</span>
+</span>
+</div>
+<div aria-label="Language" class="lang-switch" role="group">
+<button class="active" data-lang="de" type="button">DE</button>
+<button data-lang="en" type="button">EN</button>
+</div>
+<div class="kicker">ISAC DATABASE // AGENT REFERENCE</div>
+<h1>Gear Sets, Brand Sets <span>&amp;</span> Waffen</h1>
+<p class="lede">Alle Ausrüstungs- und Marken-Sets aus The Division 2 in einer durchsuchbaren Übersicht — jedes Set mit vollständigen Set-Boni und Talenten direkt sichtbar. Dazu alle exotischen Kleidungsstücke (Masken, Brust, Rucksack, Holster, Handschuhe, Knie) mit ihrem Kern-Talent, sowie alle Standard-, Named- und Exotic-Waffen, sortiert nach Waffenklasse.</p>
+<div class="stat-row">
+<div class="stat"><div class="num">28</div><div class="lbl" data-de="GEAR SETS" data-en="GEAR SETS">GEAR SETS</div></div>
+<div class="stat"><div class="num">37</div><div class="lbl" data-de="MARKEN-SETS" data-en="BRAND SETS">MARKEN-SETS</div></div>
+<div class="stat"><div class="num">65</div><div class="lbl" data-de="SETS GESAMT" data-en="TOTAL SETS">SETS GESAMT</div></div>
+<div class="stat"><div class="num">30</div><div class="lbl" data-de="EXOTISCHE KLEIDUNG" data-en="EXOTIC GEAR">EXOTISCHE KLEIDUNG</div></div>
+<div class="stat"><div class="num">46</div><div class="lbl" data-de="BENANNTES GEAR" data-en="NAMED GEAR">BENANNTES GEAR</div></div>
+<div class="stat"><div class="num" id="wpCountStat">—</div><div class="lbl" data-de="WAFFEN ERFASST" data-en="WEAPONS TRACKED">WAFFEN ERFASST</div></div>
+</div>
+</header>
+<div class="controls">
+<div class="controls-inner">
+<div class="search">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input id="searchInput" placeholder="Alles durchsuchen…" type="text"/>
+</div>
+<div class="filters">
+<button class="active" data-f="all">Alle</button>
+<button data-f="gear">Gear Sets</button>
+<button data-f="brand">Brand Sets</button>
+<button data-f="exogear">Exotische Kleidung</button>
+<button data-f="namedgear">Named Gear</button>
+<button data-f="exotic">Exotic-Waffen</button>
+<button data-f="named">Named-Waffen</button>
+<button data-f="standard">Standard-Waffen</button>
+<button data-f="escalation">Escalation</button>
+<button data-f="augments">Prototypen-Augments</button>
+</div>
+<div class="count-note" id="countNote"></div>
+</div>
+</div>
+<section aria-label="Escalation" class="esc-section" hidden="" id="escSection"></section>
+<section aria-label="Prototypen-Augments" class="aug-section" hidden="" id="augSection"></section>
+<div class="section-head gear">
+<h2>Gear Sets</h2>
+<span class="tag">2 / 3 / 4-TEILE</span>
+<div class="rule"></div>
+</div>
+<div class="grid" id="gearGrid"></div>
+<div class="section-head brand">
+<h2>Brand Sets</h2>
+<span class="tag">1 / 2 / 3-TEILE</span>
+<div class="rule"></div>
+</div>
+<div class="grid" id="brandGrid"></div>
+<div class="section-head exogear">
+<h2>Exotische Kleidung</h2>
+<span class="tag">MASKEN / BRUST / RUCKSACK / HOLSTER / HANDSCHUHE / KNIE</span>
+<div class="rule"></div>
+</div>
+<div class="grid" id="exoGrid"></div>
+<div class="section-head namedgear" id="namedGearSection">
+<h2 data-de="Benanntes Gear" data-en="Named Gear">Benanntes Gear</h2>
+<span class="tag" data-de="46 BENANNTE RÜSTUNGSTEILE" data-en="46 NAMED GEAR PIECES">46 BENANNTE RÜSTUNGSTEILE</span>
+<div class="rule"></div>
+</div>
+<div class="grid named-gear-grid" id="namedGearGrid">
 <div class="named-gear-group-label">Masken <span>— 5</span></div>
 <article class="named-gear-card" data-name="punch drunk douglas &amp; harding masken +20% kopfschussschaden (standard-maximum auf masken ist 10%)." data-slot="Masken">
-  <div class="ng-meta"><span>Masken</span><span>Douglas &amp; Harding</span></div>
-  <h3>Punch Drunk</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>+20% Kopfschussschaden (Standard-Maximum auf Masken ist 10%).</p>
+<div class="ng-meta"><span data-de="Masken">Masken</span><span>Douglas &amp; Harding</span></div>
+<h3 data-de-name="Punch Drunk" data-en-name="Punch Drunk">Punch Drunk</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="+20% Kopfschussschaden (Standard-Maximum auf Masken ist 10%)." data-en="+20% Headshot Damage (the standard maximum on masks is 10%).">+20% Kopfschussschaden (Standard-Maximum auf Masken ist 10%).</p>
 </article>
 <article class="named-gear-card" data-name="nightwatcher gila guard masken +100% scanner-impuls-tempo (reduziert die abklingzeit des scan-skills drastisch)." data-slot="Masken">
-  <div class="ng-meta"><span>Masken</span><span>Gila Guard</span></div>
-  <h3>Nightwatcher</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>+100% Scanner-Impuls-Tempo (reduziert die Abklingzeit des Scan-Skills drastisch).</p>
+<div class="ng-meta"><span data-de="Masken">Masken</span><span>Gila Guard</span></div>
+<h3 data-de-name="Nightwatcher" data-en-name="Nightwatcher">Nightwatcher</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="+100% Scanner-Impuls-Tempo (reduziert die Abklingzeit des Scan-Skills drastisch)." data-en="+100% Scanner Pulse Haste (dramatically reduces the Scan skill's cooldown).">+100% Scanner-Impuls-Tempo (reduziert die Abklingzeit des Scan-Skills drastisch).</p>
 </article>
 <article class="named-gear-card" data-name="the hollow man yaahl gear masken +10% schaden an lebensenergie (damage to health). (dz-exklusiv / benannte behälter)." data-slot="Masken">
-  <div class="ng-meta"><span>Masken</span><span>Yaahl Gear</span></div>
-  <h3>The Hollow Man</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>+10% Schaden an Lebensenergie (Damage to Health). (DZ-exklusiv / Benannte Behälter).</p>
+<div class="ng-meta"><span data-de="Masken">Masken</span><span>Yaahl Gear</span></div>
+<h3 data-de-name="The Hollow Man" data-en-name="The Hollow Man">The Hollow Man</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="+10% Schaden an Lebensenergie (Damage to Health). (DZ-exklusiv / Benannte Behälter)." data-en="+10% Damage to Health. (Dark Zone exclusive / Named Caches).">+10% Schaden an Lebensenergie (Damage to Health). (DZ-exklusiv / Benannte Behälter).</p>
 </article>
 <article class="named-gear-card" data-name="chill out gila guard masken besitzt keine marken-attribute (marken-boni gelten dennoch), bietet dafür aber als einzige maske zwei vollwertige plätze für rüstungsmodifikationen. (saisonales winter-event)." data-slot="Masken">
-  <div class="ng-meta"><span>Masken</span><span>Gila Guard</span></div>
-  <h3>Chill Out</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Besitzt keine Marken-Attribute (Marken-Boni gelten dennoch), bietet dafür aber als einzige Maske ZWEI vollwertige Plätze für Rüstungsmodifikationen. (Saisonales Winter-Event).</p>
+<div class="ng-meta"><span data-de="Masken">Masken</span><span>Gila Guard</span></div>
+<h3 data-de-name="Chill Out" data-en-name="Chill Out">Chill Out</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Besitzt keine Marken-Attribute (Marken-Boni gelten dennoch), bietet dafür aber als einzige Maske ZWEI vollwertige Plätze für Rüstungsmodifikationen. (Saisonales Winter-Event)." data-en="Has no brand attributes (brand bonuses still apply), but is the only mask with TWO full slots for gear mods. (Seasonal winter event).">Besitzt keine Marken-Attribute (Marken-Boni gelten dennoch), bietet dafür aber als einzige Maske ZWEI vollwertige Plätze für Rüstungsmodifikationen. (Saisonales Winter-Event).</p>
 </article>
 <article class="named-gear-card" data-name="catalyst yaahl gear masken +15% explosionswiderstand auf dem masken-slot. (exklusiv aus brooklyn-endgame-aktivitäten)." data-slot="Masken">
-  <div class="ng-meta"><span>Masken</span><span>Yaahl Gear</span></div>
-  <h3>Catalyst</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>+15% Explosionswiderstand auf dem Masken-Slot. (Exklusiv aus Brooklyn-Endgame-Aktivitäten).</p>
+<div class="ng-meta"><span data-de="Masken">Masken</span><span>Yaahl Gear</span></div>
+<h3 data-de-name="Catalyst" data-en-name="Catalyst">Catalyst</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="+15% Explosionswiderstand auf dem Masken-Slot. (Exklusiv aus Brooklyn-Endgame-Aktivitäten)." data-en="+15% Explosive Resistance on the mask slot. (Exclusive to Brooklyn endgame activities).">+15% Explosionswiderstand auf dem Masken-Slot. (Exklusiv aus Brooklyn-Endgame-Aktivitäten).</p>
 </article>
 <div class="named-gear-group-label">Westen <span>— 16</span></div>
 <article class="named-gear-card" data-name="the sacrifice / das opfer providence defense westen perfekte glaskanone — erhöht allen von ihnen verursachten schaden um +30%, erhöht jedoch gleichzeitig jeglichen erlittenen schaden um +60%." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Providence Defense</span></div>
-  <h3>The Sacrifice / Das Opfer</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Glaskanone — Erhöht allen von Ihnen verursachten Schaden um +30%, erhöht jedoch gleichzeitig jeglichen erlittenen Schaden um +60%.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Providence Defense</span></div>
+<h3 data-de-name="The Sacrifice / Das Opfer" data-en-name="The Sacrifice">The Sacrifice / Das Opfer</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Glaskanone — Erhöht allen von Ihnen verursachten Schaden um +30%, erhöht jedoch gleichzeitig jeglichen erlittenen Schaden um +60%." data-en="Perfect Glass Cannon — Increases all damage you deal by +30%, but also increases all damage you take by +60%.">Perfekte Glaskanone — Erhöht allen von Ihnen verursachten Schaden um +30%, erhöht jedoch gleichzeitig jeglichen erlittenen Schaden um +60%.</p>
 </article>
 <article class="named-gear-card" data-name="chainkiller walker, harris &amp; co. westen perfekter jäger (perfect headhunter) — nach dem töten eines gegners per kopfschuss fügt ihr nächster treffer innerhalb von 30 sek. zusätzlich 150% des schadens des tödlichen treffers hinzu (gedeckt bei maximal 1250%)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Walker, Harris &amp; Co.</span></div>
-  <h3>Chainkiller</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Jäger (Perfect Headhunter) — Nach dem Töten eines Gegners per Kopfschuss fügt Ihr nächster Treffer innerhalb von 30 Sek. zusätzlich 150% des Schadens des tödlichen Treffers hinzu (gedeckt bei maximal 1250%).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Walker, Harris &amp; Co.</span></div>
+<h3 data-de-name="Chainkiller" data-en-name="Chainkiller">Chainkiller</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Jäger (Perfect Headhunter) — Nach dem Töten eines Gegners per Kopfschuss fügt Ihr nächster Treffer innerhalb von 30 Sek. zusätzlich 150% des Schadens des tödlichen Treffers hinzu (gedeckt bei maximal 1250%)." data-en="Perfect Headhunter — After killing an enemy with a headshot, your next hit within 30 seconds deals an additional 150% of the killing shot's damage (capped at 1250%).">Perfekter Jäger (Perfect Headhunter) — Nach dem Töten eines Gegners per Kopfschuss fügt Ihr nächster Treffer innerhalb von 30 Sek. zusätzlich 150% des Schadens des tödlichen Treffers hinzu (gedeckt bei maximal 1250%).</p>
 </article>
-<article class="named-gear-card" data-name="zero f&#x27;s badger tuff westen perfekt unzerbrechlich — wenn ihre rüstung vollständig verbraucht wird, repariert das talent sofort 100% ihrer maximalen rüstung. (abklingzeit: 55 sekunden)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Badger Tuff</span></div>
-  <h3>Zero F&#x27;s</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Unzerbrechlich — Wenn Ihre Rüstung vollständig verbraucht wird, repariert das Talent sofort 100% Ihrer maximalen Rüstung. (Abklingzeit: 55 Sekunden).</p>
+<article class="named-gear-card" data-name="zero f's badger tuff westen perfekt unzerbrechlich — wenn ihre rüstung vollständig verbraucht wird, repariert das talent sofort 100% ihrer maximalen rüstung. (abklingzeit: 55 sekunden)." data-slot="Westen">
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Badger Tuff</span></div>
+<h3 data-de-name="Zero F's" data-en-name="Zero F's">Zero F's</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Unzerbrechlich — Wenn Ihre Rüstung vollständig verbraucht wird, repariert das Talent sofort 100% Ihrer maximalen Rüstung. (Abklingzeit: 55 Sekunden)." data-en="Perfectly Unbreakable — When your armor is completely depleted, the talent immediately repairs 100% of your maximum armor. (Cooldown: 55 seconds).">Perfekt Unzerbrechlich — Wenn Ihre Rüstung vollständig verbraucht wird, repariert das Talent sofort 100% Ihrer maximalen Rüstung. (Abklingzeit: 55 Sekunden).</p>
 </article>
 <article class="named-gear-card" data-name="henri uzina getica westen perfekter gefährte — erhöht ihren totalen waffenschaden um +20%, solange sie sich innerhalb von 5 metern neben einem verbündeten oder einer eigenen aktiven fertigkeit befinden." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Uzina Getica</span></div>
-  <h3>Henri</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Gefährte — Erhöht Ihren totalen Waffenschaden um +20%, solange Sie sich innerhalb von 5 Metern neben einem Verbündeten oder einer eigenen aktiven Fertigkeit befinden.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Uzina Getica</span></div>
+<h3 data-de-name="Henri" data-en-name="Henri">Henri</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Gefährte — Erhöht Ihren totalen Waffenschaden um +20%, solange Sie sich innerhalb von 5 Metern neben einem Verbündeten oder einer eigenen aktiven Fertigkeit befinden." data-en="Perfect Companion — Increases your total weapon damage by +20% while you are within 5 meters of an ally or one of your active skills.">Perfekter Gefährte — Erhöht Ihren totalen Waffenschaden um +20%, solange Sie sich innerhalb von 5 Metern neben einem Verbündeten oder einer eigenen aktiven Fertigkeit befinden.</p>
 </article>
 <article class="named-gear-card" data-name="the closer / der schließer uzina getica westen perfektes sichten (perfect spotter) — erhöht den gesamten waffen- und fertigkeitenschaden bei gepulsten gegnern (z. b. durch techniker-laser) um +20%." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Uzina Getica</span></div>
-  <h3>The Closer / Der Schließer</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfektes Sichten (Perfect Spotter) — Erhöht den gesamten Waffen- und Fertigkeitenschaden bei gepulsten Gegnern (z. B. durch Techniker-Laser) um +20%.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Uzina Getica</span></div>
+<h3 data-de-name="The Closer / Der Schließer" data-en-name="The Closer">The Closer / Der Schließer</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfektes Sichten (Perfect Spotter) — Erhöht den gesamten Waffen- und Fertigkeitenschaden bei gepulsten Gegnern (z. B. durch Techniker-Laser) um +20%." data-en="Perfect Spotter — Increases total weapon and skill damage against pulsed enemies (e.g. by the Technician laser) by +20%.">Perfektes Sichten (Perfect Spotter) — Erhöht den gesamten Waffen- und Fertigkeitenschaden bei gepulsten Gegnern (z. B. durch Techniker-Laser) um +20%.</p>
 </article>
-<article class="named-gear-card" data-name="door-kicker&#x27;s knock grupo sombra westen perfekter funke (perfect spark) — das beschädigen eines gegners mit einer fertigkeit erhöht ihren waffenschaden 15 sek. lang um +20%." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Grupo Sombra</span></div>
-  <h3>Door-Kicker&#x27;s Knock</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Funke (Perfect Spark) — Das Beschädigen eines Gegners mit einer Fertigkeit erhöht Ihren Waffenschaden 15 Sek. lang um +20%.</p>
+<article class="named-gear-card" data-name="door-kicker's knock grupo sombra westen perfekter funke (perfect spark) — das beschädigen eines gegners mit einer fertigkeit erhöht ihren waffenschaden 15 sek. lang um +20%." data-slot="Westen">
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Grupo Sombra</span></div>
+<h3 data-de-name="Door-Kicker's Knock" data-en-name="Door-Kicker's Knock">Door-Kicker's Knock</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Funke (Perfect Spark) — Das Beschädigen eines Gegners mit einer Fertigkeit erhöht Ihren Waffenschaden 15 Sek. lang um +20%." data-en="Perfect Spark — Damaging an enemy with a skill increases your weapon damage by +20% for 15 seconds.">Perfekter Funke (Perfect Spark) — Das Beschädigen eines Gegners mit einer Fertigkeit erhöht Ihren Waffenschaden 15 Sek. lang um +20%.</p>
 </article>
 <article class="named-gear-card" data-name="pristine example airaldi holdings westen perfekter fokus — erhöht den waffenschaden beim zielen durch ein visier mit 8-facher vergrößerung oder höher jede sekunde um +6%, bis zu einem maximum von +60%." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Airaldi Holdings</span></div>
-  <h3>Pristine Example</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Fokus — Erhöht den Waffenschaden beim Zielen durch ein Visier mit 8-facher Vergrößerung oder höher jede Sekunde um +6%, bis zu einem Maximum von +60%.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Airaldi Holdings</span></div>
+<h3 data-de-name="Pristine Example" data-en-name="Pristine Example">Pristine Example</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Fokus — Erhöht den Waffenschaden beim Zielen durch ein Visier mit 8-facher Vergrößerung oder höher jede Sekunde um +6%, bis zu einem Maximum von +60%." data-en="Perfect Focus — Increases weapon damage by +6% each second while aiming through a scope with 8x magnification or higher, up to a maximum of +60%.">Perfekter Fokus — Erhöht den Waffenschaden beim Zielen durch ein Visier mit 8-facher Vergrößerung oder höher jede Sekunde um +6%, bis zu einem Maximum von +60%.</p>
 </article>
 <article class="named-gear-card" data-name="pointman belstone armory westen perfekte vorhut — beim ausfahren ihres schildes erhalten alle verbündeten 5 sek. lang 50% ihrer maximalen rüstung als bonus-rüstung. (abklingzeit: 25 sekunden)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Belstone Armory</span></div>
-  <h3>Pointman</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Vorhut — Beim Ausfahren Ihres Schildes erhalten alle Verbündeten 5 Sek. lang 50% Ihrer maximalen Rüstung als Bonus-Rüstung. (Abklingzeit: 25 Sekunden).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Belstone Armory</span></div>
+<h3 data-de-name="Pointman" data-en-name="Pointman">Pointman</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Vorhut — Beim Ausfahren Ihres Schildes erhalten alle Verbündeten 5 Sek. lang 50% Ihrer maximalen Rüstung als Bonus-Rüstung. (Abklingzeit: 25 Sekunden)." data-en="Perfect Vanguard — Deploying your shield grants all allies 50% of your maximum armor as bonus armor for 5 seconds. (Cooldown: 25 seconds).">Perfekte Vorhut — Beim Ausfahren Ihres Schildes erhalten alle Verbündeten 5 Sek. lang 50% Ihrer maximalen Rüstung als Bonus-Rüstung. (Abklingzeit: 25 Sekunden).</p>
 </article>
 <article class="named-gear-card" data-name="everyday carrier belstone armory westen perfekt effizient — beim verwenden eines rüstungskits besteht eine chance von 75%, dass das kit nicht verbraucht wird." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Belstone Armory</span></div>
-  <h3>Everyday Carrier</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Effizient — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Belstone Armory</span></div>
+<h3 data-de-name="Everyday Carrier" data-en-name="Everyday Carrier">Everyday Carrier</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Effizient — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird." data-en="Perfectly Efficient — When using an armor kit, there is a 75% chance that the kit will not be consumed.">Perfekt Effizient — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird.</p>
 </article>
 <article class="named-gear-card" data-name="vedmedytsya-weste petrov defense group westen perfekte abstützung (perfect braced) — gewährt ihnen einen massiven bonus von +50% waffenhandhabung, solange sie sich in einer deckung befinden." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Petrov Defense Group</span></div>
-  <h3>Vedmedytsya-Weste</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Abstützung (Perfect Braced) — Gewährt Ihnen einen massiven Bonus von +50% Waffenhandhabung, solange Sie sich in einer Deckung befinden.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Petrov Defense Group</span></div>
+<h3 data-de-name="Vedmedytsya-Weste" data-en-name="Vedmedytsya-Weste">Vedmedytsya-Weste</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Abstützung (Perfect Braced) — Gewährt Ihnen einen massiven Bonus von +50% Waffenhandhabung, solange Sie sich in einer Deckung befinden." data-en="Perfect Braced — Grants you a massive +50% weapon handling bonus while you are in cover.">Perfekte Abstützung (Perfect Braced) — Gewährt Ihnen einen massiven Bonus von +50% Waffenhandhabung, solange Sie sich in einer Deckung befinden.</p>
 </article>
 <article class="named-gear-card" data-name="hunter-killer golan gear westen perfekt einschüchtern — solange sie bonus-rüstung besitzen, erhalten sie jede sekunde einen stapel von +5% waffenschaden (bis zu 8 stapel / 40% gesamtschaden), wenn sie sich innerhalb von 10 metern um einen gegner befinden. (belohnung für new york hunter-masken-rätsel)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Golan Gear</span></div>
-  <h3>Hunter-Killer</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Einschüchtern — Solange Sie Bonus-Rüstung besitzen, erhalten Sie jede Sekunde einen Stapel von +5% Waffenschaden (bis zu 8 Stapel / 40% Gesamtschaden), wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden. (Belohnung für New York Hunter-Masken-Rätsel).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Golan Gear</span></div>
+<h3 data-de-name="Hunter-Killer" data-en-name="Hunter-Killer">Hunter-Killer</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Einschüchtern — Solange Sie Bonus-Rüstung besitzen, erhalten Sie jede Sekunde einen Stapel von +5% Waffenschaden (bis zu 8 Stapel / 40% Gesamtschaden), wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden. (Belohnung für New York Hunter-Masken-Rätsel)." data-en="Perfect Intimidate — While you have bonus armor, gain a stack of +5% weapon damage every second when within 10 meters of an enemy (up to 8 stacks / 40% total damage). (Reward from the New York Hunter mask puzzle).">Perfekt Einschüchtern — Solange Sie Bonus-Rüstung besitzen, erhalten Sie jede Sekunde einen Stapel von +5% Waffenschaden (bis zu 8 Stapel / 40% Gesamtschaden), wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden. (Belohnung für New York Hunter-Masken-Rätsel).</p>
 </article>
 <article class="named-gear-card" data-name="ferocious calm fenris group ab westen perfekter gefasster mut — erhöht den waffenschaden drastisch, je mehr eigene rüstung verloren geht (bis zu +50% waffenschaden bei komplett zerstörter rüstung). (dz-exklusiv)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Fenris Group AB</span></div>
-  <h3>Ferocious Calm</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Gefasster Mut — Erhöht den Waffenschaden drastisch, je mehr eigene Rüstung verloren geht (bis zu +50% Waffenschaden bei komplett zerstörter Rüstung). (DZ-exklusiv).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Fenris Group AB</span></div>
+<h3 data-de-name="Ferocious Calm" data-en-name="Ferocious Calm">Ferocious Calm</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Gefasster Mut — Erhöht den Waffenschaden drastisch, je mehr eigene Rüstung verloren geht (bis zu +50% Waffenschaden bei komplett zerstörter Rüstung). (DZ-exklusiv)." data-en="Perfectly Unbreakable? No — Perfectly Composed? — Greatly increases weapon damage as you lose armor (up to +50% weapon damage when your armor is completely depleted). (Dark Zone exclusive).">Perfekter Gefasster Mut — Erhöht den Waffenschaden drastisch, je mehr eigene Rüstung verloren geht (bis zu +50% Waffenschaden bei komplett zerstörter Rüstung). (DZ-exklusiv).</p>
 </article>
 <article class="named-gear-card" data-name="cherished aegis brand westen perfekt unerschütterlich — gewährt bei waffenwechsel nach einer deckung-zu-deckung-bewegung eine extreme erhöhung der waffen-präzision und stabilität." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Aegis Brand</span></div>
-  <h3>Cherished</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Unerschütterlich — Gewährt bei Waffenwechsel nach einer Deckung-zu-Deckung-Bewegung eine extreme Erhöhung der Waffen-Präzision und Stabilität.</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Aegis Brand</span></div>
+<h3 data-de-name="Cherished" data-en-name="Cherished">Cherished</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Unerschütterlich — Gewährt bei Waffenwechsel nach einer Deckung-zu-Deckung-Bewegung eine extreme Erhöhung der Waffen-Präzision und Stabilität." data-en="Perfectly Unflinching — After moving from cover to cover, switching weapons grants a significant increase to weapon accuracy and stability.">Perfekt Unerschütterlich — Gewährt bei Waffenwechsel nach einer Deckung-zu-Deckung-Bewegung eine extreme Erhöhung der Waffen-Präzision und Stabilität.</p>
 </article>
 <article class="named-gear-card" data-name="equalizer unit alloys westen perfektes obliterate / vernichten — kritische treffer erhöhen den waffenschaden 10 sek. lang um +1% (bis zu 30-mal stapelbar)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Unit Alloys</span></div>
-  <h3>Equalizer</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfektes Obliterate / Vernichten — Kritische Treffer erhöhen den Waffenschaden 10 Sek. lang um +1% (bis zu 30-mal stapelbar).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Unit Alloys</span></div>
+<h3 data-de-name="Equalizer" data-en-name="Equalizer">Equalizer</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfektes Obliterate / Vernichten — Kritische Treffer erhöhen den Waffenschaden 10 Sek. lang um +1% (bis zu 30-mal stapelbar)." data-en="Perfect Obliterate — Critical hits increase weapon damage by +1% for 10 seconds, stacking up to 30 times.">Perfektes Obliterate / Vernichten — Kritische Treffer erhöhen den Waffenschaden 10 Sek. lang um +1% (bis zu 30-mal stapelbar).</p>
 </article>
 <article class="named-gear-card" data-name="trick shot imminence armaments westen perfekt zugewiesen — das töten eines gegners fügt der seitenwaffe 1 patrone einer zufälligen spezialmunition (schock, brand, zerreißen) hinzu. (abklingzeit: 8 sekunden)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Imminence Armaments</span></div>
-  <h3>Trick Shot</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Zugewiesen — Das Töten eines Gegners fügt der Seitenwaffe 1 Patrone einer zufälligen Spezialmunition (Schock, Brand, Zerreißen) hinzu. (Abklingzeit: 8 Sekunden).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Imminence Armaments</span></div>
+<h3 data-de-name="Trick Shot" data-en-name="Trick Shot">Trick Shot</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Zugewiesen — Das Töten eines Gegners fügt der Seitenwaffe 1 Patrone einer zufälligen Spezialmunition (Schock, Brand, Zerreißen) hinzu. (Abklingzeit: 8 Sekunden)." data-en="Perfectly Assigned — Killing an enemy adds 1 round of random special ammunition (shock, incendiary, or rupture) to your sidearm. (Cooldown: 8 seconds).">Perfekt Zugewiesen — Das Töten eines Gegners fügt der Seitenwaffe 1 Patrone einer zufälligen Spezialmunition (Schock, Brand, Zerreißen) hinzu. (Abklingzeit: 8 Sekunden).</p>
 </article>
 <article class="named-gear-card" data-name="rushdown richter &amp; kaiser westen perfektes tag-team — das treffen eines gegners mit einer fertigkeit markiert das ziel. waffenschaden verbraucht die markierung und verkürzt alle aktiven fertigkeiten-abklingzeiten um 12 sekunden. (abklingzeit: 4 sekunden)." data-slot="Westen">
-  <div class="ng-meta"><span>Westen</span><span>Richter &amp; Kaiser</span></div>
-  <h3>Rushdown</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfektes Tag-Team — Das Treffen eines Gegners mit einer Fertigkeit markiert das Ziel. Waffenschaden verbraucht die Markierung und verkürzt alle aktiven Fertigkeiten-Abklingzeiten um 12 Sekunden. (Abklingzeit: 4 Sekunden).</p>
+<div class="ng-meta"><span data-de="Westen">Westen</span><span>Richter &amp; Kaiser</span></div>
+<h3 data-de-name="Rushdown" data-en-name="Rushdown">Rushdown</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfektes Tag-Team — Das Treffen eines Gegners mit einer Fertigkeit markiert das Ziel. Waffenschaden verbraucht die Markierung und verkürzt alle aktiven Fertigkeiten-Abklingzeiten um 12 Sekunden. (Abklingzeit: 4 Sekunden)." data-en="Perfect Tag Team — Hitting an enemy with a skill marks the target. Weapon damage consumes the mark and reduces all active skill cooldowns by 12 seconds. (Cooldown: 4 seconds).">Perfektes Tag-Team — Das Treffen eines Gegners mit einer Fertigkeit markiert das Ziel. Waffenschaden verbraucht die Markierung und verkürzt alle aktiven Fertigkeiten-Abklingzeiten um 12 Sekunden. (Abklingzeit: 4 Sekunden).</p>
 </article>
 <div class="named-gear-group-label">Rucksäcke <span>— 14</span></div>
 <article class="named-gear-card" data-name="the gift / das geschenk providence defense rucksäcke perfekte wachsamkeit — erhöht den waffenschaden permanent um +25%. wenn sie schaden erleiden, wird dieser bonus für lediglich 3 sekunden deaktiviert (statt 4 sekunden beim standard-talent). (dz-exklusiv)." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Providence Defense</span></div>
-  <h3>The Gift / Das Geschenk</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Wachsamkeit — Erhöht den Waffenschaden permanent um +25%. Wenn Sie Schaden erleiden, wird dieser Bonus für lediglich 3 Sekunden deaktiviert (statt 4 Sekunden beim Standard-Talent). (DZ-exklusiv).</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Providence Defense</span></div>
+<h3 data-de-name="The Gift / Das Geschenk" data-en-name="The Gift">The Gift / Das Geschenk</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Wachsamkeit — Erhöht den Waffenschaden permanent um +25%. Wenn Sie Schaden erleiden, wird dieser Bonus für lediglich 3 Sekunden deaktiviert (statt 4 Sekunden beim Standard-Talent). (DZ-exklusiv)." data-en="Perfect Vigilance — Permanently increases weapon damage by +25%. When you take damage, this bonus is disabled for only 3 seconds (instead of 4 seconds with the standard talent). (Dark Zone exclusive).">Perfekte Wachsamkeit — Erhöht den Waffenschaden permanent um +25%. Wenn Sie Schaden erleiden, wird dieser Bonus für lediglich 3 Sekunden deaktiviert (statt 4 Sekunden beim Standard-Talent). (DZ-exklusiv).</p>
 </article>
 <article class="named-gear-card" data-name="matador walker, harris &amp; co. rucksäcke perfekter adrenalinrausch — wenn sie sich innerhalb von 10 metern um einen gegner befinden, erhalten sie alle 5 sek. +23% bonus-rüstung (bis zu 3-mal stapelbar für max. 69% bonus-rüstung). (dz-exklusiv)." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Walker, Harris &amp; Co.</span></div>
-  <h3>Matador</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Adrenalinrausch — Wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden, erhalten Sie alle 5 Sek. +23% Bonus-Rüstung (bis zu 3-mal stapelbar für max. 69% Bonus-Rüstung). (DZ-exklusiv).</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Walker, Harris &amp; Co.</span></div>
+<h3 data-de-name="Matador" data-en-name="Matador">Matador</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Adrenalinrausch — Wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden, erhalten Sie alle 5 Sek. +23% Bonus-Rüstung (bis zu 3-mal stapelbar für max. 69% Bonus-Rüstung). (DZ-exklusiv)." data-en="Perfect Adrenaline Rush — When you are within 10 meters of an enemy, gain +23% bonus armor every 5 seconds, stacking up to 3 times for a maximum of 69% bonus armor. (Dark Zone exclusive).">Perfekter Adrenalinrausch — Wenn Sie sich innerhalb von 10 Metern um einen Gegner befinden, erhalten Sie alle 5 Sek. +23% Bonus-Rüstung (bis zu 3-mal stapelbar für max. 69% Bonus-Rüstung). (DZ-exklusiv).</p>
 </article>
 <article class="named-gear-card" data-name="force multiplier / kraftmultiplikator hana-u rucksäcke perfekter kombinierter fluss — das treffen eines gegners mit einer waffe erhöht ihren gesamten fertigkeitenschaden 3 sek. lang um +30%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Hana-U</span></div>
-  <h3>Force Multiplier / Kraftmultiplikator</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Kombinierter Fluss — Das Treffen eines Gegners mit einer Waffe erhöht Ihren gesamten Fertigkeitenschaden 3 Sek. lang um +30%.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Hana-U</span></div>
+<h3 data-de-name="Force Multiplier / Kraftmultiplikator" data-en-name="Force Multiplier">Force Multiplier / Kraftmultiplikator</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Kombinierter Fluss — Das Treffen eines Gegners mit einer Waffe erhöht Ihren gesamten Fertigkeitenschaden 3 Sek. lang um +30%." data-en="Perfect Combined Arms — Hitting an enemy with a weapon increases your total skill damage by +30% for 3 seconds.">Perfekter Kombinierter Fluss — Das Treffen eines Gegners mit einer Waffe erhöht Ihren gesamten Fertigkeitenschaden 3 Sek. lang um +30%.</p>
 </article>
-<article class="named-gear-card" data-name="anarchist&#x27;s cookbook / anarchisten-kochbuch golan gear rucksäcke perfekt boshaft (perfectly wicked) — das zufügen eines statuseffekts an einem gegner erhöht ihren gesamten waffenschaden 27 sek. lang um +18%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Golan Gear</span></div>
-  <h3>Anarchist&#x27;s Cookbook / Anarchisten-Kochbuch</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Boshaft (Perfectly Wicked) — Das Zufügen eines Statuseffekts an einem Gegner erhöht Ihren gesamten Waffenschaden 27 Sek. lang um +18%.</p>
+<article class="named-gear-card" data-name="anarchist's cookbook / anarchisten-kochbuch golan gear rucksäcke perfekt boshaft (perfectly wicked) — das zufügen eines statuseffekts an einem gegner erhöht ihren gesamten waffenschaden 27 sek. lang um +18%." data-slot="Rucksäcke">
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Golan Gear</span></div>
+<h3 data-de-name="Anarchist's Cookbook / Anarchisten-Kochbuch" data-en-name="Anarchist's Cookbook">Anarchist's Cookbook / Anarchisten-Kochbuch</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Boshaft (Perfectly Wicked) — Das Zufügen eines Statuseffekts an einem Gegner erhöht Ihren gesamten Waffenschaden 27 Sek. lang um +18%." data-en="Perfectly Wicked — Applying a status effect to an enemy increases your total weapon damage by +18% for 27 seconds.">Perfekt Boshaft (Perfectly Wicked) — Das Zufügen eines Statuseffekts an einem Gegner erhöht Ihren gesamten Waffenschaden 27 Sek. lang um +18%.</p>
 </article>
 <article class="named-gear-card" data-name="strategic alignment china light industries rucksäcke perfekter schock (shock and awe) — das zufügen eines statuseffekts erhöht die fertigkeiten-reparatur und den fertigkeitenschaden 27 sek. lang um +20%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>China Light Industries</span></div>
-  <h3>Strategic Alignment</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Schock (Shock and Awe) — Das Zufügen eines Statuseffekts erhöht die Fertigkeiten-Reparatur und den Fertigkeitenschaden 27 Sek. lang um +20%.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>China Light Industries</span></div>
+<h3 data-de-name="Strategic Alignment" data-en-name="Strategic Alignment">Strategic Alignment</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Schock (Shock and Awe) — Das Zufügen eines Statuseffekts erhöht die Fertigkeiten-Reparatur und den Fertigkeitenschaden 27 Sek. lang um +20%." data-en="Perfect Shock and Awe — Applying a status effect increases skill repair and skill damage by +20% for 27 seconds.">Perfekter Schock (Shock and Awe) — Das Zufügen eines Statuseffekts erhöht die Fertigkeiten-Reparatur und den Fertigkeitenschaden 27 Sek. lang um +20%.</p>
 </article>
 <article class="named-gear-card" data-name="liquid engineer belstone armory rucksäcke perfekter blutsauger — das töten eines gegners gewährt ihnen 10 sek. lang +12% bonus-rüstung. bis zu 10-mal stapelbar." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Belstone Armory</span></div>
-  <h3>Liquid Engineer</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Blutsauger — Das Töten eines Gegners gewährt Ihnen 10 Sek. lang +12% Bonus-Rüstung. Bis zu 10-mal stapelbar.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Belstone Armory</span></div>
+<h3 data-de-name="Liquid Engineer" data-en-name="Liquid Engineer">Liquid Engineer</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Blutsauger — Das Töten eines Gegners gewährt Ihnen 10 Sek. lang +12% Bonus-Rüstung. Bis zu 10-mal stapelbar." data-en="Perfect Bloodsucker — Killing an enemy grants +12% bonus armor for 10 seconds. Stacks up to 10 times.">Perfekter Blutsauger — Das Töten eines Gegners gewährt Ihnen 10 Sek. lang +12% Bonus-Rüstung. Bis zu 10-mal stapelbar.</p>
 </article>
-<article class="named-gear-card" data-name="devil&#x27;s due češka výroba rucksäcke perfektes halten / perfect clutch — wenn ihre rüstung unter 20% fällt, reparieren kritische treffer 5 sek. lang 100% des verloren gegangenen rüstungswerts pro kritischem treffer." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Češka Výroba</span></div>
-  <h3>Devil&#x27;s Due</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfektes Halten / Perfect Clutch — Wenn Ihre Rüstung unter 20% fällt, reparieren kritische Treffer 5 Sek. lang 100% des verloren gegangenen Rüstungswerts pro kritischem Treffer.</p>
+<article class="named-gear-card" data-name="devil's due češka výroba rucksäcke perfektes halten / perfect clutch — wenn ihre rüstung unter 20% fällt, reparieren kritische treffer 5 sek. lang 100% des verloren gegangenen rüstungswerts pro kritischem treffer." data-slot="Rucksäcke">
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Češka Výroba</span></div>
+<h3 data-de-name="Devil's Due" data-en-name="Devil's Due">Devil's Due</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfektes Halten / Perfect Clutch — Wenn Ihre Rüstung unter 20% fällt, reparieren kritische Treffer 5 Sek. lang 100% des verloren gegangenen Rüstungswerts pro kritischem Treffer." data-en="Perfect Clutch — When your armor drops below 20%, critical hits repair 100% of the lost armor value per critical hit for 5 seconds.">Perfektes Halten / Perfect Clutch — Wenn Ihre Rüstung unter 20% fällt, reparieren kritische Treffer 5 Sek. lang 100% des verloren gegangenen Rüstungswerts pro kritischem Treffer.</p>
 </article>
 <article class="named-gear-card" data-name="percussive maintenance alps summit armament rucksäcke perfekter tech-support — das töten eines gegners mit einer fertigkeit erhöht ihren gesamten fertigkeitenschaden 27 sek. lang um +25%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Alps Summit Armament</span></div>
-  <h3>Percussive Maintenance</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Tech-Support — Das Töten eines Gegners mit einer Fertigkeit erhöht Ihren gesamten Fertigkeitenschaden 27 Sek. lang um +25%.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Alps Summit Armament</span></div>
+<h3 data-de-name="Percussive Maintenance" data-en-name="Percussive Maintenance">Percussive Maintenance</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Tech-Support — Das Töten eines Gegners mit einer Fertigkeit erhöht Ihren gesamten Fertigkeitenschaden 27 Sek. lang um +25%." data-en="Perfect Tech Support — Killing an enemy with a skill increases your total skill damage by +25% for 27 seconds.">Perfekter Tech-Support — Das Töten eines Gegners mit einer Fertigkeit erhöht Ihren gesamten Fertigkeitenschaden 27 Sek. lang um +25%.</p>
 </article>
 <article class="named-gear-card" data-name="battery pack empress international rucksäcke perfekte effizienz — beim verwenden eines rüstungskits besteht eine chance von 75%, dass das kit nicht verbraucht wird (äquivalent zu everyday carrier, jedoch auf dem rucksack-slot für flexiblere build-kombinationen)." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Empress International</span></div>
-  <h3>Battery Pack</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Effizienz — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird (äquivalent zu Everyday Carrier, jedoch auf dem Rucksack-Slot für flexiblere Build-Kombinationen).</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Empress International</span></div>
+<h3 data-de-name="Battery Pack" data-en-name="Battery Pack">Battery Pack</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Effizienz — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird (äquivalent zu Everyday Carrier, jedoch auf dem Rucksack-Slot für flexiblere Build-Kombinationen)." data-en="Perfectly Efficient — When using an armor kit, there is a 75% chance that the kit will not be consumed (equivalent to Everyday Carrier, but on the backpack slot for more flexible build combinations).">Perfekte Effizienz — Beim Verwenden eines Rüstungskits besteht eine Chance von 75%, dass das Kit nicht verbraucht wird (äquivalent zu Everyday Carrier, jedoch auf dem Rucksack-Slot für flexiblere Build-Kombinationen).</p>
 </article>
 <article class="named-gear-card" data-name="the setup / das setup uzina getica rucksäcke perfekter opportunist — treffer mit einer schrotflinte oder einem präzisionsgewehr erhöhen den erlittenen schaden des ziels aus allen schadensquellen 5 sek. lang um +15%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Uzina Getica</span></div>
-  <h3>The Setup / Das Setup</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Opportunist — Treffer mit einer Schrotflinte oder einem Präzisionsgewehr erhöhen den erlittenen Schaden des Ziels aus allen Schadensquellen 5 Sek. lang um +15%.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Uzina Getica</span></div>
+<h3 data-de-name="The Setup / Das Setup" data-en-name="The Setup">The Setup / Das Setup</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Opportunist — Treffer mit einer Schrotflinte oder einem Präzisionsgewehr erhöhen den erlittenen Schaden des Ziels aus allen Schadensquellen 5 Sek. lang um +15%." data-en="Perfect Opportunistic — Hits with a shotgun or marksman rifle increase the damage the target receives from all sources by +15% for 5 seconds.">Perfekter Opportunist — Treffer mit einer Schrotflinte oder einem Präzisionsgewehr erhöhen den erlittenen Schaden des Ziels aus allen Schadensquellen 5 Sek. lang um +15%.</p>
 </article>
 <article class="named-gear-card" data-name="hermano brazos de arcobuz rucksäcke perfekt überladen / perfect overclock — verbündete innerhalb von 9 metern um ihre platzierten fertigkeiten erhalten +15% nachladetempo und deren aktive abklingzeiten werden pro sekunde um 0,6 sek. verringert." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Brazos de Arcobuz</span></div>
-  <h3>Hermano</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Überladen / Perfect Overclock — Verbündete innerhalb von 9 Metern um Ihre platzierten Fertigkeiten erhalten +15% Nachladetempo und deren aktive Abklingzeiten werden pro Sekunde um 0,6 Sek. verringert.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Brazos de Arcobuz</span></div>
+<h3 data-de-name="Hermano" data-en-name="Hermano">Hermano</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Überladen / Perfect Overclock — Verbündete innerhalb von 9 Metern um Ihre platzierten Fertigkeiten erhalten +15% Nachladetempo und deren aktive Abklingzeiten werden pro Sekunde um 0,6 Sek. verringert." data-en="Perfect Overclock — Allies within 9 meters of your deployed skills gain +15% reload speed, and their active cooldowns are reduced by 0.6 seconds per second.">Perfekt Überladen / Perfect Overclock — Verbündete innerhalb von 9 Metern um Ihre platzierten Fertigkeiten erhalten +15% Nachladetempo und deren aktive Abklingzeiten werden pro Sekunde um 0,6 Sek. verringert.</p>
 </article>
 <article class="named-gear-card" data-name="backbone / das rückgrat walker, harris &amp; co. rucksäcke perfekt unaufhaltsame kraft — das töten eines gegners erhöht ihren waffenschaden 15 sek. lang um +7%. bis zu 5-mal stapelbar (maximal +35% waffenschaden)." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Walker, Harris &amp; Co.</span></div>
-  <h3>Backbone / Das Rückgrat</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekt Unaufhaltsame Kraft — Das Töten eines Gegners erhöht Ihren Waffenschaden 15 Sek. lang um +7%. Bis zu 5-mal stapelbar (maximal +35% Waffenschaden).</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Walker, Harris &amp; Co.</span></div>
+<h3 data-de-name="Backbone / Das Rückgrat" data-en-name="Backbone">Backbone / Das Rückgrat</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekt Unaufhaltsame Kraft — Das Töten eines Gegners erhöht Ihren Waffenschaden 15 Sek. lang um +7%. Bis zu 5-mal stapelbar (maximal +35% Waffenschaden)." data-en="Perfect Unstoppable Force — Killing an enemy increases your weapon damage by +7% for 15 seconds. Stacks up to 5 times (maximum +35% weapon damage).">Perfekt Unaufhaltsame Kraft — Das Töten eines Gegners erhöht Ihren Waffenschaden 15 Sek. lang um +7%. Bis zu 5-mal stapelbar (maximal +35% Waffenschaden).</p>
 </article>
 <article class="named-gear-card" data-name="melon baller airaldi holdings rucksäcke perfekte erschütterung / perfect concussion — kopfschüsse erhöhen den waffenschaden 1,5 sek. lang um +20% (5 sek. bei präzisionsgewehren). kopfschuss-kills erhöhen den waffenschaden 10 sek. lang um +15%." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>Airaldi Holdings</span></div>
-  <h3>Melon Baller</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekte Erschütterung / Perfect Concussion — Kopfschüsse erhöhen den Waffenschaden 1,5 Sek. lang um +20% (5 Sek. bei Präzisionsgewehren). Kopfschuss-Kills erhöhen den Waffenschaden 10 Sek. lang um +15%.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>Airaldi Holdings</span></div>
+<h3 data-de-name="Melon Baller" data-en-name="Melon Baller">Melon Baller</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekte Erschütterung / Perfect Concussion — Kopfschüsse erhöhen den Waffenschaden 1,5 Sek. lang um +20% (5 Sek. bei Präzisionsgewehren). Kopfschuss-Kills erhöhen den Waffenschaden 10 Sek. lang um +15%." data-en="Perfect Concussion — Headshots increase weapon damage by +20% for 1.5 seconds (5 seconds for marksman rifles). Headshot kills increase weapon damage by +15% for 10 seconds.">Perfekte Erschütterung / Perfect Concussion — Kopfschüsse erhöhen den Waffenschaden 1,5 Sek. lang um +20% (5 Sek. bei Präzisionsgewehren). Kopfschuss-Kills erhöhen den Waffenschaden 10 Sek. lang um +15%.</p>
 </article>
 <article class="named-gear-card" data-name="keeper 5.11 tactical rucksäcke perfekter beschützer — generiert zusätzliche bonus-rüstung für das gesamte team, wenn sie oder ihre aktiven defensiven fertigkeiten schaden blockieren oder absorbieren." data-slot="Rucksäcke">
-  <div class="ng-meta"><span>Rucksäcke</span><span>5.11 Tactical</span></div>
-  <h3>Keeper</h3>
-  <div class="ng-type">Talent</div>
-  <p>Perfekter Beschützer — Generiert zusätzliche Bonus-Rüstung für das gesamte Team, wenn Sie oder Ihre aktiven defensiven Fertigkeiten Schaden blockieren oder absorbieren.</p>
+<div class="ng-meta"><span data-de="Rucksäcke">Rucksäcke</span><span>5.11 Tactical</span></div>
+<h3 data-de-name="Keeper" data-en-name="Keeper">Keeper</h3>
+<div class="ng-type" data-de="Talent" data-en="Talent">Talent</div>
+<p data-de="Perfekter Beschützer — Generiert zusätzliche Bonus-Rüstung für das gesamte Team, wenn Sie oder Ihre aktiven defensiven Fertigkeiten Schaden blockieren oder absorbieren." data-en="Perfect Protector — Generates additional bonus armor for the entire team when you or your active defensive skills block or absorb damage.">Perfekter Beschützer — Generiert zusätzliche Bonus-Rüstung für das gesamte Team, wenn Sie oder Ihre aktiven defensiven Fertigkeiten Schaden blockieren oder absorbieren.</p>
 </article>
 <div class="named-gear-group-label">Handschuhe <span>— 4</span></div>
-<article class="named-gear-card" data-name="contractor&#x27;s gloves / auftragnehmer-handschuhe petrov defense group handschuhe verfügen über das exklusive zweitattribut +8% rüstungsschaden (damage to armor). eines der stärksten multiplikativen items für fast jedes dps-waffenbuild." data-slot="Handschuhe">
-  <div class="ng-meta"><span>Handschuhe</span><span>Petrov Defense Group</span></div>
-  <h3>Contractor&#x27;s Gloves / Auftragnehmer-Handschuhe</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Verfügen über das exklusive Zweitattribut +8% Rüstungsschaden (Damage to Armor). Eines der stärksten multiplikativen Items für fast jedes DPS-Waffenbuild.</p>
+<article class="named-gear-card" data-name="contractor's gloves / auftragnehmer-handschuhe petrov defense group handschuhe verfügen über das exklusive zweitattribut +8% rüstungsschaden (damage to armor). eines der stärksten multiplikativen items für fast jedes dps-waffenbuild." data-slot="Handschuhe">
+<div class="ng-meta"><span data-de="Handschuhe">Handschuhe</span><span>Petrov Defense Group</span></div>
+<h3 data-de-name="Contractor's Gloves / Auftragnehmer-Handschuhe" data-en-name="Contractor's Gloves">Contractor's Gloves / Auftragnehmer-Handschuhe</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Verfügen über das exklusive Zweitattribut +8% Rüstungsschaden (Damage to Armor). Eines der stärksten multiplikativen Items für fast jedes DPS-Waffenbuild." data-en="Has the exclusive secondary attribute +8% Damage to Armor. One of the strongest multiplicative items for almost any DPS weapon build.">Verfügen über das exklusive Zweitattribut +8% Rüstungsschaden (Damage to Armor). Eines der stärksten multiplikativen Items für fast jedes DPS-Waffenbuild.</p>
 </article>
 <article class="named-gear-card" data-name="firm handshake / fester händedruck sokolov concern handschuhe bieten einen drastisch erhöhten wert von +15% statuseffekt-dauer/stärke (standard ist maximal 10%)." data-slot="Handschuhe">
-  <div class="ng-meta"><span>Handschuhe</span><span>Sokolov Concern</span></div>
-  <h3>Firm Handshake / Fester Händedruck</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Bieten einen drastisch erhöhten Wert von +15% Statuseffekt-Dauer/Stärke (Standard ist maximal 10%).</p>
+<div class="ng-meta"><span data-de="Handschuhe">Handschuhe</span><span>Sokolov Concern</span></div>
+<h3 data-de-name="Firm Handshake / Fester Händedruck" data-en-name="Firm Handshake">Firm Handshake / Fester Händedruck</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Bieten einen drastisch erhöhten Wert von +15% Statuseffekt-Dauer/Stärke (Standard ist maximal 10%)." data-en="Provides a greatly increased +15% Status Effects value (the standard maximum is 10%).">Bieten einen drastisch erhöhten Wert von +15% Statuseffekt-Dauer/Stärke (Standard ist maximal 10%).</p>
 </article>
 <article class="named-gear-card" data-name="motherly love / mutterliebe alps summit armament handschuhe bieten das einzigartige attribut +20% fertigkeiten-lebensenergie. (kann nur über die blaupause der spezialisierungs-forschung am fertigungstisch hergestellt werden)." data-slot="Handschuhe">
-  <div class="ng-meta"><span>Handschuhe</span><span>Alps Summit Armament</span></div>
-  <h3>Motherly Love / Mutterliebe</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Bieten das einzigartige Attribut +20% Fertigkeiten-Lebensenergie. (Kann nur über die Blaupause der Spezialisierungs-Forschung am Fertigungstisch hergestellt werden).</p>
+<div class="ng-meta"><span data-de="Handschuhe">Handschuhe</span><span>Alps Summit Armament</span></div>
+<h3 data-de-name="Motherly Love / Mutterliebe" data-en-name="Motherly Love">Motherly Love / Mutterliebe</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Bieten das einzigartige Attribut +20% Fertigkeiten-Lebensenergie. (Kann nur über die Blaupause der Spezialisierungs-Forschung am Fertigungstisch hergestellt werden)." data-en="Provides the unique attribute +20% Skill Health. (Can only be crafted from the Specialization Research blueprint at the crafting bench).">Bieten das einzigartige Attribut +20% Fertigkeiten-Lebensenergie. (Kann nur über die Blaupause der Spezialisierungs-Forschung am Fertigungstisch hergestellt werden).</p>
 </article>
 <article class="named-gear-card" data-name="deathgrips 5.11 tactical handschuhe verfügen über das exklusive attribut +5% rüstung bei tötung (armor on kill). (dz-exklusiv / benannte behälter)." data-slot="Handschuhe">
-  <div class="ng-meta"><span>Handschuhe</span><span>5.11 Tactical</span></div>
-  <h3>Deathgrips</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Verfügen über das exklusive Attribut +5% Rüstung bei Tötung (Armor on Kill). (DZ-exklusiv / Benannte Behälter).</p>
+<div class="ng-meta"><span data-de="Handschuhe">Handschuhe</span><span>5.11 Tactical</span></div>
+<h3 data-de-name="Deathgrips" data-en-name="Deathgrips">Deathgrips</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Verfügen über das exklusive Attribut +5% Rüstung bei Tötung (Armor on Kill). (DZ-exklusiv / Benannte Behälter)." data-en="Has the exclusive attribute +5% Armor on Kill. (Dark Zone exclusive / Named Caches).">Verfügen über das exklusive Attribut +5% Rüstung bei Tötung (Armor on Kill). (DZ-exklusiv / Benannte Behälter).</p>
 </article>
 <div class="named-gear-group-label">Holster <span>— 5</span></div>
-<article class="named-gear-card" data-name="picaro&#x27;s holster brazos de arcobuz holster dieses kern-gegenstand-holster rollt standardmäßig mit einem blauen rüstungskern, besitzt jedoch als unveränderbares attribut +15% waffenschaden. dadurch agiert es als mächtiges doppel-kern-item (rot/blau)." data-slot="Holster">
-  <div class="ng-meta"><span>Holster</span><span>Brazos de Arcobuz</span></div>
-  <h3>Picaro&#x27;s Holster</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Dieses Kern-Gegenstand-Holster rollt standardmäßig mit einem blauen Rüstungskern, besitzt jedoch als unveränderbares Attribut +15% Waffenschaden. Dadurch agiert es als mächtiges Doppel-Kern-Item (Rot/Blau).</p>
+<article class="named-gear-card" data-name="picaro's holster brazos de arcobuz holster dieses kern-gegenstand-holster rollt standardmäßig mit einem blauen rüstungskern, besitzt jedoch als unveränderbares attribut +15% waffenschaden. dadurch agiert es als mächtiges doppel-kern-item (rot/blau)." data-slot="Holster">
+<div class="ng-meta"><span data-de="Holster">Holster</span><span>Brazos de Arcobuz</span></div>
+<h3 data-de-name="Picaro's Holster" data-en-name="Picaro's Holster">Picaro's Holster</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Dieses Kern-Gegenstand-Holster rollt standardmäßig mit einem blauen Rüstungskern, besitzt jedoch als unveränderbares Attribut +15% Waffenschaden. Dadurch agiert es als mächtiges Doppel-Kern-Item (Rot/Blau)." data-en="This core-item holster normally rolls with a blue armor core, but has an unchangeable +15% weapon damage attribute. This makes it a powerful dual-core item (Red/Blue).">Dieses Kern-Gegenstand-Holster rollt standardmäßig mit einem blauen Rüstungskern, besitzt jedoch als unveränderbares Attribut +15% Waffenschaden. Dadurch agiert es als mächtiges Doppel-Kern-Item (Rot/Blau).</p>
 </article>
 <article class="named-gear-card" data-name="the forge / die schmiede richter &amp; kaiser holster gewährt das exklusive attribut +50% schild-lebensenergie (massiver buff für dedizierte tank- und schild-builds)." data-slot="Holster">
-  <div class="ng-meta"><span>Holster</span><span>Richter &amp; Kaiser</span></div>
-  <h3>The Forge / Die Schmiede</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Gewährt das exklusive Attribut +50% Schild-Lebensenergie (massiver Buff für dedizierte Tank- und Schild-Builds).</p>
+<div class="ng-meta"><span data-de="Holster">Holster</span><span>Richter &amp; Kaiser</span></div>
+<h3 data-de-name="The Forge / Die Schmiede" data-en-name="The Forge">The Forge / Die Schmiede</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Gewährt das exklusive Attribut +50% Schild-Lebensenergie (massiver Buff für dedizierte Tank- und Schild-Builds)." data-en="Grants the exclusive attribute +50% Shield Health (a massive buff for dedicated tank and shield builds).">Gewährt das exklusive Attribut +50% Schild-Lebensenergie (massiver Buff für dedizierte Tank- und Schild-Builds).</p>
 </article>
 <article class="named-gear-card" data-name="claws out wyvern wear holster besitzt die einzigartige kombination aus +500% nahkampfschaden und +10% pistolen-schaden. (dz-exklusiv / benannte behälter)." data-slot="Holster">
-  <div class="ng-meta"><span>Holster</span><span>Wyvern Wear</span></div>
-  <h3>Claws Out</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Besitzt die einzigartige Kombination aus +500% Nahkampfschaden und +10% Pistolen-Schaden. (DZ-exklusiv / Benannte Behälter).</p>
+<div class="ng-meta"><span data-de="Holster">Holster</span><span>Wyvern Wear</span></div>
+<h3 data-de-name="Claws Out" data-en-name="Claws Out">Claws Out</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Besitzt die einzigartige Kombination aus +500% Nahkampfschaden und +10% Pistolen-Schaden. (DZ-exklusiv / Benannte Behälter)." data-en="Has the unique combination of +500% Melee Damage and +10% Pistol Damage. (Dark Zone exclusive / Named Caches).">Besitzt die einzigartige Kombination aus +500% Nahkampfschaden und +10% Pistolen-Schaden. (DZ-exklusiv / Benannte Behälter).</p>
 </article>
 <article class="named-gear-card" data-name="ammo dump badger tuff holster bietet das exklusive nutzwert-attribut +10% munitionskapazität." data-slot="Holster">
-  <div class="ng-meta"><span>Holster</span><span>Badger Tuff</span></div>
-  <h3>Ammo Dump</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Bietet das exklusive Nutzwert-Attribut +10% Munitionskapazität.</p>
+<div class="ng-meta"><span data-de="Holster">Holster</span><span>Badger Tuff</span></div>
+<h3 data-de-name="Ammo Dump" data-en-name="Ammo Dump">Ammo Dump</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Bietet das exklusive Nutzwert-Attribut +10% Munitionskapazität." data-en="Provides the exclusive utility attribute +10% Ammo Capacity.">Bietet das exklusive Nutzwert-Attribut +10% Munitionskapazität.</p>
 </article>
 <article class="named-gear-card" data-name="salvo unit alloys holster rollt mit dem exklusiven offensiv-attribut +10% feuerrate direkt auf dem holster-slot." data-slot="Holster">
-  <div class="ng-meta"><span>Holster</span><span>Unit Alloys</span></div>
-  <h3>Salvo</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Rollt mit dem exklusiven Offensiv-Attribut +10% Feuerrate direkt auf dem Holster-Slot.</p>
+<div class="ng-meta"><span data-de="Holster">Holster</span><span>Unit Alloys</span></div>
+<h3 data-de-name="Salvo" data-en-name="Salvo">Salvo</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Rollt mit dem exklusiven Offensiv-Attribut +10% Feuerrate direkt auf dem Holster-Slot." data-en="Rolls with the exclusive offensive attribute +10% Rate of Fire directly on the holster slot.">Rollt mit dem exklusiven Offensiv-Attribut +10% Feuerrate direkt auf dem Holster-Slot.</p>
 </article>
 <div class="named-gear-group-label">Knieschoner <span>— 2</span></div>
-<article class="named-gear-card" data-name="fox&#x27;s prayer / gebet des fuchses overlord armaments knieschoner verfügen über das extrem starke attribut +8% schaden gegen ungedeckte ziele (damage to targets out of cover). dieser wert ist multiplikativ und macht die knieschoner zum absoluten standard in fast jeder schadens-kombination." data-slot="Knieschoner">
-  <div class="ng-meta"><span>Knieschoner</span><span>Overlord Armaments</span></div>
-  <h3>Fox&#x27;s Prayer / Gebet des Fuchses</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Verfügen über das extrem starke Attribut +8% Schaden gegen ungedeckte Ziele (Damage to Targets Out of Cover). Dieser Wert ist multiplikativ und macht die Knieschoner zum absoluten Standard in fast jeder Schadens-Kombination.</p>
+<article class="named-gear-card" data-name="fox's prayer / gebet des fuchses overlord armaments knieschoner verfügen über das extrem starke attribut +8% schaden gegen ungedeckte ziele (damage to targets out of cover). dieser wert ist multiplikativ und macht die knieschoner zum absoluten standard in fast jeder schadens-kombination." data-slot="Knieschoner">
+<div class="ng-meta"><span data-de="Knieschoner">Knieschoner</span><span>Overlord Armaments</span></div>
+<h3 data-de-name="Fox's Prayer / Gebet des Fuchses" data-en-name="Fox's Prayer">Fox's Prayer / Gebet des Fuchses</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Verfügen über das extrem starke Attribut +8% Schaden gegen ungedeckte Ziele (Damage to Targets Out of Cover). Dieser Wert ist multiplikativ und macht die Knieschoner zum absoluten Standard in fast jeder Schadens-Kombination." data-en="Has the extremely strong attribute +8% Damage to Targets Out of Cover. This value is multiplicative and makes these kneepads a standard choice in many damage builds.">Verfügen über das extrem starke Attribut +8% Schaden gegen ungedeckte Ziele (Damage to Targets Out of Cover). Dieser Wert ist multiplikativ und macht die Knieschoner zum absoluten Standard in fast jeder Schadens-Kombination.</p>
 </article>
-<article class="named-gear-card" data-name="emperor&#x27;s guard / kaiserliche garde murakami industries knieschoner bieten das sonst auf knieschonern nicht vorkommende attribut +1% rüstungsregeneration pro sekunde. (dz-exklusiv / benannte behälter)." data-slot="Knieschoner">
-  <div class="ng-meta"><span>Knieschoner</span><span>Murakami Industries</span></div>
-  <h3>Emperor&#x27;s Guard / Kaiserliche Garde</h3>
-  <div class="ng-type">Besonderheit</div>
-  <p>Bieten das sonst auf Knieschonern nicht vorkommende Attribut +1% Rüstungsregeneration pro Sekunde. (DZ-exklusiv / Benannte Behälter).</p>
+<article class="named-gear-card" data-name="emperor's guard / kaiserliche garde murakami industries knieschoner bieten das sonst auf knieschonern nicht vorkommende attribut +1% rüstungsregeneration pro sekunde. (dz-exklusiv / benannte behälter)." data-slot="Knieschoner">
+<div class="ng-meta"><span data-de="Knieschoner">Knieschoner</span><span>Murakami Industries</span></div>
+<h3 data-de-name="Emperor's Guard / Kaiserliche Garde" data-en-name="Emperor's Guard">Emperor's Guard / Kaiserliche Garde</h3>
+<div class="ng-type" data-de="Besonderheit" data-en="Special Feature">Besonderheit</div>
+<p data-de="Bieten das sonst auf Knieschonern nicht vorkommende Attribut +1% Rüstungsregeneration pro Sekunde. (DZ-exklusiv / Benannte Behälter)." data-en="Provides the otherwise unavailable-on-kneepads attribute +1% Armor Regeneration per second. (Dark Zone exclusive / Named Caches).">Bieten das sonst auf Knieschonern nicht vorkommende Attribut +1% Rüstungsregeneration pro Sekunde. (DZ-exklusiv / Benannte Behälter).</p>
 </article>
-  </div>
-
-  <div class="section-head weapon" style="margin-top:70px;">
-    <h2>Waffen</h2>
-    <span class="tag">STANDARD / NAMED / EXOTIC</span>
-    <div class="rule"></div>
-  </div>
-  <p class="wp-intro">Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic mit Unique-Talent). Tier-Badges (S/A/B/C) zeigen die aktuelle Meta-Einstufung 2026 je Waffenklasse. Bei den Exotic-Waffen lässt sich das jeweilige Exotic-Talent per Klick aufklappen.</p>
-  <div class="wp-jump" id="wpJump"></div>
-  <div id="wpCategories"></div>
-
-  <div class="extras">
-    <div class="panel" id="panelNamed">
-      <h3><span class="dot"></span>Perfect-Talent-Items</h3>
-      <div id="namedItems"></div>
-    </div>
-    <div class="panel" id="panelMeta">
-      <h3><span class="dot"></span>Meta-Empfehlungen 2026</h3>
-      <div class="best-cols">
-        <div>
-          <h4>BESTE GEAR SETS</h4>
-          <ul id="bestGear"></ul>
-        </div>
-        <div>
-          <h4>BESTE BRAND SETS</h4>
-          <ul id="bestBrand"></ul>
-        </div>
-      </div>
-    </div>
-    <div class="panel">
-      <h3><span class="dot"></span>Quellen</h3>
-      <div class="source-list">
-        <div class="source-item" data-source-de="OFFIZIELL|<strong>Ubisoft – The Division 2 Patch Notes &amp; Season News:</strong> Offizielle Patch Notes und Season-News werden zur Prüfung von Änderungen an Waffen, Talenten, Gear-/Brand-Sets und Spielwerten herangezogen. Dazu gehören insbesondere die offiziellen Ubisoft Patch Notes und PTS Patch Notes."
-             data-source-en="OFFICIAL|<strong>Ubisoft – The Division 2 Patch Notes &amp; Season News:</strong> Official patch notes and season news are used to verify changes to weapons, talents, Gear/Brand Sets, and game values. This includes the official Ubisoft Patch Notes and PTS Patch Notes."></div>
-        <div class="source-item" data-source-de="WIKI|<strong>The Division Wiki (Fandom):</strong> Wird für Namen und Beschreibungen von Exotic-Talenten und Exotic-Gear verwendet, soweit die jeweilige Division-2-Seite gepflegt ist. Veraltete oder unvollständige Wiki-Einträge werden entsprechend berücksichtigt."
-             data-source-en="WIKI|<strong>The Division Wiki (Fandom):</strong> Used for names and descriptions of Exotic talents and Exotic Gear where the relevant Division 2 page is maintained. Outdated or incomplete wiki entries are treated accordingly."></div>
-        <div class="source-item" data-source-de="DATEN|<strong>grindout.com:</strong> Community-Quelle für Gear-/Brand-Sets sowie Namen und Einstufungen der erfassten Waffen."
-             data-source-en="DATA|<strong>grindout.com:</strong> Community source for Gear/Brand Sets as well as names and classifications of the weapons tracked here."></div>
-        <div class="source-item" data-source-de="WAFFENWERTE|<strong>djtickle.com/weapons:</strong> Quelle für Waffenwerte wie Base Damage, RPM, Magazin, Reload, Optimal Range sowie Burst-/Sustain-DPS, ergänzt durch die bereitgestellten Screenshots."
-             data-source-en="WEAPON STATS|<strong>djtickle.com/weapons:</strong> Source for weapon values such as Base Damage, RPM, magazine size, reload, Optimal Range, and Burst/Sustain DPS, supplemented by the provided screenshots."></div>
-        <div class="source-item" data-source-de="GUIDES|<strong>KeenGamer, Sportskeeda, Destructoid und games.gg:</strong> Ergänzende Community- und Guide-Quellen, wenn das Wiki oder die offiziellen Angaben keine vollständige Beschreibung liefern."
-             data-source-en="GUIDES|<strong>KeenGamer, Sportskeeda, Destructoid and games.gg:</strong> Additional community and guide sources when the Wiki or official information does not provide a complete description."></div>
-        <div class="source-item" data-source-de="ESCALATION|<strong>Escalation-Grafik (Into the Dark):</strong> Enemy Mutators, Global Mutators sowie Kosten, Belohnungen und Schwierigkeitsskalierung je Tier stammen aus der bereitgestellten Escalation-Übersichtsgrafik."
-             data-source-en="ESCALATION|<strong>Escalation graphic (Into the Dark):</strong> Enemy Mutators, Global Mutators as well as costs, rewards and difficulty scaling per tier are taken from the provided Escalation overview graphic."></div>
-        <div class="source-item" data-source-de="HINWEIS|<strong>Stand der Daten:</strong> Die Angaben können sich durch neue Title Updates und Patch Notes ändern. Die Seite ist eine inoffizielle Community-Datenbank und steht nicht in Verbindung mit Ubisoft."
-             data-source-en="NOTE|<strong>Data status:</strong> The information may change with new Title Updates and Patch Notes. This site is an unofficial community database and is not affiliated with Ubisoft."></div>
-      </div>
-    </div>
-  </div>
-
-  <footer>
-    <span id="sourceFooter">Quellenübersicht siehe Quellen-Panel — Community-Datenbank, Stand 2026</span>
-    <span id="ubisoftFooter">Nicht offiziell mit Ubisoft verbunden</span>
-  
-    <!--
+</div>
+<div class="section-head weapon" style="margin-top:70px;">
+<h2>Waffen</h2>
+<span class="tag">STANDARD / NAMED / EXOTIC</span>
+<div class="rule"></div>
+</div>
+<p class="wp-intro">Alle Waffen aus The Division 2, unterteilt nach Waffenklasse und Seltenheit (Standard/High-End, Named mit Perfect-Talent, Exotic mit Unique-Talent). Tier-Badges (S/A/B/C) zeigen die aktuelle Meta-Einstufung 2026 je Waffenklasse. Bei den Exotic-Waffen lässt sich das jeweilige Exotic-Talent per Klick aufklappen.</p>
+<div class="wp-jump" id="wpJump"></div>
+<div id="wpCategories"></div>
+<div class="extras">
+<div class="panel" id="panelNamed">
+<h3><span class="dot"></span>Perfect-Talent-Items</h3>
+<div id="namedItems"></div>
+</div>
+<div class="panel" id="panelMeta">
+<h3><span class="dot"></span>Meta-Empfehlungen 2026</h3>
+<div class="best-cols">
+<div>
+<h4>BESTE GEAR SETS</h4>
+<ul id="bestGear"></ul>
+</div>
+<div>
+<h4>BESTE BRAND SETS</h4>
+<ul id="bestBrand"></ul>
+</div>
+</div>
+</div>
+<div class="panel">
+<h3><span class="dot"></span>Quellen</h3>
+<div class="source-list">
+<div class="source-item" data-source-de="OFFIZIELL|&lt;strong&gt;Ubisoft – The Division 2 Patch Notes &amp; Season News:&lt;/strong&gt; Offizielle Patch Notes und Season-News werden zur Prüfung von Änderungen an Waffen, Talenten, Gear-/Brand-Sets und Spielwerten herangezogen. Dazu gehören insbesondere die offiziellen Ubisoft Patch Notes und PTS Patch Notes." data-source-en="OFFICIAL|&lt;strong&gt;Ubisoft – The Division 2 Patch Notes &amp; Season News:&lt;/strong&gt; Official patch notes and season news are used to verify changes to weapons, talents, Gear/Brand Sets, and game values. This includes the official Ubisoft Patch Notes and PTS Patch Notes."></div>
+<div class="source-item" data-source-de="WIKI|&lt;strong&gt;The Division Wiki (Fandom):&lt;/strong&gt; Wird für Namen und Beschreibungen von Exotic-Talenten und Exotic-Gear verwendet, soweit die jeweilige Division-2-Seite gepflegt ist. Veraltete oder unvollständige Wiki-Einträge werden entsprechend berücksichtigt." data-source-en="WIKI|&lt;strong&gt;The Division Wiki (Fandom):&lt;/strong&gt; Used for names and descriptions of Exotic talents and Exotic Gear where the relevant Division 2 page is maintained. Outdated or incomplete wiki entries are treated accordingly."></div>
+<div class="source-item" data-source-de="DATEN|&lt;strong&gt;grindout.com:&lt;/strong&gt; Community-Quelle für Gear-/Brand-Sets sowie Namen und Einstufungen der erfassten Waffen." data-source-en="DATA|&lt;strong&gt;grindout.com:&lt;/strong&gt; Community source for Gear/Brand Sets as well as names and classifications of the weapons tracked here."></div>
+<div class="source-item" data-source-de="WAFFENWERTE|&lt;strong&gt;djtickle.com/weapons:&lt;/strong&gt; Quelle für Waffenwerte wie Base Damage, RPM, Magazin, Reload, Optimal Range sowie Burst-/Sustain-DPS, ergänzt durch die bereitgestellten Screenshots." data-source-en="WEAPON STATS|&lt;strong&gt;djtickle.com/weapons:&lt;/strong&gt; Source for weapon values such as Base Damage, RPM, magazine size, reload, Optimal Range, and Burst/Sustain DPS, supplemented by the provided screenshots."></div>
+<div class="source-item" data-source-de="GUIDES|&lt;strong&gt;KeenGamer, Sportskeeda, Destructoid und games.gg:&lt;/strong&gt; Ergänzende Community- und Guide-Quellen, wenn das Wiki oder die offiziellen Angaben keine vollständige Beschreibung liefern." data-source-en="GUIDES|&lt;strong&gt;KeenGamer, Sportskeeda, Destructoid and games.gg:&lt;/strong&gt; Additional community and guide sources when the Wiki or official information does not provide a complete description."></div>
+<div class="source-item" data-source-de="ESCALATION|&lt;strong&gt;Escalation-Grafik (Into the Dark):&lt;/strong&gt; Enemy Mutators, Global Mutators sowie Kosten, Belohnungen und Schwierigkeitsskalierung je Tier stammen aus der bereitgestellten Escalation-Übersichtsgrafik." data-source-en="ESCALATION|&lt;strong&gt;Escalation graphic (Into the Dark):&lt;/strong&gt; Enemy Mutators, Global Mutators as well as costs, rewards and difficulty scaling per tier are taken from the provided Escalation overview graphic."></div>
+<div class="source-item" data-source-de="HINWEIS|&lt;strong&gt;Stand der Daten:&lt;/strong&gt; Die Angaben können sich durch neue Title Updates und Patch Notes ändern. Die Seite ist eine inoffizielle Community-Datenbank und steht nicht in Verbindung mit Ubisoft." data-source-en="NOTE|&lt;strong&gt;Data status:&lt;/strong&gt; The information may change with new Title Updates and Patch Notes. This site is an unofficial community database and is not affiliated with Ubisoft."></div>
+</div>
+</div>
+</div>
+<footer>
+<span id="sourceFooter">Quellenübersicht siehe Quellen-Panel — Community-Datenbank, Stand 2026</span>
+<span id="ubisoftFooter">Nicht offiziell mit Ubisoft verbunden</span>
+<!--
   COPYRIGHT / OWNERSHIP NOTICE
   © 2026 VortexGamer21 · Alle Rechte vorbehalten.
   Originaldesign & Seitenstruktur: VortexGamer21.
   Gestaltung/Umsetzung mithilfe von Cloud AI.
   Dieser Marker gehört zur Seitenintegritätsprüfung und sollte nicht entfernt werden.
 -->
-<div class="copyright" id="vortex-owner-mark" data-owner="VortexGamer21" data-copyright="2026">© 2026 VortexGamer21 · Alle Rechte vorbehalten. · Originaldesign &amp; Seitenstruktur: VortexGamer21 · Mit Unterstützung von Cloud AI gestaltet</div>
+<div class="copyright" data-copyright="2026" data-owner="VortexGamer21" id="vortex-owner-mark">© 2026 VortexGamer21 · Alle Rechte vorbehalten. · Originaldesign &amp; Seitenstruktur: VortexGamer21 · Mit Unterstützung von Cloud AI gestaltet</div>
 </footer>
-
 </div>
-
 <script>
 const gearSets = [
 ["Striker's Battlegear","+15% Waffenhandhabung","+15% Feuerrate",
@@ -2898,7 +2876,6 @@ filterButtons.forEach(btn => {
 
 applyFilters();
 </script>
-
 <script>
 /* ==========================================================
    BILINGUAL UI — DE / EN
@@ -3433,31 +3410,28 @@ applyFilters();
       if(!m) return;
       const slot = m[1].trim();
       const count = m[2];
-      el.textContent = english
-        ? `${slotEN[slot] || slot} — ${count}`
-        : `${slot} — ${count}`;
+      el.textContent = english ? `${slotEN[slot] || slot} — ${count}` : `${slot} — ${count}`;
     });
 
     document.querySelectorAll('#namedGearGrid .named-gear-card').forEach(card=>{
+      const h3 = card.querySelector('h3');
       const meta = card.querySelector('.ng-meta');
       const type = card.querySelector('.ng-type');
       const desc = card.querySelector('p');
-      const metaParts = meta ? meta.querySelectorAll('span') : [];
+      const slot = meta ? meta.querySelector('span') : null;
 
-      if(metaParts[0]){
-        if(!metaParts[0].dataset.deText) metaParts[0].dataset.deText = metaParts[0].textContent;
-        const deSlot = metaParts[0].dataset.deText;
-        metaParts[0].textContent = english ? (slotEN[deSlot] || translate(deSlot)) : deSlot;
+      if(h3){
+        h3.textContent = english ? (h3.dataset.enName || h3.dataset.deName) : h3.dataset.deName;
+      }
+      if(slot){
+        const deSlot = slot.dataset.de || slot.textContent.trim();
+        slot.textContent = english ? (slotEN[deSlot] || deSlot) : deSlot;
       }
       if(type){
-        if(!type.dataset.deText) type.dataset.deText = type.textContent;
-        type.textContent = english
-          ? (type.dataset.deText === 'Besonderheit' ? 'Special Feature' : translate(type.dataset.deText))
-          : type.dataset.deText;
+        type.textContent = english ? (type.dataset.en || 'Talent') : (type.dataset.de || 'Talent');
       }
       if(desc){
-        if(!desc.dataset.deText) desc.dataset.deText = desc.innerHTML;
-        desc.innerHTML = english ? translate(desc.dataset.deText) : desc.dataset.deText;
+        desc.textContent = english ? desc.dataset.en : desc.dataset.de;
       }
     });
   }
@@ -3481,7 +3455,7 @@ applyFilters();
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       const p=node.parentElement;
-      if(!p || p.closest('.lang-switch,.esc-section,script,style')) return NodeFilter.FILTER_REJECT;
+      if(!p || p.closest('.lang-switch,.esc-section,#namedGearGrid,script,style')) return NodeFilter.FILTER_REJECT;
       if(!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
@@ -3610,7 +3584,6 @@ applyFilters();
   setLanguage(saved==='en' ? 'en' : 'de');
 })();
 </script>
-
 <script>
 /* ==========================================================
    ESCALATION TAB — Enemy Mutators, Global Mutators, Cost/Reward & Difficulty Scaling
@@ -3891,7 +3864,6 @@ applyFilters();
   new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
 })();
 </script>
-
 <script>
 /* ==========================================================
    PROTOTYPEN-AUGMENTS TAB — Prototype Gear Augments
@@ -4004,8 +3976,6 @@ applyFilters();
   new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
 })();
 </script>
-
-
 <script>
 (() => {
   'use strict';
@@ -4047,6 +4017,5 @@ applyFilters();
   }
 })();
 </script>
-
 </body>
 </html>
