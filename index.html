@@ -1207,6 +1207,14 @@
   .esc-chip{ margin-left:0; }
 }
 
+
+  .copyright{
+    flex-basis:100%;
+    padding-top:6px;
+    color:var(--text-faint);
+    font-size:10.5px;
+    letter-spacing:.03em;
+  }
 </style>
 </head>
 <body>
@@ -1335,7 +1343,16 @@
   <footer>
     <span id="sourceFooter">Quellenübersicht siehe Quellen-Panel — Community-Datenbank, Stand 2026</span>
     <span id="ubisoftFooter">Nicht offiziell mit Ubisoft verbunden</span>
-  </footer>
+  
+    <!--
+  COPYRIGHT / OWNERSHIP NOTICE
+  © 2026 VortexGamer21 · Alle Rechte vorbehalten.
+  Originaldesign & Seitenstruktur: VortexGamer21.
+  Gestaltung/Umsetzung mithilfe von Cloud AI.
+  Dieser Marker gehört zur Seitenintegritätsprüfung und sollte nicht entfernt werden.
+-->
+<div class="copyright" id="vortex-owner-mark" data-owner="VortexGamer21" data-copyright="2026">© 2026 VortexGamer21 · Alle Rechte vorbehalten. · Originaldesign &amp; Seitenstruktur: VortexGamer21 · Mit Unterstützung von Cloud AI gestaltet</div>
+</footer>
 
 </div>
 
@@ -3061,6 +3078,14 @@ applyFilters();
     document.documentElement.lang=lang;
     document.title=english ? "Division 2 — Gear & Weapon Database" : "Division 2 — Sets Datenbank";
     buttons.forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+
+    /* Copyright / ownership notice: always follows the selected language. */
+    const ownerMark = document.getElementById('vortex-owner-mark');
+    if(ownerMark){
+      ownerMark.innerHTML = english
+        ? '© 2026 VortexGamer21 · All rights reserved. · Original design &amp; page structure: VortexGamer21 · Designed with assistance from Cloud AI'
+        : '© 2026 VortexGamer21 · Alle Rechte vorbehalten. · Originaldesign &amp; Seitenstruktur: VortexGamer21 · Mit Unterstützung von Cloud AI gestaltet';
+    }
     const wipTitle=document.querySelector('.wip-badge .wip-title');
     const wipText=document.querySelector('.wip-badge .wip-text');
     if(wipTitle) wipTitle.textContent=english ? 'WORK IN PROGRESS' : 'IN BEARBEITUNG';
@@ -3554,6 +3579,49 @@ applyFilters();
 
   render();
   new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+})();
+</script>
+
+
+<script>
+(() => {
+  'use strict';
+
+  const OWNER = 'VortexGamer21';
+  const COPYRIGHT_YEAR = '2026';
+  const marker = document.getElementById('vortex-owner-mark');
+
+  const valid =
+    marker &&
+    marker.dataset.owner === OWNER &&
+    marker.dataset.copyright === COPYRIGHT_YEAR &&
+    marker.textContent.includes('VortexGamer21') &&
+    marker.textContent.includes('© 2026') &&
+    marker.textContent.includes('Cloud AI');
+
+  if (!valid) {
+    document.documentElement.innerHTML = `
+      <head>
+        <meta charset="UTF-8">
+        <title>Seitenintegrität verletzt</title>
+        <style>
+          html,body{background:#0a0a0a;color:#eee;font-family:system-ui,sans-serif}
+          body{display:grid;place-items:center;min-height:100vh;margin:0}
+          main{max-width:680px;padding:32px;text-align:center;border:1px solid #333;border-radius:14px}
+          h1{margin-top:0}
+        </style>
+      </head>
+      <body>
+        <main>
+          <h1>Seitenintegrität verletzt</h1>
+          <p>Der Eigentümer-/Copyright-Marker dieser Seite wurde entfernt oder verändert.</p>
+          <p>Originaldesign &amp; Seitenstruktur: <strong>VortexGamer21</strong> · Mit Unterstützung von Cloud AI · © 2026</p>
+          <p lang="en">The ownership/copyright marker of this page has been removed or modified.</p>
+          <p lang="en">Original design &amp; page structure: <strong>VortexGamer21</strong> · Designed with assistance from Cloud AI · © 2026</p>
+        </main>
+      </body>`;
+    throw new Error('VortexGamer21 ownership marker missing or modified.');
+  }
 })();
 </script>
 
