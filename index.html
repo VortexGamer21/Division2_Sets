@@ -1145,6 +1145,56 @@
   color:var(--text-faint);
 }
 .esc-note b{ color:var(--text-dim); font-weight:500; }
+/* ---------- Erklär-Text: Prototyp-Beute ---------- */
+.esc-loot{
+  background:var(--panel);
+  border:1px solid var(--line-soft);
+  border-radius: var(--radius);
+  padding:22px 26px 8px;
+  min-width:0;
+}
+.esc-loot-intro{
+  margin:0 0 6px; max-width:900px;
+  font-size:13.5px; line-height:1.8; color:var(--text-dim);
+}
+.esc-loot-intro b{ color:#fff; font-weight:500; }
+.esc-loot-sec{
+  max-width:900px;
+  padding:22px 0 24px;
+  border-top:1px solid var(--line-soft);
+  margin-top:18px;
+}
+.esc-loot-sec h5{
+  margin:0 0 10px;
+  font-family:'Oswald', sans-serif; font-weight:500;
+  font-size:20px; line-height:1.35; color:#fff;
+}
+.esc-loot-sec h5 .n{ color:var(--esc); margin-right:6px; }
+.esc-loot-sec h5 .sub{ color:var(--esc); }
+.esc-loot-lead{
+  margin:0 0 14px;
+  font-size:13.5px; line-height:1.8; color:var(--text);
+}
+.esc-loot-list{ list-style:none; margin:0; padding:0; }
+.esc-loot-list li{
+  position:relative;
+  padding-left:22px;
+  margin-bottom:12px;
+  font-size:13.5px; line-height:1.8; color:var(--text-dim);
+}
+.esc-loot-list li:last-child{ margin-bottom:0; }
+.esc-loot-list li::before{
+  content:''; position:absolute; left:4px; top:.78em;
+  width:6px; height:6px; background:var(--esc);
+  border-radius:1px; transform:rotate(45deg);
+}
+.esc-loot-list li b{ color:#fff; font-weight:600; }
+.esc-loot-list li.key{ color:var(--text); }
+.esc-loot .hl{ color:var(--gold); font-weight:600; }
+@media (max-width:560px){
+  .esc-loot{ padding:18px 18px 4px; }
+}
+
 @media (max-width:1100px){
   .esc-table{ font-size:12.5px; }
   .esc-table th{ padding:6px 8px 12px; }
@@ -3211,6 +3261,58 @@ applyFilters();
 
   const TOKEN = `<svg class="esc-token" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="6.6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="1.7 2.3"/><path d="M8.4 12.4 12 9l3.6 3.4M8.4 15.4 12 12l3.6 3.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
+  /* Erklär-Bereich „Prototyp-Beute" (DE/EN) */
+  const LOOT = {
+    de:{
+      title:'Prototyp-Beute im Escalation-Modus verstehen',
+      intro:'Im Escalation-Modus gibt es zwei verschiedene Wege, wie Prototyp-Ausrüstung (Prototype Gear) auf den höheren Stufen (Tiers) für dich droppen kann. Das Spiel unterscheidet dabei streng zwischen der <b>zielgerichteten Beute</b> und dem <b>Zufalls-Drop von Gegnern</b>:',
+      how:'Wie es funktioniert', means:'Das bedeutet für dich',
+      cards:[
+        { title:'Chance bei Zielgerichteter Beute (Targeted Loot)', sub:'Dein Hauptziel',
+          lead:'Jeden Tag rotiert im Escalation-Modus eine bestimmte Marke oder ein bestimmtes Gear-Set als Zielgerichtete Beute (z. B. Stürmer/Striker).',
+          how:'Sobald das Spiel entscheidet, ein Item aus diesem täglichen Pool fallen zu lassen (egal ob es Handschuhe, Knieschoner oder eine Maske sind), greift diese prozentuale Aufwertungs-Chance.',
+          means:'Wenn du auf Stufe 10 spielst, wird jedes gedroppte Teil der zielgerichteten Beute zu <b class="hl">62 %</b> Wahrscheinlichkeit direkt als mächtige Prototyp-Variante auf den Boden geworfen. Zu <b class="hl">38 %</b> ist es ein normales Item. Das gilt auch für alle Beutekisten innerhalb der Mission.' },
+        { title:'Reine Drop-Chance pro NPC', sub:'Der Bonus-Zufall',
+          lead:'Das ist die grundlegende Basis-Wahrscheinlichkeit für alle Gegenstände, die nicht zur aktuellen zielgerichteten Beute des Tages gehören.',
+          how:'Jeder einzelne Feind (NPC), den du in der Mission eliminierst, hat eine ganz eigene, kleine Chance, irgendein komplett zufälliges Ausrüstungsteil als Prototyp fallen zu lassen.',
+          means:'Wenn du einen Gegner auf Stufe 10 besiegst, besteht eine <b class="hl">3 %</b> Chance, dass dieser Feind ein zufälliges Prototyp-Teil verliert (selbst wenn es eine Marke ist, die heute gar nicht im Fokus steht). Es ist ein reiner, seltener Glücksbonus beim normalen Durchspielen.' }
+      ]
+    },
+    en:{
+      title:'Understanding Prototype Loot in Escalation',
+      intro:'In Escalation mode there are two different ways Prototype Gear can drop for you on the higher Tiers. The game strictly separates <b>Targeted Loot</b> from <b>random enemy drops</b>:',
+      how:'How it works', means:'What this means for you',
+      cards:[
+        { title:'Targeted Loot Chance', sub:'Your main goal',
+          lead:'Every day, Escalation rotates one specific brand or gear set as Targeted Loot (e.g. Striker).',
+          how:'As soon as the game decides to drop an item from this daily pool (whether it is gloves, kneepads or a mask), this percentage upgrade chance applies.',
+          means:'If you play on Tier 10, every dropped piece of Targeted Loot has a <b class="hl">62%</b> chance to hit the ground directly as a powerful Prototype variant. There is a <b class="hl">38%</b> chance it is a regular item. This also applies to all loot crates within the mission.' },
+        { title:'Base Drop Chance per NPC', sub:'The bonus roll',
+          lead:'This is the basic base probability for all items that are not part of the current day\'s Targeted Loot.',
+          how:'Every single enemy (NPC) you eliminate in the mission has its own small chance to drop a completely random piece of gear as a Prototype.',
+          means:'If you defeat an enemy on Tier 10, there is a <b class="hl">3%</b> chance that this enemy drops a random Prototype piece (even if it belongs to a brand that is not in focus today). It is a pure, rare luck bonus during normal play.' }
+      ]
+    }
+  };
+
+  function lootHtml(lang){
+    const L = LOOT[lang];
+    const sections = L.cards.map((c, i) => `
+          <section class="esc-loot-sec">
+            <h5><span class="n">${i + 1}.</span>${c.title} – <span class="sub">${c.sub}</span></h5>
+            <p class="esc-loot-lead">${c.lead}</p>
+            <ul class="esc-loot-list">
+              <li><b>${L.how}:</b> ${c.how}</li>
+              <li class="key"><b>${L.means}:</b> ${c.means}</li>
+            </ul>
+          </section>`).join('');
+    return `
+        <div class="esc-loot">
+          <h4 class="esc-col-title">${L.title}</h4>
+          <p class="esc-loot-intro">${L.intro}</p>${sections}
+        </div>`;
+  }
+
   const CRATE = `<svg class="esc-token" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>`;
 
   const TARGET_IC = `<svg class="esc-token" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 1.8v4.6M12 17.6v4.6M1.8 12h4.6M17.6 12h4.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
@@ -3298,6 +3400,8 @@ applyFilters();
           </div>
           <p class="esc-note">${t.hint}<br>${t.note}</p>
         </div>
+
+        ${lootHtml(lang)}
       </div>`;
     paint();
   }
