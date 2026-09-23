@@ -1738,23 +1738,6 @@
 <div class="wp-jump weapon-jump" id="wpJump"></div>
 <div id="wpCategories"></div>
 <div class="extras">
-<div class="panel" id="panelNamed">
-<h3><span class="dot"></span>Perfect-Talent-Items</h3>
-<div id="namedItems"></div>
-</div>
-<div class="panel" id="panelMeta">
-<h3><span class="dot"></span>Meta-Empfehlungen 2026</h3>
-<div class="best-cols">
-<div>
-<h4>BESTE GEAR SETS</h4>
-<ul id="bestGear"></ul>
-</div>
-<div>
-<h4>BESTE BRAND SETS</h4>
-<ul id="bestBrand"></ul>
-</div>
-</div>
-</div>
 <div class="panel">
 <h3><span class="dot"></span>Quellen</h3>
 <div class="source-list">
@@ -2040,22 +2023,32 @@ const weaponCategories = [
     exotic: [],
     named: [],
     standard: [
-      ["SRS A1 (Sharpshooter)","standard",""],
-      ["M32A1 Granatwerfer (Demolitionist)","standard",""],
-      ["Armbrust (Survivalist)","standard",""],
-      ["M134 Minigun (Gunner)","standard",""],
-      ["Mehrfach-Raketenwerfer (Technician)","standard",""],
-      ["K8-JetStream Flammenwerfer (Firewall)","standard",""]
+      ["TAC-50 C Rifle (Sharpshooter)","standard",""],
+      ["M32A1 Grenade Launcher (Demolitionist)","standard",""],
+      ["Crossbow (Survivalist)","standard",""],
+      ["Minigun (Gunner)","standard",""],
+      ["P-017 Missile Launcher (Technician)","standard",""],
+      ["K8-JetStream Flamethrower (Firewall)","standard",""]
     ]
   }}
 ];
+
+/* ---------- Signaturwaffen-Werte (aus den bereitgestellten Waffen-Karten-Screenshots) ---------- */
+const sigWeaponStats = {
+  "Minigun (Gunner)": {dmg:"198.9K", rpm:1000, mag:"150 + 150", range:"30m"},
+  "Crossbow (Survivalist)": {dmg:"844.1k", rpm:98, mag:"1 + 5", range:"About 50 meters"},
+  "TAC-50 C Rifle (Sharpshooter)": {dmg:"449.7k", rpm:41, mag:"6+1", range:"More than 50 meters", fireMode:"Manually operated rotary bolt action"},
+  "K8-JetStream Flamethrower (Firewall)": {dmg:"477.6k", rpm:500, mag:"50", range:"15 meters", fireMode:"Ignition System"},
+  "M32A1 Grenade Launcher (Demolitionist)": {dmg:"949.5k", rpm:98, mag:"6 + 1", range:"Might be more than 50 meters", fireMode:"Double-action"},
+  "P-017 Missile Launcher (Technician)": {dmg:"2.5M", rpm:98, mag:"6", range:"50 meters", fireMode:"Missile Guided"}
+};
 
 /* ---------- Waffen-Werte ----------
    Quelle: djtickle.com/weapons DPS-Tabelle (Screenshots des Users, Stand 17.09.2026 / 18.09.2026).
    Format je Waffe: { dmg, pellet(optional Anzeige-Zusatz), rpm, mag, reload, range, magDmg, burst, sustain }
    Fehlt eine Waffe hier, werden noch keine Werte gerendert (siehe wp-note).
    Offene Lücken (nicht in Screenshots enthalten / keine DPS-Kennzahlen):
-   die 6 Signaturwaffen (SRS A1, M32A1, Armbrust, M134 Minigun, Mehrfach-Raketenwerfer, K8-JetStream). */
+   die 6 Signaturwaffen (TAC-50 C Rifle, M32A1 Grenade Launcher, Crossbow, Minigun, P-017 Missile Launcher, K8-JetStream Flamethrower) — deren Werte liegen separat in sigWeaponStats vor. */
 const weaponStats = {
   // --- Sturmgewehre (AR) ---
   "St. Elmo's Engine": {dmg:46918, rpm:850, mag:70, reload:2.02, range:31, magDmg:3284260, burst:664672, sustain:471797},
@@ -2540,6 +2533,19 @@ function weaponStatsBlock(name){
     </div>`;
 }
 
+function sigWeaponStatsBlock(name){
+  const s = sigWeaponStats[name];
+  if(!s) return '<div class="wstats-missing">Werte noch nicht erfasst</div>';
+  return `
+    <div class="wstats">
+      <div class="ws"><span>DAMAGE</span><b>${s.dmg}</b></div>
+      <div class="ws"><span>RATE OF FIRE</span><b>${s.rpm}</b></div>
+      <div class="ws"><span>MAGAZINE</span><b>${s.mag}</b></div>
+      <div class="ws"><span>RANGE</span><b>${s.range}</b></div>
+      ${s.fireMode ? `<div class="ws hl"><span>FIRE MODE</span><b>${s.fireMode}</b></div>` : ''}
+    </div>`;
+}
+
 /* ---------- render ---------- */
 const gearGrid = document.getElementById('gearGrid');
 const brandGrid = document.getElementById('brandGrid');
@@ -2760,19 +2766,6 @@ exoticGear.forEach(([slotName]) => {
   exoJump.appendChild(btn);
 });
 
-const namedWrap = document.getElementById('namedItems');
-namedItems.forEach(n => {
-  const el = document.createElement('div');
-  el.className = 'named-item';
-  el.innerHTML = `<div class="set">${n[0]}</div><div class="item">${n[1]}<span class="slot">${n[2]}</span></div>`;
-  namedWrap.appendChild(el);
-});
-
-const bestGearEl = document.getElementById('bestGear');
-bestGear.forEach(n => { const li = document.createElement('li'); li.textContent = n; bestGearEl.appendChild(li); });
-const bestBrandEl = document.getElementById('bestBrand');
-bestBrand.forEach(n => { const li = document.createElement('li'); li.textContent = n; bestBrandEl.appendChild(li); });
-
 /* ---------- Waffen render ---------- */
 const rarityLabel = { exotic:"Exotic", named:"Named", standard:"Standard" };
 const groupLabel = { exotic:"Exotic Weapons", named:"Named Weapons (Perfect Talent)", standard:"Standard / High-End Weapons" };
@@ -2836,7 +2829,7 @@ weaponCategories.forEach(cat => {
           ${tier ? `<div class="wtier ${tierClass(tier)}">${tier}</div>` : ''}
           <div class="wname">${name}</div>
           <div class="wrarity">${rarityLabel[rarity]}</div>
-          ${weaponStatsBlock(name)}
+          ${cat.id === 'sig' ? sigWeaponStatsBlock(name) : weaponStatsBlock(name)}
           ${talentBlock(name, rarity)}
         </div>`;
     });
