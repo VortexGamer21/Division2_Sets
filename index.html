@@ -4359,7 +4359,7 @@ applyFilters();
   const STORE='division2-knowhow-v1', TABKEY='division2-tab';
   const MAXLVL=10;
 
-  /* type 'cnt' = x/y Zähler | type 'lvl' = Stufe 0–10 ; v = Startwert aus deinen Screenshots */
+  /* type 'cnt' = x/y Zähler (Name EN, Name DE, [ungenutzt], Maximum) | type 'lvl' = Stufe 0–10. Alle Startwerte sind 0. */
   const KH_DATA=[
     {id:'weapons', cls:'weapon', type:'cnt', de:'Waffen', en:'Weapons', items:[
       ['Rifles','Gewehre',18,37],['Assault Rifles','Sturmgewehre',8,56],['Marksman Rifles','Scharfschützengewehre',17,34],
@@ -4392,12 +4392,12 @@ applyFilters();
     de:{kicker:'KNOW-HOW // FORTSCHRITT',lede:'Verfolge deinen Know-how-Fortschritt: Marken und Gear Sets auf Stufe 10 bringen, dazu die Anzahl der Waffen, Named/Exotic-Gear-Teile und Skill-Varianten, mit denen du bereits vertraut bist. Alles wird automatisch in deinem Browser gespeichert.',
       search:'Suchen…',all:'Alle',open:'Offen',done:'Fertig',export:'Export',import:'Import',reset:'Reset',max:'MAX',allmax:'Alle auf Max',
       empty:'Nichts gefunden.',maxed:'auf Stufe 10',prof:'vertraut',total:'Gesamt',
-      note:'Hinweis: Dein Fortschritt liegt nur in diesem Browser (localStorage). Mit „Export“ kannst du ihn sichern oder auf ein anderes Gerät übertragen. Die Startwerte stammen aus deinen Screenshots; Marken/Sets ohne Stufenanzeige wurden mit 0 angesetzt. Die Maximalwerte (z. B. 18/37) kannst du im Code unter KH_DATA anpassen, wenn neue Inhalte erscheinen.',
+      note:'Hinweis: Dein Fortschritt liegt nur in diesem Browser (localStorage). Mit „Export“ kannst du ihn sichern oder auf ein anderes Gerät übertragen. Alle Werte beginnen bei 0. Die Maximalwerte (z. B. 18/37) kannst du im Code unter KH_DATA anpassen, wenn neue Inhalte erscheinen.',
       confirm:'Wirklich den kompletten Know-how-Fortschritt auf 0 zurücksetzen?',saved:'Export in die Zwischenablage kopiert',pasteHint:'Exportierten Text hier einfügen:',imported:'Import erfolgreich',bad:'Import fehlgeschlagen'},
     en:{kicker:'KNOW-HOW // PROGRESS',lede:'Track your Know-how progress: bring brands and gear sets to level 10, plus the number of weapons, named/exotic gear pieces and skill variants you are already proficient with. Everything is saved automatically in your browser.',
       search:'Search…',all:'All',open:'Open',done:'Done',export:'Export',import:'Import',reset:'Reset',max:'MAX',allmax:'Max all',
       empty:'Nothing found.',maxed:'at level 10',prof:'proficient',total:'Total',
-      note:'Note: your progress is stored only in this browser (localStorage). Use “Export” to back it up or move it to another device. Start values come from your screenshots; brands/sets without a level display were set to 0. You can adjust the maximums (e.g. 18/37) in the code under KH_DATA when new content is released.',
+      note:'Note: your progress is stored only in this browser (localStorage). Use “Export” to back it up or move it to another device. All values start at 0. You can adjust the maximums (e.g. 18/37) in the code under KH_DATA when new content is released.',
       confirm:'Really reset all Know-how progress to 0?',saved:'Export copied to clipboard',pasteHint:'Paste exported text here:',imported:'Import successful',bad:'Import failed'}
   };
   const lang=()=>document.documentElement.lang==='en'?'en':'de';
@@ -4405,7 +4405,7 @@ applyFilters();
 
   /* ---------- state ---------- */
   const defaults=()=>{const s={};KH_DATA.forEach(sec=>sec.items.forEach(it=>{
-      s[sec.id+'|'+it[0]]= sec.type==='cnt' ? it[2] : (it[2]||0);}));return s;};
+      s[sec.id+'|'+it[0]]=0;}));return s;};
   let state=defaults();
   try{const raw=localStorage.getItem(STORE);if(raw){const p=JSON.parse(raw);if(p&&typeof p==='object')Object.keys(state).forEach(k=>{if(typeof p[k]==='number')state[k]=p[k];});}}catch(e){}
   const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}};
