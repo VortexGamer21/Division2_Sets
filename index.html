@@ -1031,6 +1031,33 @@
 .section-head.escalation h2::before{ background: var(--esc); }
 .section-head.escalation .tag{ color: var(--esc); }
 
+
+/* ---------- Prototyp-Attribute (Tabellen) ---------- */
+:root{ --proto:#FFB020; --proto-dim:#7A5A1A; }
+.filters button.active[data-f="prototype"]{ color: var(--proto); background: rgba(255,176,32,0.14); }
+.proto-section{ scroll-margin-top: 92px; }
+.proto-section[hidden]{ display:none; }
+.section-head.proto h2::before{ background: var(--proto); }
+.section-head.proto .tag{ color: var(--proto); }
+.proto-block{ margin-bottom: 36px; }
+.proto-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+.proto-table{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:560px; }
+.proto-table th{ text-align:left; padding:10px 14px; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color: var(--text-dim); background: var(--panel-2); border-bottom:1px solid var(--line); position:sticky; top:0; }
+.proto-table td{ padding:8px 14px; border-bottom:1px solid var(--line-soft); color: var(--text); }
+.proto-table tr:last-child td{ border-bottom:0; }
+.proto-table td.num, .proto-table th.num{ text-align:right; font-variant-numeric: tabular-nums; }
+.proto-table td.pv{ color:#fff; font-weight:600; }
+.proto-table td.unk{ color:#ff5a5a; font-weight:600; }
+.proto-table td.item{ color: var(--proto); }
+.proto-table tr.named td.attr{ color: var(--proto); font-weight:600; }
+.proto-table tr.grp td{ background: rgba(255,176,32,0.07); color: var(--proto); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600; padding:7px 14px; }
+.proto-table tr:not(.grp):hover td{ background: rgba(255,255,255,0.025); }
+.proto-table td.bar{ width:6px; padding:0; }
+.proto-table td.bar i{ display:block; width:4px; height:100%; min-height:30px; }
+.proto-table td.bar i.r{ background:#E5483A; } .proto-table td.bar i.b{ background:#3E8BFF; } .proto-table td.bar i.y{ background:#FFD60A; } .proto-table td.bar i.n{ background:#6b7280; }
+.proto-chip{ display:inline-block; padding:2px 8px; border:1px solid var(--line); border-radius:999px; font-size:10.5px; letter-spacing:.05em; color: var(--text-dim); }
+.proto-note{ font-size:11.5px; color: var(--text-dim); margin:0 0 14px; }
+
 .esc-section{ scroll-margin-top: 92px; }
 .esc-section[hidden]{ display:none; }
 
@@ -1559,12 +1586,14 @@
 <button data-f="standard">Standard-Waffen</button>
 <button data-f="escalation">Escalation</button>
 <button data-f="augments">Prototypen-Augments</button>
+<button data-f="prototype">Prototyp-Attribute</button>
 </div>
 <div class="count-note" id="countNote"></div>
 </div>
 </div>
 <section aria-label="Escalation" class="esc-section" hidden="" id="escSection"></section>
 <section aria-label="Prototypen-Augments" class="aug-section" hidden="" id="augSection"></section>
+<section aria-label="Prototyp-Attribute" class="proto-section" hidden="" id="protoSection"></section>
 <div class="section-head gear">
 <h2>Gear Sets</h2>
 <span class="tag">2 / 3 / 4-TEILE</span>
@@ -3269,7 +3298,7 @@ function applyFilters(){
 
 
   /* Waffen-Sektion nur ausblenden, wenn gezielt nach Gear/Brand/Meta gefiltert wird (ohne Waffenbezug) */
-  const hideWeaponSection = ['gear','brand','exogear','namedgear','escalation','augments'].includes(activeFilter);
+  const hideWeaponSection = ['gear','brand','exogear','namedgear','escalation','augments','prototype'].includes(activeFilter);
   weaponSectionHead.style.display = hideWeaponSection ? 'none' : '';
   wpIntro.style.display = hideWeaponSection ? 'none' : '';
   wpJumpEl.style.display = hideWeaponSection ? 'none' : '';
@@ -3294,9 +3323,15 @@ function applyFilters(){
     countNote.textContent = q ? `${visibleAug} von 9 Augments` : '9 Prototypen-Augments';
   }
 
+  /* Prototyp-Attribute-Reiter */
+  const protoOn = activeFilter === 'prototype';
+  const protoSec = document.getElementById('protoSection');
+  if(protoSec) protoSec.hidden = !protoOn;
+  if(protoOn) countNote.textContent = '';
+
   ['panelNamed','panelMeta'].forEach(id => {
     const el = document.getElementById(id);
-    if(el) el.style.display = (escOn || augOn) ? 'none' : '';
+    if(el) el.style.display = (escOn || augOn || protoOn) ? 'none' : '';
   });
   if(escOn || activeFilter === 'namedgear') countNote.textContent = activeFilter === 'namedgear' ? `${visibleNamedGear} Named-Gear-Teile` : '';
 
@@ -3322,6 +3357,10 @@ filterButtons.forEach(btn => {
     if(activeFilter === 'augments'){
       const augSec = document.getElementById('augSection');
       if(augSec && typeof augSec.scrollIntoView === 'function') augSec.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+    if(activeFilter === 'prototype'){
+      const protoSec = document.getElementById('protoSection');
+      if(protoSec && typeof protoSec.scrollIntoView === 'function') protoSec.scrollIntoView({behavior:'smooth', block:'start'});
     }
   });
 });
@@ -3919,7 +3958,7 @@ applyFilters();
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       const p=node.parentElement;
-      if(!p || p.closest('.lang-switch,.esc-section,#namedGearGrid,script,style')) return NodeFilter.FILTER_REJECT;
+      if(!p || p.closest('.lang-switch,.esc-section,.proto-section,#namedGearGrid,script,style')) return NodeFilter.FILTER_REJECT;
       if(!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
@@ -4440,6 +4479,166 @@ applyFilters();
   }
 
   render();
+  new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
+})();
+</script>
+<script>
+/* ==========================================================
+   PROTOTYP-ATTRIBUTE TAB — Basis- vs. Prototype-Werte
+   Zwei getrennte Tabellen: Gear und Waffen (laut Screenshot).
+   Eigene DE/EN-Umschaltung (der allgemeine Übersetzer überspringt .proto-section).
+   ========================================================== */
+(function(){
+  const sec = document.getElementById('protoSection');
+  if(!sec) return;
+
+  /* Gear: [Farbe r/b/y, EN, DE, Basis, Prototype, Item] — Gruppen: core / attr / named */
+  const GEAR = {
+    core:[
+      ['r','Weapon Damage','Waffenschaden','15%','22.5%'],
+      ['b','Armor','Rüstung','170000','255001'],
+      ['y','Skill Tier','Skill-Stufe','1','1']],
+    attr:[
+      ['r','Critical Hit Chance','Krit-Chance','6%','9%'],
+      ['r','Critical Hit Damage','Krit-Schaden','12%','18%'],
+      ['r','Headshot Damage','Kopfschuss-Schaden','10%','15%'],
+      ['r','Weapon Handling','Waffenhandhabung','8%','12%'],
+      ['b','Armor Regen','Rüstungsregeneration','4925','7388'],
+      ['b','Explosive Resistance','Explosionsresistenz','10%','15%'],
+      ['b','Hazard Protection','Gefahrenschutz','10%','15%'],
+      ['b','Health','Gesundheit','18935','28403'],
+      ['y','Repair Skills','Reparatur-Skills','20%','30%'],
+      ['y','Skill Damage','Skill-Schaden','10%','15%'],
+      ['y','Skill Haste','Fertigkeitsbeschleunigung','12%','18%'],
+      ['y','Status Effects','Statuseffekte','10%','15%']],
+    named:[
+      ['r','Accuracy','Genauigkeit','38%','57%',"Spot-On"],
+      ['r','Ammo Capacity','Munitionskapazität','10%','15%',"Ammo Dump"],
+      ['b','Armor on Kill','Rüstung bei Kill','10%','15%',"Deathgrips"],
+      ['b','Armor Regen','Rüstungsregeneration','1%','1.5%',"Emperor's Guard"],
+      ['r','Damage to Armor','Schaden gegen Rüstung','8%','12%',"Contractor's Gloves"],
+      ['r','DMG to target out of cover','Schaden gegen Ziele außerhalb der Deckung','8%','12%',"Fox's Prayer"],
+      ['r','Headshot Damage','Kopfschuss-Schaden','20%','30%',"Punch Drunk"],
+      ['r','Health Damage','Schaden gegen Gesundheit','14%','21%',"The Hollow Man"],
+      ['y','Melee Damage','Nahkampfschaden','500%','750%',"Claws Out"],
+      ['y','Optimal Range','Optimale Reichweite','50%','75%',"Visionario"],
+      ['r','Pistol Damage','Pistolenschaden','11%','16.5%',"Claws Out"],
+      ['r','Rate of Fire','Feuerrate','5%','7.5%',"Salvo"],
+      ['b','Reduced Threat','Reduzierte Bedrohung','50%','75%',"Cloak"],
+      ['y','Scanner Pulse Haste','Scanner-Puls-Beschleunigung','100%','150%',"Nightwatcher"],
+      ['b','Shield Health','Schild-Gesundheit','50%','75%',"Forge"],
+      ['y','Skill Health','Skill-Gesundheit','25%','?',"Motherly Love"],
+      ['y','Status Effects','Statuseffekte','16%','24%',"Firm Handshake Grease"],
+      ['r','Weapon Damage','Waffenschaden','10%','15%',"Picaros Holster"],
+      ['r','Weapon Handling','Waffenhandhabung','15%','22.5%',"Eagles Grasp"]]
+  };
+
+  /* Waffen: [Waffentyp, EN, DE, Basis, Prototype, Item] */
+  const WEAPON = {
+    core:[
+      ['AR','AR Damage','Sturmgewehr-Schaden','15%','22.5%'],
+      ['AR','Health Damage','Schaden gegen Gesundheit','21%','31.5%'],
+      ['LMG','LMG Damage','LMG-Schaden','15%','22.5%'],
+      ['LMG','DMG to target out of cover','Schaden gegen Ziele außerhalb der Deckung','12%','17%'],
+      ['MMR','MMR Damage','Scharfschützengewehr-Schaden','15%','22.5%'],
+      ['MMR','Headshot Damage','Kopfschuss-Schaden','111%','166%'],
+      ['Pistol','Pistol Damage','Pistolenschaden','15%','22.5%'],
+      ['Rifle','Rifle Damage','Gewehr-Schaden','15%','22.5%'],
+      ['Rifle','Critical Hit Damage','Krit-Schaden','17%','26%'],
+      ['Shotgun','Shotgun Damage','Schrotflinten-Schaden','15%','22.5%'],
+      ['Shotgun','Damage to Armor','Schaden gegen Rüstung','12%','17%'],
+      ['SMG','SMG Damage','SMG-Schaden','15%','22.5%'],
+      ['SMG','Critical Hit Chance','Krit-Chance','21%','31.5%']],
+    named:[
+      ['MMR','Headshot Damage','Kopfschuss-Schaden','137%','205%','The White Death, Oh Carol'],
+      ['Pistol','Skill Tier','Skill-Stufe','1','2','TDI "Kard" Custom'],
+      ['Shotgun','Armor on Kill','Rüstung bei Kill','10%','15%','The Mop'],
+      ['Shotgun','Shotgun Damage','Schrotflinten-Schaden','17%','26%','Backup Boomstick']],
+    attr:[
+      ['','Accuracy','Genauigkeit','12%','18%'],
+      ['','Critical Hit Chance','Krit-Chance','9.5%','14.5%'],
+      ['','Critical Hit Damage','Krit-Schaden','10%','15%'],
+      ['','Damage to Armor','Schaden gegen Rüstung','6%','9%'],
+      ['','DMG to target out of cover','Schaden gegen Ziele außerhalb der Deckung','10%','15%'],
+      ['','Headshot Damage','Kopfschuss-Schaden','10%','15%'],
+      ['','Health Damage','Schaden gegen Gesundheit','9.5%','14.5%'],
+      ['','Magazine Size','Magazingröße','12.5%','19%'],
+      ['','Optimal Range','Optimale Reichweite','24%','36%'],
+      ['','Rate of Fire','Feuerrate','5%','7.5%'],
+      ['','Reload Speed','Nachladegeschwindigkeit','12%','18%'],
+      ['','Stability','Stabilität','12%','18%'],
+      ['','Swap Speed','Wechselgeschwindigkeit','15%','22.5%']]
+  };
+
+  const TXT = {
+    de:{ title:'Prototyp-Attribute', tag:'BASIS → PROTOTYPE', chip:'Prototype Gear',
+         sub:'Vergleich der Basiswerte mit den Prototype-Werten. Gear und Waffen sind in getrennten Tabellen aufgeführt.',
+         gear:'Gear', weapons:'Waffen',
+         cols:['Typ','Attribut','Basis','Prototype','Item'],
+         grp:{core:'Kernattribute', attr:'Attribute', named:'Named-Attribute'},
+         wtype:'Waffe', any:'Alle', unk:'unbekannt', empty:'Keine Treffer.' },
+    en:{ title:'Prototype Attributes', tag:'BASE → PROTOTYPE', chip:'Prototype Gear',
+         sub:'Comparison of base values and Prototype values. Gear and weapons are listed in separate tables.',
+         gear:'Gear', weapons:'Weapons',
+         cols:['Type','Attribute','Base','Prototype','Item'],
+         grp:{core:'Core Attributes', attr:'Attributes', named:'Named Attributes'},
+         wtype:'Weapon', any:'All', unk:'unknown', empty:'No matches.' }
+  };
+  const esc = v => String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+
+  function render(){
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'de';
+    const t = TXT[lang];
+    const searchEl = document.getElementById('searchInput') || document.querySelector('input[type="search"], input[type="text"]');
+    const q = searchEl ? searchEl.value.trim().toLowerCase() : '';
+
+    const row = (kind, isGear, r, grp) => {
+      const [a, en, de, base, proto, item] = r;
+      const attr = lang === 'en' ? en : de;
+      if(q && !(en + ' ' + de + ' ' + (item||'') + ' ' + a).toLowerCase().includes(q)) return '';
+      const unknown = proto === '?';
+      const lead = isGear
+        ? `<td class="bar"><i class="${a}"></i></td>`
+        : `<td class="bar"><i class="n"></i></td>`;
+      const typeCell = isGear ? `<td><span class="proto-chip">${esc(t.grp[grp])}</span></td>`
+                              : `<td>${a ? `<span class="proto-chip">${esc(a)}</span>` : `<span class="proto-chip">${esc(t.any)}</span>`}</td>`;
+      return `<tr class="${kind==='named'?'named':''}">${lead}${typeCell}
+        <td class="attr">${esc(attr)}</td>
+        <td class="num">${esc(base)}</td>
+        <td class="num ${unknown?'unk':'pv'}">${unknown ? esc(t.unk) : esc(proto)}</td>
+        <td class="item">${item ? esc(item) : ''}</td></tr>`;
+    };
+
+    const table = (data, isGear) => {
+      let body = '';
+      ['core','attr','named'].forEach(k => {
+        if(!data[k]) return;
+        const rows = data[k].map(r => row(k, isGear, r, k)).join('');
+        if(rows) body += `<tr class="grp"><td colspan="6">${esc(t.grp[k])}</td></tr>` + rows;
+      });
+      if(!body) body = `<tr><td colspan="6" style="text-align:center;color:var(--text-dim)">${esc(t.empty)}</td></tr>`;
+      const head = `<tr><th style="width:6px;padding:0"></th><th>${isGear ? t.cols[0] : t.wtype}</th><th>${t.cols[1]}</th><th class="num">${t.cols[2]}</th><th class="num">${t.cols[3]}</th><th>${t.cols[4]}</th></tr>`;
+      return `<div class="proto-wrap"><table class="proto-table"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
+    };
+
+    sec.innerHTML = `
+      <div class="section-head proto">
+        <h2>${t.title}</h2><span class="tag">${t.tag}</span><div class="rule"></div>
+      </div>
+      <p class="proto-note">${t.sub}</p>
+      <div class="proto-block">
+        <div class="section-head proto"><h2>${t.gear}</h2><div class="rule"></div></div>
+        ${table(GEAR, true)}
+      </div>
+      <div class="proto-block">
+        <div class="section-head proto"><h2>${t.weapons}</h2><div class="rule"></div></div>
+        ${table(WEAPON, false)}
+      </div>`;
+  }
+
+  render();
+  const si = document.getElementById('searchInput');
+  if(si) si.addEventListener('input', render);
   new MutationObserver(render).observe(document.documentElement, { attributes:true, attributeFilter:['lang'] });
 })();
 </script>
