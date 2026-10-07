@@ -1439,6 +1439,31 @@
   .kh-toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--panel); border:1px solid var(--yellow-dim); color:var(--yellow); padding:10px 18px; border-radius:999px; font-size:12px; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
   .kh-toast.show{ opacity:1; }
 
+
+  /* ================= EXOTIC COLLECTOR ================= */
+  .main-tabs .tabs button[data-tab="exotic"].active{ background: rgba(232,194,74,.14); color: var(--gold); box-shadow: 0 0 0 1px #7a6420 inset; }
+  body.tab-exotic .main-tabs .kh-lang{ display:flex; }
+  #viewExotic{ display:none; }
+  body.tab-exotic #viewExotic{ display:block; }
+  body.tab-exotic #viewDb{ display:none; }
+  #viewExotic .kh-hero .kicker{ color:var(--gold); border-color:#7a6420; background:rgba(232,194,74,.07); }
+  #viewExotic .kh-hero h1 span{ color:var(--gold); }
+  #viewExotic .kh-stat{ border-top-color:var(--gold); }
+  #viewExotic .kh-stat .bar i{ background:var(--gold); }
+  #viewExotic .kh-controls .search input:focus{ border-color:var(--gold); box-shadow:0 0 0 3px rgba(232,194,74,.14); }
+  #viewExotic .kh-filters button.active{ background:rgba(232,194,74,.14); color:var(--gold); }
+  #viewExotic .kh-sec-head .maxall:hover{ color:var(--gold); border-color:#7a6420; }
+  .ec-card{ cursor:pointer; user-select:none; }
+  .ec-card:hover{ border-color:var(--text-faint); border-left-color:var(--c); }
+  .ec-card .ec-sub{ font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); margin-top:4px; }
+  .ec-card .ec-state{ display:flex; align-items:center; gap:10px; margin-top:12px; font-size:12px; color:var(--text-dim); }
+  .ec-box{ width:22px; height:22px; border-radius:5px; border:2px solid var(--line); background:var(--panel-2); display:flex; align-items:center; justify-content:center; color:transparent; font-size:14px; line-height:1; transition:all .12s ease; }
+  .ec-card.done{ border-color:#7a6420; border-left-color:var(--gold); box-shadow:0 0 0 1px rgba(232,194,74,.08) inset, 0 12px 26px -18px rgba(232,194,74,.3); }
+  .ec-card.done .ec-box{ background:var(--gold); border-color:var(--gold); color:#1a1500; font-weight:700; }
+  .ec-card.done .ec-state{ color:var(--gold); }
+  .ec-card.done .kh-badge{ background:var(--gold); }
+  .ec-card:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+
   /* ================= PHOEBE TRACKER ================= */
   .main-tabs .tabs{ flex-wrap:wrap; }
   .main-tabs .tabs button[data-tab="phoebe"].active{ background: rgba(201,67,46,.14); color: var(--weapon); box-shadow: 0 0 0 1px var(--weapon-dim) inset; }
@@ -1538,6 +1563,7 @@
 <button class="active" data-tab="db" role="tab" type="button">Datenbank</button>
 <button data-tab="knowhow" role="tab" type="button">Know-how Tracker</button>
 <button data-tab="phoebe" role="tab" type="button">Phoebe-Tracker</button>
+<button data-tab="exotic" role="tab" type="button">Exotic Collector</button>
 </div>
 <div class="kh-lang" role="group" aria-label="Language">
 <button data-l="de" type="button">DE</button>
@@ -2022,6 +2048,32 @@
 </div>
 <div id="khBody"></div>
 <div class="kh-note" id="khNote"></div>
+</div>
+<div id="viewExotic">
+<header class="kh-hero">
+<div class="kicker" id="ecKicker"></div>
+<h1 id="ecTitle"></h1>
+<p id="ecLede"></p>
+<div class="kh-stats" id="ecStats"></div>
+</header>
+<div class="kh-controls">
+<div class="search">
+<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input id="ecSearch" type="text" placeholder="Suchen…"/>
+</div>
+<div class="kh-filters" id="ecFilters">
+<button class="active" data-kf="all" type="button">Alle</button>
+<button data-kf="missing" type="button">Fehlt</button>
+<button data-kf="owned" type="button">Besessen</button>
+</div>
+<div class="kh-tools">
+<button id="ecExport" type="button">Export</button>
+<button id="ecImport" type="button">Import</button>
+<button id="ecReset" class="danger" type="button">Reset</button>
+</div>
+</div>
+<div id="ecBody"></div>
+<div class="kh-note" id="ecNote"></div>
 </div>
 <div id="viewPhoebe">
 <header class="ph-hero">
@@ -3958,7 +4010,7 @@ applyFilters();
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{
     acceptNode(node){
       const p=node.parentElement;
-      if(!p || p.closest('.lang-switch,.esc-section,.proto-section,#namedGearGrid,script,style')) return NodeFilter.FILTER_REJECT;
+      if(!p || p.closest('.lang-switch,.esc-section,.proto-section,#viewExotic,#namedGearGrid,script,style')) return NodeFilter.FILTER_REJECT;
       if(!node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     }
@@ -4643,6 +4695,164 @@ applyFilters();
 })();
 </script>
 <script>
+/* ==========================================================
+   EXOTIC COLLECTOR — alle Exotic-Waffen & Exotic-Gear abhaken
+   Datenquelle: weaponCategories (Exotic-Gruppe) und exoticGear aus der Datenbank.
+   Speicherung: localStorage (nur in diesem Browser).
+   ========================================================== */
+(function(){
+  const view=document.getElementById('viewExotic'); if(!view) return;
+  const STORE='division2-exotic-collector-v1';
+  const $=id=>document.getElementById(id);
+  const lang=()=>document.documentElement.lang==='en'?'en':'de';
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  const CAT_EN={ar:'Assault Rifles (AR)',smg:'Submachine Guns (SMG)',lmg:'Light Machine Guns (LMG)',mmr:'Marksman Rifles (MMR)',rifle:'Rifles',shotgun:'Shotguns',pistol:'Pistols'};
+  const SLOT_EN={'Masken':'Masks','Brust':'Chest','Rucksack':'Backpack','Holster':'Holster','Handschuhe':'Gloves','Knie':'Kneepads'};
+  const SLOT_DE={'Masken':'Masken','Brust':'Brustpanzer','Rucksack':'Rucksäcke','Holster':'Holster','Handschuhe':'Handschuhe','Knie':'Knieschützer'};
+
+  /* Sektionen aus der Datenbank aufbauen */
+  const SECTIONS=[];
+  try{
+    weaponCategories.forEach(cat=>{
+      const list=(cat.groups&&cat.groups.exotic)||[];
+      if(!list.length) return;
+      SECTIONS.push({id:'w-'+cat.id,kind:'weapon',cls:'weapon',de:cat.name,en:CAT_EN[cat.id]||cat.name,
+        items:list.map(w=>({key:'w|'+cat.id+'|'+w[0],name:w[0]}))});
+    });
+    exoticGear.forEach(([slot,items])=>{
+      SECTIONS.push({id:'g-'+slot,kind:'gear',cls:'named',de:SLOT_DE[slot]||slot,en:SLOT_EN[slot]||slot,
+        items:items.map(g=>({key:'g|'+slot+'|'+g[0],name:g[0]}))});
+    });
+  }catch(e){ console.error('Exotic Collector: Datenquelle fehlt',e); }
+
+  const ALLKEYS=new Set(); SECTIONS.forEach(sec=>sec.items.forEach(it=>ALLKEYS.add(it.key)));
+  let owned={};
+  try{const raw=localStorage.getItem(STORE);if(raw){const p=JSON.parse(raw);if(p&&typeof p==='object')Object.keys(p).forEach(k=>{if(p[k]===true&&ALLKEYS.has(k))owned[k]=true;});}}catch(e){}
+  const save=()=>{try{localStorage.setItem(STORE,JSON.stringify(owned));}catch(e){}};
+
+  const T={
+    de:{kicker:'EXOTIC COLLECTOR // SAMMLUNG',t1:'Exotic',t2:'Collector',
+      lede:'Hake ab, welche Exotic-Waffen und Exotic-Gear-Teile du bereits besitzt. Klicke einfach auf eine Karte, um sie als „besessen“ zu markieren oder die Markierung wieder zu entfernen. Alles wird automatisch in deinem Browser gespeichert.',
+      search:'Suchen…',all:'Alle',missing:'Fehlt',owned:'Besessen',export:'Export',import:'Import',reset:'Reset',
+      weapons:'Exotic-Waffen',gear:'Exotic-Gear',total:'Gesamt',have:'Besitzt du',
+      markAll:'Alle markieren',unmarkAll:'Alle abwählen',badge:'BESESSEN',yes:'Besitze ich',no:'Fehlt noch',
+      empty:'Nichts gefunden.',
+      note:'Hinweis: Dein Fortschritt liegt nur in diesem Browser (localStorage). Mit „Export“ speicherst du ihn als .txt-Datei, mit „Import“ lädst du diese Datei wieder ein, z. B. auf einem anderen Gerät. Die Liste wird automatisch aus den Exotic-Einträgen der Datenbank erzeugt.',
+      confirm:'Wirklich alle Markierungen im Exotic Collector zurücksetzen?',saved:'Export als .txt-Datei gespeichert',imported:'Import erfolgreich',bad:'Import fehlgeschlagen'},
+    en:{kicker:'EXOTIC COLLECTOR // COLLECTION',t1:'Exotic',t2:'Collector',
+      lede:'Check off which Exotic weapons and Exotic gear pieces you already own. Simply click a card to mark it as owned or to remove the mark again. Everything is saved automatically in your browser.',
+      search:'Search…',all:'All',missing:'Missing',owned:'Owned',export:'Export',import:'Import',reset:'Reset',
+      weapons:'Exotic Weapons',gear:'Exotic Gear',total:'Total',have:'Owned',
+      markAll:'Mark all',unmarkAll:'Unmark all',badge:'OWNED',yes:'I own this',no:'Still missing',
+      empty:'Nothing found.',
+      note:'Note: your progress is stored only in this browser (localStorage). “Export” saves it as a .txt file; “Import” loads that file again, e.g. on another device. The list is generated automatically from the Exotic entries of the database.',
+      confirm:'Really reset all marks in the Exotic Collector?',saved:'Export saved as .txt file',imported:'Import successful',bad:'Import failed'}
+  };
+
+  let filter='all', query='';
+  const toast=msg=>{const el=$('khToast');if(!el)return;el.textContent=msg;el.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove('show'),2200);};
+
+  function card(sec,it,t){
+    const on=!!owned[it.key];
+    return `<div class="kh-card ec-card ${sec.cls}${on?' done':''}" role="button" tabindex="0" aria-pressed="${on}" data-act="toggle" data-key="${esc(it.key)}">
+      <div class="kh-top"><div class="kh-name">${esc(it.name)}</div><span class="kh-badge">${t.badge}</span></div>
+      <div class="ec-sub">${esc(sec[lang()])}</div>
+      <div class="ec-state"><span class="ec-box">✓</span><span>${on?t.yes:t.no}</span></div></div>`;
+  }
+
+  function render(){
+    const t=T[lang()], q=query.trim().toLowerCase();
+    $('ecKicker').textContent=t.kicker;
+    $('ecTitle').innerHTML=`${esc(t.t1)} <span>${esc(t.t2)}</span>`;
+    $('ecLede').textContent=t.lede; $('ecNote').textContent=t.note;
+    $('ecSearch').placeholder=t.search;
+    document.querySelectorAll('#ecFilters button').forEach(b=>{b.textContent=t[b.dataset.kf];b.classList.toggle('active',b.dataset.kf===filter);});
+    $('ecExport').textContent=t.export; $('ecImport').textContent=t.import; $('ecReset').textContent=t.reset;
+    document.querySelectorAll('.kh-lang button').forEach(b=>b.classList.toggle('active',b.dataset.l===lang()));
+
+    const cnt=kind=>{let c=0,n=0;SECTIONS.forEach(sec=>{if(sec.kind!==kind)return;sec.items.forEach(it=>{n++;if(owned[it.key])c++;});});return [c,n];};
+    const [wc,wn]=cnt('weapon'),[gc,gn]=cnt('gear');
+    const stat=(c,n,l)=>`<div class="kh-stat"><div class="num">${c}<small> / ${n}</small></div><div class="lbl">${esc(l)}</div><div class="bar"><i style="width:${n?c/n*100:0}%"></i></div></div>`;
+    $('ecStats').innerHTML=stat(wc,wn,t.weapons)+stat(gc,gn,t.gear)+stat(wc+gc,wn+gn,t.total);
+
+    let html='', shown=0;
+    SECTIONS.forEach(sec=>{
+      const list=sec.items.filter(it=>{
+        if(q && !(it.name+' '+sec.de+' '+sec.en).toLowerCase().includes(q)) return false;
+        if(filter==='missing' && owned[it.key]) return false;
+        if(filter==='owned' && !owned[it.key]) return false;
+        return true;});
+      if(!list.length) return;
+      shown+=list.length;
+      const c=sec.kind==='weapon'?'var(--weapon)':'var(--gold)';
+      const fin=sec.items.filter(it=>owned[it.key]).length;
+      const all=fin===sec.items.length;
+      const prefix=sec.kind==='weapon'?t.weapons:t.gear;
+      html+=`<div class="kh-sec-head" style="--c:${c}"><h2>${esc(prefix)} — ${esc(sec[lang()])}</h2><span class="tag">${fin} / ${sec.items.length}</span><div class="rule"></div><button class="maxall" type="button" data-act="toggleall" data-sec="${esc(sec.id)}">${all?t.unmarkAll:t.markAll}</button></div>`;
+      html+=`<div class="kh-grid">${list.map(it=>card(sec,it,t)).join('')}</div>`;
+    });
+    if(!shown) html=`<div class="kh-grid" style="margin-top:30px"><div class="kh-empty">${t.empty}</div></div>`;
+    $('ecBody').innerHTML=html;
+  }
+  window.exoCollectorRender=render;
+
+  function toggle(key){ if(owned[key]) delete owned[key]; else owned[key]=true; save(); render(); }
+
+  $('ecBody').addEventListener('click',e=>{
+    const b=e.target.closest('[data-act]'); if(!b) return;
+    if(b.dataset.act==='toggleall'){
+      const sec=SECTIONS.find(s=>s.id===b.dataset.sec); if(!sec) return;
+      const all=sec.items.every(it=>owned[it.key]);
+      sec.items.forEach(it=>{ if(all) delete owned[it.key]; else owned[it.key]=true; });
+      save(); render(); return;
+    }
+    if(b.dataset.act==='toggle') toggle(b.dataset.key);
+  });
+  $('ecBody').addEventListener('keydown',e=>{
+    if(e.key!=='Enter' && e.key!==' ') return;
+    const b=e.target.closest('[data-act="toggle"]'); if(!b) return;
+    e.preventDefault(); toggle(b.dataset.key);
+  });
+  $('ecSearch').addEventListener('input',e=>{query=e.target.value;render();});
+  $('ecFilters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;filter=b.dataset.kf;render();});
+  $('ecReset').addEventListener('click',()=>{if(confirm(T[lang()].confirm)){owned={};save();render();}});
+  $('ecExport').addEventListener('click',()=>{
+    try{
+      const blob=new Blob([JSON.stringify(owned)],{type:'text/plain;charset=utf-8'});
+      const url=URL.createObjectURL(blob), a=document.createElement('a'), d=new Date(), pad=n=>String(n).padStart(2,'0');
+      a.href=url; a.download='division2-exotic-collector-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'.txt';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+      toast(T[lang()].saved);
+    }catch(err){toast(T[lang()].bad);}
+  });
+  (function(){
+    const fi=document.createElement('input');
+    fi.type='file'; fi.accept='.txt,text/plain'; fi.style.display='none';
+    document.body.appendChild(fi);
+    $('ecImport').addEventListener('click',()=>{fi.value='';fi.click();});
+    fi.addEventListener('change',()=>{
+      const f=fi.files&&fi.files[0]; if(!f) return;
+      const r=new FileReader();
+      r.onload=()=>{
+        try{
+          const p=JSON.parse(String(r.result).replace(/^\uFEFF/,'').trim());
+          if(!p||typeof p!=='object') throw new Error('bad');
+          const next={}; Object.keys(p).forEach(k=>{if(p[k]===true&&ALLKEYS.has(k))next[k]=true;});
+          owned=next; save(); render(); toast(T[lang()].imported);
+        }catch(err){toast(T[lang()].bad);}
+      };
+      r.onerror=()=>toast(T[lang()].bad);
+      r.readAsText(f);
+    });
+  })();
+
+  new MutationObserver(()=>{ if(document.body.classList.contains('tab-exotic')) render(); }).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  render();
+})();
+</script>
+<script>
 (() => {
   'use strict';
 
@@ -4861,9 +5071,11 @@ applyFilters();
   function setTab(tab){
     document.body.classList.toggle('tab-knowhow',tab==='knowhow');
     document.body.classList.toggle('tab-phoebe',tab==='phoebe');
+    document.body.classList.toggle('tab-exotic',tab==='exotic');
     document.querySelectorAll('.main-tabs .tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
     try{localStorage.setItem(TABKEY,tab);}catch(e){}
     if(tab==='knowhow') render();
+    if(tab==='exotic' && window.exoCollectorRender) window.exoCollectorRender();
     window.scrollTo({top:0});
   }
   document.querySelectorAll('.main-tabs .tabs button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
@@ -4873,7 +5085,7 @@ applyFilters();
   }));
   document.querySelectorAll('.lang-switch button').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>{if(document.body.classList.contains('tab-knowhow'))render();},0)));
 
-  let start='db'; try{const v=localStorage.getItem(TABKEY);start=(v==='knowhow'||v==='phoebe')?v:'db';}catch(e){}
+  let start='db'; try{const v=localStorage.getItem(TABKEY);start=(v==='knowhow'||v==='phoebe'||v==='exotic')?v:'db';}catch(e){}
   render(); setTab(start); window.scrollTo({top:0});
 })();
 </script>
