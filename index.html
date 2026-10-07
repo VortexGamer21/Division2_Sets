@@ -1411,6 +1411,104 @@
   .kh-note{ margin-top:50px; padding:18px 22px; background:var(--panel); border:1px solid var(--line-soft); border-radius:var(--radius); color:var(--text-dim); font-size:12px; line-height:1.7; }
   .kh-toast{ position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:var(--panel); border:1px solid var(--yellow-dim); color:var(--yellow); padding:10px 18px; border-radius:999px; font-size:12px; z-index:100; opacity:0; pointer-events:none; transition:opacity .2s; }
   .kh-toast.show{ opacity:1; }
+
+  /* ================= PHOEBE TRACKER ================= */
+  .main-tabs .tabs{ flex-wrap:wrap; }
+  .main-tabs .tabs button[data-tab="phoebe"].active{ background: rgba(201,67,46,.14); color: var(--weapon); box-shadow: 0 0 0 1px var(--weapon-dim) inset; }
+  body.tab-phoebe .main-tabs .kh-lang{ display:flex; }
+  @media (max-width:560px){ .main-tabs .tabs button{ padding:9px 13px; font-size:12.5px; } }
+
+  #viewPhoebe{ display:none; }
+  body.tab-phoebe #viewPhoebe{ display:block; }
+  body.tab-phoebe #viewDb{ display:none; }
+
+  .ph-hero{ padding:40px 0 26px; border-bottom:1px solid var(--line-soft); }
+  .ph-hero .kicker{
+    display:inline-flex; align-items:center; gap:9px; font-size:11px; color:var(--weapon);
+    letter-spacing:.14em; padding:7px 13px; border:1px solid var(--weapon-dim);
+    border-radius:3px 3px 3px 0; background:rgba(201,67,46,.08); margin-bottom:18px;
+  }
+  .ph-hero .kicker::before{ content:''; width:6px; height:6px; background:var(--weapon); border-radius:1px; transform:rotate(45deg); display:inline-block; }
+  .ph-hero h1{ font-size:clamp(30px,5vw,48px); line-height:1.05; margin:0 0 12px; color:#fff; }
+  .ph-hero h1 span{ color:var(--weapon); }
+  .ph-hero p{ max-width:640px; color:var(--text-dim); font-size:13.5px; line-height:1.7; margin:0; }
+
+  .ph-notice{ display:block; max-width:640px; margin:0 0 14px; padding:9px 14px; font-size:12px; line-height:1.6; color:var(--yellow); background:rgba(255,214,10,.07); border:1px solid var(--yellow-dim); border-left:3px solid var(--yellow); border-radius:3px; }
+  .ph-layout{ display:grid; grid-template-columns:minmax(300px,430px) 1fr; gap:18px; align-items:start; margin-top:26px; }
+  @media (max-width:860px){ .ph-layout{ grid-template-columns:1fr; } }
+  .ph-side{ display:grid; gap:18px; }
+
+  .ph-card{
+    --c:var(--weapon);
+    background:linear-gradient(175deg,var(--panel-2),var(--panel) 60%);
+    border:1px solid var(--line-soft); border-top:3px solid var(--c);
+    border-radius:var(--radius-sm); padding:22px 20px 20px;
+    transition:border-color .25s ease, box-shadow .25s ease;
+  }
+  .ph-card.ready{ --c:var(--yellow); border-color:var(--yellow-dim); border-top-color:var(--yellow); box-shadow:0 0 0 1px rgba(255,214,10,.08) inset, 0 12px 26px -18px rgba(255,214,10,.3); }
+  .ph-card .kh-sec-head{ margin:0 0 16px; }
+  .ph-card .kh-sec-head h2{ font-size:19px; }
+
+  .ph-ring{ position:relative; width:min(290px,78vw); aspect-ratio:1; margin:6px auto 18px; }
+  .ph-ring svg{ width:100%; height:100%; transform:rotate(-90deg); }
+  .ph-ring circle{ fill:none; stroke-width:8; }
+  .ph-track{ stroke:var(--line); }
+  .ph-bar{ stroke:var(--c); stroke-linecap:round; transition:stroke-dashoffset .4s linear, stroke .3s; }
+  .ph-card.ready .ph-bar{ filter:drop-shadow(0 0 6px rgba(255,214,10,.45)); }
+  .ph-center{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:0 28px; }
+  .ph-time{ font-family:'Oswald',sans-serif; font-weight:600; font-size:clamp(44px,13vw,64px); line-height:1; color:#fff; font-variant-numeric:tabular-nums; }
+  .ph-card.ready .ph-time{ color:var(--yellow); }
+  .ph-state{ font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-faint); margin-top:10px; line-height:1.4; }
+
+  .ph-stats{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
+  .ph-stat{ background:var(--panel); border:1px solid var(--line-soft); border-top:3px solid var(--c); border-radius:var(--radius-sm); padding:10px 14px 9px; }
+  .ph-stat .num{ font-family:'Oswald',sans-serif; font-size:26px; font-weight:600; color:#fff; line-height:1; }
+  .ph-stat .lbl{ font-size:10.5px; color:var(--text-faint); margin-top:6px; letter-spacing:.07em; text-transform:uppercase; }
+
+  .ph-actions{ display:grid; gap:10px; }
+  .ph-btn{ appearance:none; cursor:pointer; text-align:left; border-radius:var(--radius-sm); border:1px solid var(--line); background:var(--panel-2); color:var(--text); padding:13px 16px; font-family:'JetBrains Mono',monospace; transition:all .15s ease; }
+  .ph-btn strong{ display:block; font-family:'Oswald',sans-serif; font-weight:500; font-size:18px; letter-spacing:.04em; text-transform:uppercase; }
+  .ph-btn small{ display:block; font-size:11px; color:var(--text-faint); margin-top:3px; }
+  .ph-btn:hover:not(:disabled){ border-color:var(--gold); }
+  .ph-btn:active:not(:disabled){ transform:scale(.985); }
+  .ph-btn.primary{ background:var(--weapon); border-color:var(--weapon); color:#fff; }
+  .ph-btn.primary small{ color:rgba(255,255,255,.75); }
+  .ph-btn.primary:hover:not(:disabled){ background:#d9503a; border-color:#d9503a; }
+  .ph-btn:disabled{ opacity:.4; cursor:not-allowed; }
+  #viewPhoebe button:focus-visible, #viewPhoebe input:focus-visible, #viewPhoebe summary:focus-visible{ outline:2px solid var(--yellow); outline-offset:2px; }
+
+  .ph-keys{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .ph-k{ display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; padding:14px 8px 12px; background:var(--panel); border:1px solid var(--line-soft); border-radius:var(--radius-sm); transition:border-color .1s ease, background .1s ease; }
+  .ph-k kbd{ display:grid; place-items:center; min-width:56px; height:52px; padding:0 12px; border-radius:8px; border:1px solid var(--line); border-bottom-width:5px; background:var(--panel-2); color:#fff; font-family:'Oswald',sans-serif; font-weight:600; font-size:22px; letter-spacing:.04em; transition:transform .1s ease, border-color .1s ease, color .1s ease; }
+  .ph-k span{ font-size:11.5px; line-height:1.3; color:var(--text-dim); }
+  .ph-k.hit{ border-color:var(--brand); background:rgba(53,182,201,.12); }
+  .ph-k.hit kbd{ border-color:var(--brand); border-bottom-width:1px; transform:translateY(4px); color:var(--brand); }
+  .ph-keynote{ color:var(--text-faint); font-size:11.5px; margin:12px 0 0; }
+
+  #viewPhoebe .kh-sec-head .maxall:disabled{ opacity:.4; cursor:not-allowed; }
+  #viewPhoebe .kh-sec-head .maxall:disabled:hover{ color:var(--text-faint); border-color:var(--line); }
+  .ph-log{ list-style:none; margin:0; padding:0; border-top:1px solid var(--line-soft); max-height:300px; overflow:auto; }
+  .ph-log li{ display:flex; justify-content:space-between; gap:12px; padding:10px 2px; border-bottom:1px solid var(--line-soft); font-size:12.5px; color:var(--text); }
+  .ph-log li .t{ display:flex; align-items:center; gap:10px; }
+  .ph-log li .t::before{ content:''; width:7px; height:7px; background:var(--weapon); border-radius:1px; transform:rotate(45deg); flex:none; }
+  .ph-log li.lm .t::before{ background:var(--gold); }
+  .ph-log li .at{ color:var(--text-faint); font-variant-numeric:tabular-nums; }
+  .ph-empty{ color:var(--text-faint); font-size:12.5px; line-height:1.6; padding:14px 2px 2px; }
+
+  .ph-settings{ margin-top:18px; background:var(--panel); border:1px solid var(--line-soft); border-radius:var(--radius); padding:0 20px; }
+  .ph-settings summary{ cursor:pointer; padding:15px 0; list-style:none; display:flex; align-items:center; gap:10px; font-family:'Oswald',sans-serif; font-weight:500; font-size:14px; letter-spacing:.06em; text-transform:uppercase; color:var(--text-dim); }
+  .ph-settings summary::-webkit-details-marker{ display:none; }
+  .ph-settings summary::before{ content:''; width:6px; height:6px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(-45deg); transition:transform .15s ease; }
+  .ph-settings[open] summary{ color:#fff; }
+  .ph-settings[open] summary::before{ transform:rotate(45deg); }
+  .ph-set-body{ padding:2px 0 18px; border-top:1px dashed var(--line-soft); }
+  .ph-row{ display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:14px; font-size:12.5px; color:var(--text-dim); }
+  .ph-row input[type=number]{ width:74px; background:var(--panel-2); border:1px solid var(--line); color:#fff; border-radius:6px; padding:6px 8px; font-family:'Oswald',sans-serif; font-size:18px; font-weight:600; text-align:center; outline:none; }
+  .ph-row input[type=number]:focus{ border-color:var(--weapon); }
+  .ph-row input[type=checkbox]{ width:18px; height:18px; accent-color:var(--weapon); flex:none; }
+  .ph-calc{ font-size:12px; color:var(--text-faint); line-height:1.7; margin:12px 0 0; }
+  .ph-reset{ appearance:none; background:var(--panel-2); border:1px solid var(--line); color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:11px; padding:8px 12px; border-radius:999px; cursor:pointer; }
+  .ph-reset:hover{ color:var(--weapon); border-color:var(--weapon-dim); }
 </style>
 </head>
 <body>
@@ -1419,6 +1517,7 @@
 <div class="tabs" role="tablist">
 <button class="active" data-tab="db" role="tab" type="button">Datenbank</button>
 <button data-tab="knowhow" role="tab" type="button">Know-how Tracker</button>
+<button data-tab="phoebe" role="tab" type="button">Phoebe-Tracker</button>
 </div>
 <div class="kh-lang" role="group" aria-label="Language">
 <button data-l="de" type="button">DE</button>
@@ -1901,6 +2000,57 @@
 </div>
 <div id="khBody"></div>
 <div class="kh-note" id="khNote"></div>
+</div>
+<div id="viewPhoebe">
+<header class="ph-hero">
+<div class="kicker" id="phKicker"></div>
+<h1 id="phTitle"></h1>
+<div class="ph-notice" data-p="notice"></div>
+<p id="phLede"></p>
+</header>
+<div class="ph-layout">
+<section class="ph-card" id="phCard">
+<div class="ph-ring">
+<svg viewBox="0 0 120 120" aria-hidden="true"><circle class="ph-track" cx="60" cy="60" r="52"></circle><circle class="ph-bar" id="phBar" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"></circle></svg>
+<div class="ph-center"><div class="ph-time" id="phTime"></div><div class="ph-state" id="phState"></div></div>
+</div>
+<div class="ph-stats">
+<div class="ph-stat"><div class="num" id="phLm">0</div><div class="lbl" data-p="landmarks"></div></div>
+<div class="ph-stat"><div class="num" id="phDue"></div><div class="lbl" data-p="due"></div></div>
+</div>
+<div class="ph-actions">
+<button class="ph-btn primary" id="phDied" type="button"><strong data-p="died"></strong><small data-p="diedSub"></small></button>
+<button class="ph-btn" id="phLandmark" type="button" disabled><strong data-p="lm"></strong><small id="phLmSub"></small></button>
+</div>
+</section>
+<div class="ph-side">
+<section class="ph-card" style="--c:var(--brand)">
+<div class="kh-sec-head" style="--c:var(--brand)"><h2 data-p="keys"></h2><div class="rule"></div></div>
+<div class="ph-keys">
+<div class="ph-k" data-k="phDied"><kbd data-kb="Num 1"></kbd><span data-p="died"></span></div>
+<div class="ph-k" data-k="phLandmark"><kbd data-kb="Num 2"></kbd><span data-p="lm"></span></div>
+<div class="ph-k" data-k="phUndo"><kbd data-kb="Num 0"></kbd><span data-p="undo"></span></div>
+</div>
+<p class="ph-keynote" data-p="keyNote"></p>
+</section>
+<section class="ph-card" style="--c:var(--gold)">
+<div class="kh-sec-head" style="--c:var(--gold)"><h2 data-p="log"></h2><div class="rule"></div><button class="maxall" id="phUndo" type="button" disabled data-p="undo"></button></div>
+<ul class="ph-log" id="phLog"></ul>
+<div class="ph-empty" id="phEmpty"></div>
+</section>
+</div>
+</div>
+<details class="ph-settings">
+<summary data-p="settings"></summary>
+<div class="ph-set-body">
+<div class="ph-row"><label for="phMins" data-p="mins"></label><input id="phMins" type="number" min="1" max="600" value="60"/></div>
+<div class="ph-row"><label for="phPct" data-p="pct"></label><input id="phPct" type="number" min="1" max="90" value="20"/></div>
+<p class="ph-calc" data-p="calc"></p>
+<div class="ph-row"><label for="phNotify" data-p="notify"></label><input id="phNotify" type="checkbox"/></div>
+<div class="ph-row"><span></span><button class="ph-reset" id="phReset" type="button" data-p="reset"></button></div>
+</div>
+</details>
+<div class="kh-note" id="phNote"></div>
 </div>
 <div class="kh-toast" id="khToast"></div>
 <footer>
@@ -4526,6 +4676,7 @@ applyFilters();
   /* ---------- Tabs ---------- */
   function setTab(tab){
     document.body.classList.toggle('tab-knowhow',tab==='knowhow');
+    document.body.classList.toggle('tab-phoebe',tab==='phoebe');
     document.querySelectorAll('.main-tabs .tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
     try{localStorage.setItem(TABKEY,tab);}catch(e){}
     if(tab==='knowhow') render();
@@ -4538,8 +4689,157 @@ applyFilters();
   }));
   document.querySelectorAll('.lang-switch button').forEach(b=>b.addEventListener('click',()=>setTimeout(()=>{if(document.body.classList.contains('tab-knowhow'))render();},0)));
 
-  let start='db'; try{start=localStorage.getItem(TABKEY)==='knowhow'?'knowhow':'db';}catch(e){}
+  let start='db'; try{const v=localStorage.getItem(TABKEY);start=(v==='knowhow'||v==='phoebe')?v:'db';}catch(e){}
   render(); setTab(start); window.scrollTo({top:0});
+})();
+</script>
+<script>
+/* ==========================================================
+   PHOEBE TRACKER (dritter Tab)
+   Sprache folgt dem DE/EN-Schalter der Seite (document.documentElement.lang).
+   Speicherung: localStorage (nur in diesem Browser).
+   Numpad: 1 = Phoebe gestorben, 2 = Landmark gelöscht, 0 = rückgängig (nur im Phoebe-Tab, Tab im Fokus).
+   ========================================================== */
+(function(){
+  /* ===== ABLAUFZEITPUNKT =====
+     Format 'JJJJ-MM-TT HH:MM' (24 h), z. B. '2026-12-31 18:30'. Nur Datum ('2026-12-31') = 00:00 Uhr.
+     Zeit = Ortszeit des Besuchers. Ab diesem Moment wird der Phoebe-Tab entfernt, auch live,
+     wenn die Seite zu dem Zeitpunkt gerade offen ist. null = nie entfernen. */
+  var ENDS_AT='2026-11-02 00:00';
+
+  var gone=false;
+  function parseEnd(v){if(!v)return NaN;var m=String(v).trim().replace(' ','T');if(m.length===10)m+='T00:00';return new Date(m).getTime();}
+  var endMs=parseEnd(ENDS_AT);
+  function removeTab(){
+    gone=true;
+    var tabBtn=document.querySelector('.main-tabs .tabs button[data-tab="phoebe"]');
+    var wasActive=document.body.classList.contains('tab-phoebe');
+    if(tabBtn)tabBtn.remove();
+    var pv=document.getElementById('viewPhoebe');if(pv)pv.remove();
+    document.body.classList.remove('tab-phoebe');
+    if(wasActive){var dbBtn=document.querySelector('.main-tabs .tabs button[data-tab="db"]');if(dbBtn)dbBtn.click();}
+    /* Tab-Beschriftung "Datenbank"/"Database" soll weiter der Sprache folgen */
+    var setDb=function(){var b=document.querySelector('.main-tabs .tabs button[data-tab="db"]');
+      if(b)b.textContent=document.documentElement.lang==='en'?'Database':'Datenbank'};
+    setDb();new MutationObserver(setDb).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  }
+  if(!isNaN(endMs)&&Date.now()>=endMs){removeTab();return;}
+
+  var KEY='phoebe-tracker-v1', C=326.7;
+  var P={
+    de:{kicker:'WELTBOSS // RESPAWN-SCHÄTZUNG',t1:'Phoebe',t2:'Tracker',
+      lede:'Trage ein, wann Phoebe gestorben ist und welche Landmarks du gelöscht hast. Der Tracker schätzt, wann der Weltboss wieder auftaucht.',
+      nodata:'Noch keine Daten',locked:'Gesperrt',ready:'Bereit',readyState:'Phoebe sollte wieder auftauchen',
+      landmarks:'Landmarks',due:'Fällig gegen',died:'Phoebe gestorben',diedSub:'Startet die Sperre neu',
+      lm:'Landmark gelöscht',lmSub:'Nimmt {p} % der Restzeit',keys:'Tastatur (Numpad)',undo:'Rückgängig',
+      keyNote:'Funktioniert, solange dieser Tab im Fokus ist.',log:'Verlauf',
+      empty:'Noch keine Einträge. Tippe auf „Phoebe gestorben“, sobald du sie besiegt hast.',
+      settings:'Annahmen und Einstellungen',mins:'Sperre nach Phoebes Tod (Minuten)',pct:'Ersparnis pro Landmark (%)',
+      calc:'Jedes Landmark multipliziert die Restzeit mit (1 − Ersparnis). Fünf Landmarks hintereinander lassen also noch eine kleine Wartezeit übrig.',
+      notify:'Benachrichtigung, wenn fällig (Tab muss offen bleiben)',reset:'Tracker zurücksetzen',
+      confirm:'Verlauf und Timer wirklich löschen?',
+      note:'Hinweis: Dein Verlauf liegt nur in diesem Browser und wird nicht synchronisiert. Das Ergebnis ist eine Schätzung, kein exakter Timer. Passe die Einstellungen an, wenn du siehst, wie sich dein Server verhält.',
+      notif:'Phoebe ist wahrscheinlich wieder da',tabDb:'Datenbank',
+      notice:'Hinweis: Dieser Tracker wird am 2. November um 0 Uhr automatisch entfernt, da das Event am 3. November endet.'},
+    en:{kicker:'WORLD BOSS // RESPAWN ESTIMATE',t1:'Phoebe',t2:'Tracker',
+      lede:'Log when Phoebe died and which landmarks you cleared. The tracker estimates when the world boss will show up again.',
+      nodata:'No data yet',locked:'Locked',ready:'Ready',readyState:'Phoebe should be back',
+      landmarks:'Landmarks',due:'Due around',died:'Phoebe died',diedSub:'Restarts the lockout',
+      lm:'Landmark cleared',lmSub:'Takes {p} % of the remaining time',keys:'Keyboard (Numpad)',undo:'Undo',
+      keyNote:'Works as long as this tab has focus.',log:'History',
+      empty:'No entries yet. Tap “Phoebe died” as soon as you have defeated her.',
+      settings:'Assumptions & settings',mins:'Lockout after Phoebe’s death (minutes)',pct:'Time saved per landmark (%)',
+      calc:'Each landmark multiplies the remaining time by (1 − saved). Five landmarks in a row therefore still leave a short wait.',
+      notify:'Notify me when due (tab must stay open)',reset:'Reset tracker',
+      confirm:'Really delete history and timer?',
+      note:'Note: your history is stored only in this browser and is not synced. The result is an estimate, not an exact timer. Adjust the settings once you see how your server behaves.',
+      notif:'Phoebe is probably back',tabDb:'Database',
+      notice:'Note: This tracker will be removed automatically on November 2 at midnight, as the event ends on November 3.'}
+  };
+  var def={lockEnd:null,landmarks:0,log:[],mins:60,pct:20,notify:false,notified:false};
+  var $=function(id){return document.getElementById(id)};
+  var lang=function(){return document.documentElement.lang==='en'?'en':'de'};
+  function load(){try{var r=localStorage.getItem(KEY);if(r)return Object.assign({},def,JSON.parse(r))}catch(e){}return Object.assign({},def,{log:[]})}
+  var S=load();
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function fmt(ms){var s=Math.max(0,Math.ceil(ms/1000)),m=Math.floor(s/60),x=s%60;return m+':'+(x<10?'0':'')+x}
+  function clock(t){return new Date(t).toLocaleTimeString(lang()==='en'?'en-GB':'de-DE',{hour:'2-digit',minute:'2-digit'})}
+  function active(){return !!S.lockEnd&&S.lockEnd>Date.now()}
+  function snap(){return {lockEnd:S.lockEnd,landmarks:S.landmarks,notified:S.notified}}
+  function push(type){S.log.unshift({type:type,t:Date.now(),prev:snap()});if(S.log.length>50)S.log.pop()}
+
+  $('phDied').onclick=function(){push('died');S.lockEnd=Date.now()+S.mins*60000;S.landmarks=0;S.notified=false;save();render()};
+  $('phLandmark').onclick=function(){if(!active())return;push('landmark');var rest=S.lockEnd-Date.now();S.lockEnd=Date.now()+rest*(1-S.pct/100);S.landmarks++;save();render()};
+  $('phUndo').onclick=function(){var e=S.log.shift();if(!e)return;S.lockEnd=e.prev.lockEnd;S.landmarks=e.prev.landmarks;S.notified=e.prev.notified;save();render()};
+  $('phReset').onclick=function(){if(confirm(P[lang()].confirm)){S.lockEnd=null;S.landmarks=0;S.log=[];S.notified=false;save();render()}};
+  $('phMins').onchange=function(){S.mins=Math.min(600,Math.max(1,+this.value||60));save();render()};
+  $('phPct').onchange=function(){S.pct=Math.min(90,Math.max(1,+this.value||20));save();render()};
+  $('phNotify').onchange=function(){S.notify=this.checked;if(S.notify&&'Notification' in window&&Notification.permission==='default')Notification.requestPermission();save()};
+
+  function texts(){
+    var t=P[lang()];
+    document.querySelectorAll('#viewPhoebe [data-p]').forEach(function(el){el.textContent=t[el.dataset.p]});
+    document.querySelectorAll('#viewPhoebe kbd[data-kb]').forEach(function(el){el.textContent=el.dataset.kb});
+    $('phKicker').textContent=t.kicker;
+    $('phTitle').innerHTML=t.t1+' <span>'+t.t2+'</span>';
+    $('phLede').textContent=t.lede;
+    $('phNote').textContent=t.note;
+    $('phLmSub').textContent=t.lmSub.replace('{p}',S.pct);
+    var db=document.querySelector('.main-tabs .tabs button[data-tab="db"]');
+    if(db) db.textContent=t.tabDb;
+  }
+  function render(){
+    if(gone)return;
+    var t=P[lang()];
+    texts();
+    $('phMins').value=S.mins;$('phPct').value=S.pct;$('phNotify').checked=S.notify;
+    $('phLm').textContent=S.landmarks;
+    $('phUndo').disabled=!S.log.length;
+    $('phEmpty').textContent=S.log.length?'':t.empty;
+    var ul=$('phLog');ul.innerHTML='';
+    S.log.forEach(function(e){
+      var li=document.createElement('li');li.className=e.type==='died'?'':'lm';
+      var a=document.createElement('span');a.className='t';a.textContent=e.type==='died'?t.died:t.lm;
+      var b=document.createElement('span');b.className='at';b.textContent=clock(e.t);
+      li.appendChild(a);li.appendChild(b);ul.appendChild(li);
+    });
+    document.querySelectorAll('.kh-lang button').forEach(function(b){b.classList.toggle('active',b.dataset.l===lang())});
+    tick();
+  }
+  function tick(){
+    if(gone)return;
+    var t=P[lang()],rest=S.lockEnd?S.lockEnd-Date.now():0,total=S.mins*60000;
+    var isReady=!!S.lockEnd&&rest<=0;
+    $('phCard').classList.toggle('ready',isReady);
+    if(!S.lockEnd){
+      $('phTime').textContent='–:––';$('phState').textContent=t.nodata;$('phDue').textContent='–';
+      $('phBar').style.strokeDashoffset=C;
+    }else if(rest>0){
+      $('phTime').textContent=fmt(rest);$('phState').textContent=t.locked;$('phDue').textContent=clock(S.lockEnd);
+      $('phBar').style.strokeDashoffset=C*(1-Math.min(1,rest/total));
+    }else{
+      $('phTime').textContent=t.ready;$('phState').textContent=t.readyState;$('phDue').textContent=clock(S.lockEnd);
+      $('phBar').style.strokeDashoffset=0;
+      if(S.notify&&!S.notified){S.notified=true;save();
+        try{if('Notification' in window&&Notification.permission==='granted')new Notification(t.notif)}catch(e){}}
+    }
+    $('phLandmark').disabled=!(rest>0);
+  }
+
+  document.addEventListener('keydown',function(e){
+    if(!document.body.classList.contains('tab-phoebe')||e.repeat||e.ctrlKey||e.altKey||e.metaKey)return;
+    var tg=e.target&&e.target.tagName;if(tg==='INPUT'||tg==='TEXTAREA'||tg==='SELECT')return;
+    var id={Numpad1:'phDied',Numpad2:'phLandmark',Numpad0:'phUndo'}[e.code];
+    if(!id)return;
+    e.preventDefault();$(id).click();
+    var k=document.querySelector('#viewPhoebe .ph-k[data-k="'+id+'"]');
+    if(k){k.classList.add('hit');setTimeout(function(){k.classList.remove('hit')},160)}
+  });
+
+  /* Sprache folgt dem Seiten-Schalter */
+  new MutationObserver(render).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  render();setInterval(tick,1000);
+  if(!isNaN(endMs)){var endIv=setInterval(function(){if(Date.now()>=endMs){clearInterval(endIv);removeTab();}},1000);}
 })();
 </script>
 </body>
