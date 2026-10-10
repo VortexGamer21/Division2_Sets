@@ -1382,6 +1382,8 @@
   .kh-stat .lbl{ font-size:10.5px; color:var(--text-faint); margin-top:6px; letter-spacing:.07em; text-transform:uppercase; }
   .kh-stat .bar{ height:4px; background:var(--line-soft); border-radius:2px; margin-top:9px; overflow:hidden; }
   .kh-stat .bar i{ display:block; height:100%; background:var(--yellow); }
+  .kh-stat.total{ border-top-color:var(--gold); }
+  .kh-stat.total .bar i{ background:var(--gold); }
 
   .kh-controls{ position:sticky; top:12px; z-index:20; background:rgba(20,24,29,.88); backdrop-filter:blur(12px); border:1px solid var(--line-soft); border-radius:var(--radius); box-shadow:0 14px 30px -18px rgba(0,0,0,.7); padding:14px 16px; margin-top:24px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
   .kh-controls .search{ flex:1 1 220px; }
@@ -4738,7 +4740,7 @@ applyFilters();
       search:'Suchen…',all:'Alle',missing:'Fehlt',owned:'Besessen',export:'Export',import:'Import',reset:'Reset',
       weapons:'Exotic-Waffen',gear:'Exotic-Gear',total:'Gesamt',have:'Besitzt du',
       markAll:'Alle markieren',unmarkAll:'Alle abwählen',badge:'BESESSEN',yes:'Besitze ich',no:'Fehlt noch',
-      empty:'Nichts gefunden.',
+      empty:'Nichts gefunden.',totalall:'Know-how gesamt',
       note:'Hinweis: Dein Fortschritt liegt nur in diesem Browser (localStorage). Mit „Export“ speicherst du ihn als .txt-Datei, mit „Import“ lädst du diese Datei wieder ein, z. B. auf einem anderen Gerät. Die Liste wird automatisch aus den Exotic-Einträgen der Datenbank erzeugt.',
       confirm:'Wirklich alle Markierungen im Exotic Collector zurücksetzen?',saved:'Export als .txt-Datei gespeichert',imported:'Import erfolgreich',bad:'Import fehlgeschlagen'},
     en:{kicker:'EXOTIC COLLECTOR // COLLECTION',t1:'Exotic',t2:'Collector',
@@ -4746,7 +4748,7 @@ applyFilters();
       search:'Search…',all:'All',missing:'Missing',owned:'Owned',export:'Export',import:'Import',reset:'Reset',
       weapons:'Exotic Weapons',gear:'Exotic Gear',total:'Total',have:'Owned',
       markAll:'Mark all',unmarkAll:'Unmark all',badge:'OWNED',yes:'I own this',no:'Still missing',
-      empty:'Nothing found.',
+      empty:'Nothing found.',totalall:'Know-how total',
       note:'Note: your progress is stored only in this browser (localStorage). “Export” saves it as a .txt file; “Import” loads that file again, e.g. on another device. The list is generated automatically from the Exotic entries of the database.',
       confirm:'Really reset all marks in the Exotic Collector?',saved:'Export saved as .txt file',imported:'Import successful',bad:'Import failed'}
   };
@@ -4984,16 +4986,20 @@ applyFilters();
     document.querySelectorAll('.kh-lang button').forEach(b=>b.classList.toggle('active',b.dataset.l===lang()));
 
     /* stats */
-    let stats='';
+    const parts=[]; let sumCur=0,sumTot=0;
     KH_DATA.forEach(sec=>{
       let cur=0,tot=0,fin=0;
       sec.items.forEach(it=>{cur+=state[sec.id+'|'+it[0]];tot+=maxOf(sec,it);if(isDone(sec,it))fin++;});
       const pct=tot?cur/tot*100:0;
       const main= sec.type==='lvl' ? `${fin}<small> / ${sec.items.length}</small>` : `${cur}<small> / ${tot}</small>`;
       const sub = sec.type==='lvl' ? `${sec[lang()]} ${t.maxed}` : `${sec[lang()]} ${t.prof}`;
-      stats+=`<div class="kh-stat"><div class="num">${main}</div><div class="lbl">${esc(sub)}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`;
+      parts.push(`<div class="kh-stat"><div class="num">${main}</div><div class="lbl">${esc(sub)}</div><div class="bar"><i style="width:${pct}%"></i></div></div>`);
+      /* Gesamt wie im Spiel: x/y-Zähler zählen einzeln, Marken und Gear Sets zählen je 1, wenn Stufe 10 erreicht ist */
+      if(sec.type==='cnt'){sumCur+=cur;sumTot+=tot;} else {sumCur+=fin;sumTot+=sec.items.length;}
     });
-    $('khStats').innerHTML=stats;
+    const sumPct=sumTot?sumCur/sumTot*100:0;
+    parts.push(`<div class="kh-stat total"><div class="num">${sumCur}<small> / ${sumTot}</small></div><div class="lbl">${esc(t.totalall)}</div><div class="bar"><i style="width:${sumPct}%"></i></div></div>`);
+    $('khStats').innerHTML=parts.join('');
 
     /* sections */
     let html='';
